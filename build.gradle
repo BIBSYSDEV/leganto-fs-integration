@@ -1,0 +1,120 @@
+plugins {
+    id 'java'
+    id 'checkstyle'
+    id 'pmd'
+    id "jacoco"
+    id "base"
+}
+
+
+apply plugin: 'java'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+apply plugin: 'jacoco'
+apply plugin: 'base'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation('org.junit.jupiter:junit-jupiter:5.4.0')
+    testCompile 'io.cucumber:cucumber-java:4.2.0'
+
+    implementation 'io.cucumber:cucumber-java:4.2.0'
+    implementation  'com.fasterxml.jackson.core:jackson-core:2.9.8'
+    implementation  'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+
+    testImplementation 'io.cucumber:cucumber-junit:4.2.0'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.hamcrest:hamcrest:2.1'
+
+
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testRuntime
+    }
+}
+
+checkstyle {
+    configFile = rootProject.resources.text.fromFile('config/checkstyle/checkstyle.xml').asFile()
+    showViolations = true
+    toolVersion '8.13'
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled false
+        html.enabled true
+        html.stylesheet rootProject.resources.text.fromFile('config/checkstyle/checkstyle-simple.xsl')
+    }
+}
+
+
+pmd {
+    toolVersion = "6.7.0"
+    ruleSetConfig = rootProject.resources.text.fromFile('config/pmd/ruleset.xml')
+    ruleSets = []
+    ignoreFailures = false
+}
+
+test {
+    failFast = true
+}
+
+
+
+task cucumber() {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "cucumber.api.cli.Main"
+            classpath = configurations.cucumberRuntime+ sourceSets.main.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'featuretests', 'src/test/resources']
+        }
+    }
+}
+
+
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/reports/jacoco")
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.3"
+}
+
+
+check.dependsOn jacocoTestCoverageVerification
+jacocoTestCoverageVerification.dependsOn(jacocoTestReport)
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = 'METHOD'
+                value = 'COVEREDRATIO'
+                minimum = 0.7
+            }
+        }
+
+        rule {
+            limit {
+                counter = 'CLASS'
+                value = 'COVEREDRATIO'
+
+                minimum = 0.7
+            }
+        }
+
+    }
+}
+
+
