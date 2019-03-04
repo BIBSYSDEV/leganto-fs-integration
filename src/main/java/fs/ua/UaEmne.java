@@ -21,31 +21,35 @@ public class UaEmne {
         return href;
     }
 
-    public void setHref(String href) {
+    public UaEmne setHref(String href) {
         this.href = href;
+        return this;
     }
 
     public String getInstitution() {
         return institution;
     }
 
-    public void setInstitution(String institution) {
+    public UaEmne setInstitution(String institution) {
         this.institution = institution;
+        return this;
     }
 
     public String getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public UaEmne setCode(String code) {
         this.code = code;
+        return this;
     }
 
     public String getVersion() {
         return version;
     }
 
-    public void setVersion(String version) {
+    public UaEmne setVersion(String version) {
         this.version = version;
+        return this;
     }
 }

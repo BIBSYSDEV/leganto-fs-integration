@@ -4,8 +4,8 @@ public enum SemesterCode {
 
     AUTUMN, SPRING;
 
-    private static final String AUTUMN_NORWEGIAN = "HØST";
-    private static final String SPRING_NORWEGIAN = "VÅR";
+    public static final String AUTUMN_NORWEGIAN = "HØST";
+    public static final String SPRING_NORWEGIAN = "VÅR";
     private static final String ERROR_MESSAGE_PREFIX = "Invalid sememster code:";
 
     public static SemesterCode fromString(String semesterCode) {
@@ -15,6 +15,16 @@ public enum SemesterCode {
             return SPRING;
         } else {
             throw new IllegalArgumentException(ERROR_MESSAGE_PREFIX + semesterCode);
+        }
+    }
+
+    @Override
+    public String toString(){
+        if(SemesterCode.AUTUMN.equals(this)){
+            return AUTUMN_NORWEGIAN;
+        }
+        else{
+            return SPRING_NORWEGIAN;
         }
     }
 }

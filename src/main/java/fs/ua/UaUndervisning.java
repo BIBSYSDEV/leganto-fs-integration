@@ -20,23 +20,26 @@ public class UaUndervisning {
         return href;
     }
 
-    public void setHref(String href) {
+    public UaUndervisning setHref(String href) {
         this.href = href;
+        return this;
     }
 
     public UaEmne getEmne() {
         return emne;
     }
 
-    public void setEmne(UaEmne emne) {
+    public UaUndervisning setEmne(UaEmne emne) {
         this.emne = emne;
+        return this;
     }
 
     public UaSemester getUaSemester() {
         return uaSemester;
     }
 
-    public void setUaSemester(UaSemester uaSemester) {
+    public UaUndervisning setUaSemester(UaSemester uaSemester) {
         this.uaSemester = uaSemester;
+        return this;
     }
 }

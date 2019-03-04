@@ -10,6 +10,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import fs.ua.UndervisningsAktivitet;
 import io.cucumber.datatable.DataTable;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +91,7 @@ public class UAFeatureTest {
     @Given("new UA entry has been generated")
     public void new_UA_entry_has_been_generated() {
         // Write code here that turns the phrase above into concrete actions
-        UaLegantoEntry uAlegantoEntry = new UaLegantoEntry();
+        UaLegantoEntry uAlegantoEntry = new UaLegantoEntry(new UndervisningsAktivitet());
     }
 
     @When("the scheduling system requests an update")
@@ -102,7 +103,7 @@ public class UAFeatureTest {
     @Then("CourseCode is the string {string}")
     public void coursecode_is_the_string(String string) {
 
-        uAlegantoEntry
+        String courseCode=uAlegantoEntry.getCourseCode();
 
     }
 

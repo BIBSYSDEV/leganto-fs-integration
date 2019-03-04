@@ -16,12 +16,18 @@ public class UndervisningsAktivitet {
         return undervisning;
     }
 
-    public void setUndervisning(UaUndervisning undervisning) {
+    public UndervisningsAktivitet setUndervisning(UaUndervisning undervisning) {
         this.undervisning = undervisning;
+        return this;
     }
 
     public UaUndervisning getUndervising() {
         return this.undervisning;
+    }
+
+    public UndervisningsAktivitet setUndervising(UaUndervisning undervisning){
+        this.undervisning=undervisning;
+        return this;
     }
 
     @JsonIgnore
