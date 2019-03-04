@@ -5,7 +5,7 @@ Feature:
 
 
   Background:
-#    Given that it is time for an update
+
 #    And there is a scheduling system setup to request course updates in Leganto
     And there is a user input
     And the user input has a field with name "operation" with value "operation_value"
@@ -27,49 +27,50 @@ Feature:
     And the response from /emne/emneId from FS has a field "organisasjonsenheter" that is an array with the key-element pairs
       | href | organizationEnhetUrl | type| STUDIE|
       | href | organizationEnhetUrl | type| ADMINISTRATIVT |
+    And new UA entry has been generated
 
 
 
 
   Scenario: Update Leganto with new course information
     When the scheduling system requests an update
-    Then the courses in FS are populated in Leganto with the following data:
-      | Course Code (mandatory)               |
-      | Course Title (mandatory)              |
-      | Section ID                            |
-      | Academic Department                   |
-      | Processing Department (mandatory)     |
-      | Term1                                 |
-      | Term2                                 |
-      | Term3                                 |
-      | Term4                                 |
-      | Start Date                            |
-      | End Date                              |
-      | Number of Participants                |
-      | Weekly Hours                          |
-      | Year                                  |
-      | Searchable ID 1                       |
-      | Searchable ID 2                       |
-      | ALL_SEARCHABLE_IDS                    |
-      | Instructor 1                          |
-      | Instructor 2                          |
-      | Instructor 3                          |
-      | Instructor 4                          |
-      | Instructor 5                          |
-      | Instructor 6                          |
-      | Instructor 7                          |
-      | Instructor 8                          |
-      | Instructor 9                          |
-      | Instructor 10                         |
-      | ALL_INSTRUCTORS                       |
-      | Operation (mandatory)                 |
-      | Old Course Code (rollover only)       |
-      | Old Course Section ID (rollover only) |
-      | Submit By Date                        |
-      | Campuses and Campus Participants      |
-      | Reading List Name                     |
+#    Then the courses in FS are populated in Leganto with the following data:
+#      | Course Code (mandatory)               |
+#      | Course Title (mandatory)              |
+#      | Section ID                            |
+#      | Academic Department                   |
+#      | Processing Department (mandatory)     |
+#      | Term1                                 |
+#      | Term2                                 |
+#      | Term3                                 |
+#      | Term4                                 |
+#      | Start Date                            |
+#      | End Date                              |
+#      | Number of Participants                |
+#      | Weekly Hours                          |
+#      | Year                                  |
+#      | Searchable ID 1                       |
+#      | Searchable ID 2                       |
+#      | ALL_SEARCHABLE_IDS                    |
+#      | Instructor 1                          |
+#      | Instructor 2                          |
+#      | Instructor 3                          |
+#      | Instructor 4                          |
+#      | Instructor 5                          |
+#      | Instructor 6                          |
+#      | Instructor 7                          |
+#      | Instructor 8                          |
+#      | Instructor 9                          |
+#      | Instructor 10                         |
+#      | ALL_INSTRUCTORS                       |
+#      | Operation (mandatory)                 |
+#      | Old Course Code (rollover only)       |
+#      | Old Course Section ID (rollover only) |
+#      | Submit By Date                        |
+#      | Campuses and Campus Participants      |
+#      | Reading List Name                     |
     Then CourseCode is the string "UA_emneKode-emneVersion-1979-HØST"
-#    And CouseTitle is the value of emne.navn from FS-API: /emner/{id}
+#    And  CouseTitle is the string "BokmalText"
 #    And Section ID is a comma separated list consisting of  the values emne.versjon, undervisningsaktivitetet.navn from FS-API: /undervisingsaktiviteter/{id}
 #    And Academic Department is the interpolated string of "${organisasjonsenheter.institusjon}_${organisasjonsenheter.fakultet}_${organisasjonsenheter.institutt}" from the FS-API: /organisasjonsenheter/{id}
 #    And Processing Department is set to invariant value LEGANTO

@@ -8,11 +8,13 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class JsonUtils {
+public final class JsonUtils {
 
     public  static ObjectMapper mapper = jsonParser();
     public static ObjectWriter writer = mapper.writer();
     public static ObjectReader reader = mapper.reader();
+
+    private JsonUtils(){}
 
     private static ObjectMapper jsonParser() {
         JsonFactory jsonFactory = new JsonFactory()
