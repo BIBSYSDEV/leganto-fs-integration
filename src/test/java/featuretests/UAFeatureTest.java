@@ -91,7 +91,7 @@ public class UAFeatureTest {
     @Given("new UA entry has been generated")
     public void new_UA_entry_has_been_generated() {
         // Write code here that turns the phrase above into concrete actions
-        UaLegantoEntry uAlegantoEntry = new UaLegantoEntry(new UndervisningsAktivitet());
+        UaLegantoEntry uAlegantoEntry = new UaLegantoEntry();
     }
 
     @When("the scheduling system requests an update")
@@ -114,7 +114,7 @@ public class UAFeatureTest {
         int expectedFieldsNumber = fieldNamesCount.size();
 
         int actualNumberOfFields = uAlegantoEntry.toString()
-            .split(UaLegantoEntry.DELIMITER_REGEX, INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER)
+            .split(UaLegantoEntry.FIELD_DELIMITER, INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER)
             .length;
 
         assertThat(actualNumberOfFields, is(equalTo(expectedFieldsNumber)));

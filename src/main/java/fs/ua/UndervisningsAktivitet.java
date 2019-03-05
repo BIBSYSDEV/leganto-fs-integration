@@ -21,9 +21,7 @@ public class UndervisningsAktivitet {
         return this;
     }
 
-    public UaUndervisning getUndervising() {
-        return this.undervisning;
-    }
+
 
     public UndervisningsAktivitet setUndervising(UaUndervisning undervisning){
         this.undervisning=undervisning;

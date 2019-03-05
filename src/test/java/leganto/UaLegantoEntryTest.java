@@ -49,7 +49,15 @@ public class UaLegantoEntryTest {
 
     @Test
     public void getCourseCodeShouldReturn() {
-        String expected = String.join("_", UaLegantoEntry.PREFIX, EMNE_CODE, EMNE_VERSION, UASEMESTER_YEAR.toString(),
+        String firstPart=String.join(UaLegantoEntry.COURSE_CODE_PREFIX_DELIMITER,
+            UaLegantoEntry.PREFIX,
+            EMNE_CODE
+            );
+
+        String expected = String.join(UaLegantoEntry.COURSE_CODE_DELIMITER,
+            firstPart,
+            EMNE_VERSION,
+            UASEMESTER_YEAR.toString(),
             SemesterCode.AUTUMN_NORWEGIAN);
 
         String actual = entry.getCourseCode();

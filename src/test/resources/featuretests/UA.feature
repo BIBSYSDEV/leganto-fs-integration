@@ -14,10 +14,10 @@ Feature:
       | participant1|
       | particiapnt2|
     And there is a request to /undervisningsaktiviteter/UA_ID
-    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "emne.kode" with value "emneKode"
-    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "emne.versjon" with value "emneVersjon"
-    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "semester.ar" with value "1980"
-    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "semester.termin" with value "HØST"
+    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.emne.kode" with value "emneKode"
+    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.emne.versjon" with value "emneVersjon"
+    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.semester.ar" with value "1980"
+    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.semester.termin" with value "HØST"
     And there is a request to /emne/emneId
     And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
        | lang | nb | value | BokmalText |

@@ -11,7 +11,7 @@ public class UaSemester {
     private String href;
 
     @JsonProperty("ar")
-    private int year;
+    private Integer year;
 
 
     private SemesterCode semesterCode;
@@ -37,7 +37,7 @@ public class UaSemester {
         return this;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
