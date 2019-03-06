@@ -35,7 +35,7 @@ Feature:
       | undervisning.navn.value |
 
 
-  Scenario: Optional information about a course code is present
+  Scenario: Optional information about a emne code is present
     Given an accessible FS-API
     And an institution username and password for that API
     And a UA id
@@ -48,7 +48,7 @@ Feature:
       | max(tilDato value)  |
 
 
-  Scenario: Optional information about a course code not present
+  Scenario: Optional information about a emne code not present
     Given an accessible FS-api
     And an institution username and password for that API
     And a UA id
