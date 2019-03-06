@@ -6,12 +6,12 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import fs.ua.UndervisningsAktivitet;
 import io.cucumber.datatable.DataTable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import leganto.UaLegantoEntry;
@@ -19,8 +19,10 @@ import utils.JsonUtils;
 
 public class UAFeatureTest {
 
+
     private static final int INCLUDE_EMPTY_STRINGS = -1;
     private static final int INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER = INCLUDE_EMPTY_STRINGS;
+    private static final int EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL = 1;
     private ObjectNode userInput;
     private ObjectNode uaResponse;
     private ObjectNode emneResponse;
@@ -40,12 +42,14 @@ public class UAFeatureTest {
     @Given("the user input has a field with name {string} with value {string}")
     public void the_user_input_has_a_field_with_name_with_value(String key, String value) {
         // Write code here that turns the phrase above into concrete actions
-        userInput.put(key, value);
+        JsonUtils.putKeyInNode(key, value, userInput);
     }
 
     @Given("the user input has a field with name {string} with value {int}")
     public void the_user_input_has_a_field_with_name_with_value(String key, Integer value) {
         // Write code here that turns the phrase above into concrete actions
+        JsonUtils.putKeyInNode(key, value, userInput);
+
         userInput.put(key, value);
     }
 
@@ -68,7 +72,8 @@ public class UAFeatureTest {
     public void the_response_from_undervisningsaktiviteter_UA_ID_from_FS_has_a_field_with_value(String key,
         String value) {
         // Write code here that turns the phrase above into concrete actions
-        uaResponse.put(key, value);
+        JsonUtils.putKeyInNode(key, value, uaResponse);
+        System.out.print("hello");
     }
 
     @Given("there is a request to \\/emne\\/emneId")
@@ -89,9 +94,8 @@ public class UAFeatureTest {
     }
 
     @Given("new UA entry has been generated")
-    public void new_UA_entry_has_been_generated() {
-        // Write code here that turns the phrase above into concrete actions
-        UaLegantoEntry uAlegantoEntry = new UaLegantoEntry();
+    public void new_UA_entry_has_been_generated() throws IOException {
+        uAlegantoEntry = new UaLegantoEntry(UndervisningsAktivitet.fromJson(JsonUtils.write(uaResponse)));
     }
 
     @When("the scheduling system requests an update")
@@ -101,10 +105,9 @@ public class UAFeatureTest {
     }
 
     @Then("CourseCode is the string {string}")
-    public void coursecode_is_the_string(String string) {
-
-        String courseCode=uAlegantoEntry.getCourseCode();
-
+    public void coursecode_is_the_string(String expectedCourseCode) {
+        String courseCode = uAlegantoEntry.getCourseCode();
+        assertThat(courseCode, is(equalTo(expectedCourseCode)));
     }
 
     @Then("the courses in FS are populated in Leganto with the following data:")
@@ -117,7 +120,7 @@ public class UAFeatureTest {
             .split(UaLegantoEntry.FIELD_DELIMITER, INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER)
             .length;
 
-        assertThat(actualNumberOfFields, is(equalTo(expectedFieldsNumber)));
+        assertThat(actualNumberOfFields, is(equalTo(expectedFieldsNumber + EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL)));
     }
 
     private List<ObjectNode> createElementArray(DataTable keyValuePairs) {
@@ -136,10 +139,5 @@ public class UAFeatureTest {
             int keyIndex = valueIndex - 1;
             arrayElement.put(keyValuePairs.cell(row, keyIndex), keyValuePairs.cell(row, valueIndex));
         }
-    }
-
-    @And("CouseTitle is the string {string}")
-    public void cousetitleIsTheString(String courseTitle) {
-
     }
 }
