@@ -15,7 +15,6 @@ public class UaUndervisning {
     @JsonProperty("semester")
     private UaSemester uaSemester;
 
-
     public String getHref() {
         return href;
     }

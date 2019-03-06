@@ -6,23 +6,21 @@ public class UaLegantoEntry {
 
     public static final String FIELD_DELIMITER = "\t";
     public static final String FIELD_DELIMITER_REGEX = "\\t";
-    private static final int NUMBER_OF_FIELDS = 34;
     public static final String COURSE_CODE_DELIMITER = "-";
-    public static final String COURSE_CODE_PREFIX_DELIMITER="_";
-    private final transient UndervisningsAktivitet ua;
+    public static final String COURSE_CODE_PREFIX_DELIMITER = "_";
+    public static final String PREFIX = "UA";
+    private static final int NUMBER_OF_FIELDS = 34;
 
-    public static final String PREFIX= "UA";
+    private final transient String courseTitle;
+    private final transient String courseCode;
 
-    private  transient String courseCode;
-
-    public UaLegantoEntry(UndervisningsAktivitet ua){
-        this.ua=ua;
-        this.courseCode= initCourseCode(ua);
-
+    public UaLegantoEntry(UndervisningsAktivitet ua) {
+        this.courseCode = initCourseCode(ua);
+        this.courseTitle = "some value";
     }
 
     private String initCourseCode(UndervisningsAktivitet ua) {
-        String codePrefix=String.join(COURSE_CODE_PREFIX_DELIMITER, PREFIX,ua.getEmne().getCode());
+        String codePrefix = String.join(COURSE_CODE_PREFIX_DELIMITER, PREFIX, ua.getEmne().getCode());
         return String.join(COURSE_CODE_DELIMITER,
             codePrefix,
             ua.getEmne().getVersion(),
@@ -42,8 +40,9 @@ public class UaLegantoEntry {
 
     public String getCourseCode() {
         return courseCode;
-
     }
 
-
+    public String getCourseTitle() {
+        return courseTitle;
+    }
 }

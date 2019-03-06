@@ -5,9 +5,6 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -22,7 +19,7 @@ public class IoUtilsTest {
     private static final String EXISTING_FOLDER = "ua";
     private static final int EMPTY_STREAM = 0;
     private static final int EMPTY_LIST = EMPTY_STREAM;
-    private final Path testFile=Paths.get(EXISTING_FOLDER, EXISTING_FILE);
+    private final Path testFile = Paths.get(EXISTING_FOLDER, EXISTING_FILE);
 
     @Test
     public void resourceAsStreamShouldReturnNonEmptyStreamForExistingFile() throws IOException {
@@ -38,14 +35,13 @@ public class IoUtilsTest {
 
     @Test
     public void resourceAsStringShouldReturnNonEmptyStringForExistingFile() throws IOException {
-        String input= IoUtils.resourceAsString(testFile);
+        String input = IoUtils.resourceAsString(testFile);
         assertThat(input.length(), is(greaterThan(EMPTY_LIST)));
     }
 
-
     @Test
     public void resourceAsStringhouldPreserveTheNewlines() throws IOException, URISyntaxException {
-        String input= IoUtils.resourceAsString(testFile);
+        String input = IoUtils.resourceAsString(testFile);
         int expectedNumberOfLines = IoUtils.resourceAsList(testFile).size();
         assertThat(input.split(System.lineSeparator()).length, is(equalTo(expectedNumberOfLines)));
     }

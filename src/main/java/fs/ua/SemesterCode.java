@@ -19,11 +19,10 @@ public enum SemesterCode {
     }
 
     @Override
-    public String toString(){
-        if(SemesterCode.AUTUMN.equals(this)){
+    public String toString() {
+        if (SemesterCode.AUTUMN.equals(this)) {
             return AUTUMN_NORWEGIAN;
-        }
-        else{
+        } else {
             return SPRING_NORWEGIAN;
         }
     }

@@ -49,10 +49,10 @@ public class UaLegantoEntryTest {
 
     @Test
     public void getCourseCodeShouldReturn() {
-        String firstPart=String.join(UaLegantoEntry.COURSE_CODE_PREFIX_DELIMITER,
+        String firstPart = String.join(UaLegantoEntry.COURSE_CODE_PREFIX_DELIMITER,
             UaLegantoEntry.PREFIX,
             EMNE_CODE
-            );
+        );
 
         String expected = String.join(UaLegantoEntry.COURSE_CODE_DELIMITER,
             firstPart,
