@@ -10,14 +10,13 @@ public class UaLegantoEntry {
     public static final String COURSE_CODE_PREFIX_DELIMITER = "_";
     public static final String PREFIX = "UA";
     private static final int NUMBER_OF_FIELDS = 34;
-    private final transient UndervisningsAktivitet ua;
+
     private final transient String courseTitle;
-    private transient String courseCode;
+    private final transient String courseCode;
 
     public UaLegantoEntry(UndervisningsAktivitet ua) {
-        this.ua = ua;
         this.courseCode = initCourseCode(ua);
-        this.courseTitle = null;
+        this.courseTitle = "some value";
     }
 
     private String initCourseCode(UndervisningsAktivitet ua) {

@@ -19,14 +19,13 @@ import utils.JsonUtils;
 
 public class UAFeatureTest {
 
-
     private static final int INCLUDE_EMPTY_STRINGS = -1;
     private static final int INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER = INCLUDE_EMPTY_STRINGS;
     private static final int EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL = 1;
     private ObjectNode userInput;
     private ObjectNode uaResponse;
     private ObjectNode emneResponse;
-    private UaLegantoEntry uAlegantoEntry = null;
+    private UaLegantoEntry uaLegantoEntry = null;
 
     @Given("that it is time for an update")
     public void that_it_is_time_for_an_update() {
@@ -95,7 +94,7 @@ public class UAFeatureTest {
 
     @Given("new UA entry has been generated")
     public void new_UA_entry_has_been_generated() throws IOException {
-        uAlegantoEntry = new UaLegantoEntry(UndervisningsAktivitet.fromJson(JsonUtils.write(uaResponse)));
+        uaLegantoEntry = new UaLegantoEntry(UndervisningsAktivitet.fromJson(JsonUtils.write(uaResponse)));
     }
 
     @When("the scheduling system requests an update")
@@ -106,7 +105,7 @@ public class UAFeatureTest {
 
     @Then("CourseCode is the string {string}")
     public void coursecode_is_the_string(String expectedCourseCode) {
-        String courseCode = uAlegantoEntry.getCourseCode();
+        String courseCode = uaLegantoEntry.getCourseCode();
         assertThat(courseCode, is(equalTo(expectedCourseCode)));
     }
 
@@ -116,7 +115,7 @@ public class UAFeatureTest {
         List<String> fieldNamesCount = dataTable.asList();
         int expectedFieldsNumber = fieldNamesCount.size();
 
-        int actualNumberOfFields = uAlegantoEntry.toString()
+        int actualNumberOfFields = uaLegantoEntry.toString()
             .split(UaLegantoEntry.FIELD_DELIMITER, INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER)
             .length;
 

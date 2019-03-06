@@ -28,13 +28,12 @@ class JsonUtilsTest {
         String key1 = "key1";
         String key2 = "key2";
         String key3 = "key3";
-        String key=String.join(".",key1,key2,key3);
+        String key = String.join(".", key1, key2, key3);
         String value = "value";
         root = JsonUtils.putKeyInNode(key, value, root);
         String actualValue = root.get(key1).get(key2).get(key3).asText();
         assertThat(actualValue, is(equalTo(value)));
     }
-
 
     @Test
     void putMKeyInNodeShouldMaintainCommonParentsInKeysInTheObjectNode() throws IOException {
@@ -44,8 +43,8 @@ class JsonUtilsTest {
         String key3 = "key3";
         String key4 = "key4";
 
-        String keyA=String.join(KEY_DELIMITER,key1,key2,key3);
-        String keyB=String.join(".",key1,key2,key4);
+        String keyA = String.join(KEY_DELIMITER, key1, key2, key3);
+        String keyB = String.join(".", key1, key2, key4);
 
         String valueA = "valueA";
         String valueB = "valueB";
@@ -56,8 +55,4 @@ class JsonUtilsTest {
         String actualValueB = root.get(key1).get(key2).get(key4).asText();
         assertThat(actualValueB, is(equalTo(valueB)));
     }
-
-
-
-
 }

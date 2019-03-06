@@ -71,8 +71,7 @@ public final class JsonUtils {
     private static boolean hasKey(ObjectNode root, List<String> keys) {
         ObjectNode currentNode = root;
 
-        for (int i = 0; i < keys.size(); i++) {
-            String currentKey = keys.get(i);
+        for (String currentKey : keys) {
             if (currentNode.has(currentKey)) {
                 currentNode = (ObjectNode) currentNode.get(currentKey);
             } else {
