@@ -5,35 +5,49 @@ Feature:
 
 
   Background:
-
-#    And there is a scheduling system setup to request course updates in Leganto
-    And there is a user input
+    Given  there is a user input
     And the user input has a field with name "operation" with value "operation_value"
-    And the user input has a field with name "number_of_participants" with value 2
+    And the user input has a field with name "number_of_course_participants" with value 100
     And the user input has a field with name "campus_participants" is an array  with values
-      | participant1|
-      | particiapnt2|
+      | GLØS |
+      | DRAG |
     And there is a request to /undervisningsaktiviteter/UA_ID
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.emne.kode" with value "emneKode"
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.emne.versjon" with value "emneVersjon"
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.semester.ar" with value "1980"
-    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.semester.termin" with value "HØST"
+    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisningsaktivitet.navn" that is an array with the key-value pairs
+      | lang | nb | value | BokmalUANavn  |
+      | lang | nn | value | NynorkUANavn  |
+      | lang | en | value | EngelskUANavn |
+    And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.terminnr" with value 1
+
     And there is a request to /emne/emneId
     And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
-       | lang | nb | value | BokmalText |
-       | lang | nn | value | NynorskText|
-       | lang | en | value | EnglishText|
-
+      | lang | nb | value | BokmalEmneNavn  |
+      | lang | nn | value | NynorskEmneNavn |
+      | lang | en | value | EnglishEmneNavn |
     And the response from /emne/emneId from FS has a field "organisasjonsenheter" that is an array with the key-element pairs
-      | href | organizationEnhetUrl | type| STUDIE|
-      | href | organizationEnhetUrl | type| ADMINISTRATIVT |
-    And new UA entry has been generated
+      | href | organisasjonsEnhetStudieUrl | type | STUDIE         |
+      | href | organizationEnhetAdminUrl   | type | ADMINISTRATIVT |
 
-
+    And there is a request to "organisasjonsEnhetStudieUrl"
+    And the response to organisasjonsEnhetUrl has a field "institusjon" with value 222
+    And the response to organisasjonsEnhetUrl has a filed "fakultet" with value 39
+    And the response to organisasjonsEnhetUrl has a filed "institutt" with value 7
 
 
   Scenario: Update Leganto with new course information
-    When the scheduling system requests an update
+    Given the user input has a field with name "preferred_language" that is an array with values
+      | nn |
+      | nb |
+      | en |
+    And the user input has field with name "include_institutt_in_acad_department" with value true
+    And the user input has a field with name "UA_emneNavn_format" with value 1
+    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.semester.termin" with value "HØST"
+
+    And the response from /undervisningsaktiviteter/UA_ID from FS has no field "perioder"
+
+    When new UA entry has been generated
     Then the courses in FS are populated in Leganto with the following data:
       | Course Code (mandatory)               |
       | Course Title (mandatory)              |
@@ -69,55 +83,50 @@ Feature:
       | Submit By Date                        |
       | Campuses and Campus Participants      |
       | Reading List Name                     |
-    Then CourseCode is the string "UA_emneKode-emneVersjon-1980-HØST"
-#    And  CouseTitle is the string "BokmalText"
-#    And Section ID is a comma separated list consisting of  the values emne.versjon, undervisningsaktivitetet.navn from FS-API: /undervisingsaktiviteter/{id}
-#    And Academic Department is the interpolated string of "${organisasjonsenheter.institusjon}_${organisasjonsenheter.fakultet}_${organisasjonsenheter.institutt}" from the FS-API: /organisasjonsenheter/{id}
-#    And Processing Department is set to invariant value LEGANTO
-#    And Term1 is the value of semester.termin from FS-API:  /undervisingsaktiviteter/{id}
-#    And Term1 has either the value HØST or VÅR
-#    And Term2 is the value of semester.termin from FS-API:  /undervisingsaktiviteter/{id}
-#    And Term2 has either the value HØST or VÅR
-#    And Term2 does not have the same value as Term1
-#    And Term3 is empty
-#    And Term3 is empty
-#    And StartDate is  min_i(periods[i].fraDato) from FS-API: /undervisngsaktiviteter/{id}
-#    And EndDate is the max_i(periods[i]).tilDato from FS-API: /undervisningsaktiviteter/{id}
-#    And Number of Participants is the value specified by the user input
-#    And Weekly Hours is empty
-#    And Year is the value of semester.ar from FS-API: /undervisngsaktiviteter/{id}
-#    And Searchable ID1 is empty
-#    And Searchable ID2 is empty
-#    And ALL_SEARCHABLE_IDS is a comma separated list
-#    And ALL_SEARCHABLE_IDS contains a value UA_${emne.institusjon}_${emne.kode}_${emne.versjon}_${semester.ar}_${semester.kode}_Terminnr_${aktivitet} from FS-API: /undervisngsaktiviteter/{id}
-#    And ALL_SEARCHABLE_IDS contains emne.kode from FS-API: /undervisngsaktiviteter/{id}
-#    And Instructor1 is empty
-#    And Instructor2 is empty
-#    And Instructor3 is empty
-#    And Instructor4 is empty
-#    And Instructor5 is empty
-#    And Instructor6 is empty
-#    And Instructor7 is empty
-#    And Instructor8 is empty
-#    And Instructor9 is empty
-#    And Instructor10 is empty
-#    And ALL_INSTRUCTORS is not empty
-#    And Operation is value of the field "operation" of the input
-#    And Submit By Date is empty
-#    And Campuses and Campus Participants has the value of the user input field "campus_participants"
-#    And Reading List Name is empty
-#
-#
-#  Scenario: Update Leganto with new course information
-#   Given the user input field "operation" has the value "rollover"
-#    When the scheduling system requests an update
-#    Then all the fields are populated correctly
-#    And Old Course Code is the snake-case concatentation of the literal "UA" and of the values emne.kode, emne.versjon, semester.ar-1, semester.termin from FS-API: /undervisngsaktiviteter/{id}
-#    And Old Course Section ID has the value of Section ID
-#
-#  Scenario: Update Leganto with new course information
-#    Given the user input field "operation" has not the value "rollover"
-#    When the scheduling system requests an update
-#    Then all the fields are populated correctly
-#    And Old Course Code is empty
-#    And Old Course Section empty
+    And CourseCode is the string "UA_emneKode-emneVersjon-1980-HØST"
+    And CouseTitle is the string "NynorskEmneNavn_NynorkUANavn_emneKode_HØST_1980"
+    And Section ID is  the string "emneVersjon"
+    And Academic Department is the  string "222_39_7"
+    And Processing Department is set to the invariant value LEGANTO
+    And Term1 is the string  "HØST"
+    And Term2 is empty
+    And Term3 is empty
+    And Term4 is empty
+    And StartDate is the string "01.08.1980"
+    And EndDate is  the string "31.01.1981"
+    And NumberOfParticipants has the value 100
+    And WeeklyHours is empty
+    And Year has the value 1980
+    And SearchableId1 is empty
+    And SearchableId2 is empty
+    And ALL_SEARCHABLE_IDS is the string "UA_222_emneKode_emneVersjon_1980_HØST_1"
+    And Instructor1 is empty
+    And Instructor2 is empty
+    And Instructor3 is empty
+    And Instructor4 is empty
+    And Instructor5 is empty
+    And Instructor6 is empty
+    And Instructor7 is empty
+    And Instructor8 is empty
+    And Instructor9 is empty
+    And Instructor10 is empty
+    And ALL_INSTRUCTORS is not empty
+    And Operation is value of the field "operation" of the input
+    And Submit By Date is empty
+    And Campuses and Campus Participants has the value of the user input field "campus_participants"
+    And Reading List Name is empty
+
+
+  Scenario: Update Leganto with new course information
+    Given the user input field "operation" has the value "rollover"
+    When the scheduling system requests an update
+    Then all the fields are populated correctly
+    And Old Course Code is the string "UA_emneKode-emneVersjon-1979-HØST"
+    And Old Course Section ID is the string  "emneVersjon"
+
+  Scenario: Update Leganto with new course information
+    Given the user input field "operation" has not the value "rollover"
+    When the scheduling system requests an update
+    Then all the fields are populated correctly
+    And Old Course Code is empty
+    And Old Course Section empty
