@@ -1,0 +1,19 @@
+{
+  "href": "https://api.fellesstudentsystem.no/undervisning/222,0-5,1,1999,H%C3%98ST,1",
+  "emne": {
+    "href": "https://api.fellesstudentsystem.no/emner/222,0-5,1",
+    "institusjon": 222,
+    "kode": "0-5",
+    "versjon": "1"
+  },
+  "semester": {
+    "href": "https://api.fellesstudentsystem.no/semestre/1999,H%C3%98ST",
+    "ar": 1999,
+    "termin": "HØST"
+  },
+  "terminnummer": 1,
+  "lukket": false,
+  "lms": {
+    "eksport": true
+  }
+}
