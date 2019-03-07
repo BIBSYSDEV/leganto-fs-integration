@@ -1,0 +1,30 @@
+{
+  "href": "https://api.fellesstudentsystem.no/emner/222,0-5,1",
+  "institusjon": 222,
+  "kode": "0-5",
+  "versjon": "1",
+  "navn": [
+    {
+      "lang": "nb",
+      "value": "Førskolepraksis"
+    },
+    {
+      "lang": "nn",
+      "value": "Førskolepraksis"
+    }
+  ],
+  "studieniva": {
+    "href": "https://api.fellesstudentsystem.no/studienivaer/100"
+  },
+  "organisasjonsenheter": [
+    {
+      "href": "https://api.fellesstudentsystem.no/organisasjonsenheter/222,59,7,0",
+      "type": "STUDIE"
+    },
+    {
+      "href": "https://api.fellesstudentsystem.no/organisasjonsenheter/222,59,7,0",
+      "type": "ADMINISTRATIVT"
+    }
+  ],
+  "hovedoppgave": false
+}
