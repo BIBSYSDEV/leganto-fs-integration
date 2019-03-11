@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    testImplementation('org.junit.jupiter:junit-jupiter:5.4.0')
+
     testCompile 'io.cucumber:cucumber-java:4.2.0'
     testCompile 'io.cucumber:cucumber-junit:4.2.0'
 
@@ -62,21 +62,19 @@ pmd {
     ignoreFailures = false
 }
 
-test {
-    failFast = true
-}
 
 
-task cucumber() {
-    dependsOn assemble, compileTestJava
-    doLast {
-        javaexec {
-            main = "cucumber.api.cli.Main"
-            classpath = configurations.cucumberRuntime + sourceSets.test.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
-            args = ['--plugin', 'pretty', '--glue', 'featuretests', 'src/test/resources']
-        }
-    }
-}
+
+//task cucumber() {
+//    dependsOn assemble, compileTestJava
+//    doLast {
+//        javaexec {
+//            main = "cucumber.api.cli.Main"
+//            classpath = configurations.cucumberRuntime + sourceSets.test.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
+//            args = ['--plugin', 'pretty', '--glue', 'featuretests', 'src/test/resources']
+//        }
+//    }
+//}
 
 
 jacocoTestReport {
