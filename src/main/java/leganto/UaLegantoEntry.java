@@ -3,6 +3,7 @@ package leganto;
 import fs.common.Language;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
+import fs.ua.UaCourseTitle;
 import fs.ua.UndervisningsAktivitet;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class UaLegantoEntry {
     private static final String COURSE_TITLE_DELIMITER = "_";
     private static final String ORGANIZATION_DELIMITER = "_";
     private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
+    private static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
 
     private transient String courseTitle;
     private transient String courseCode;
@@ -27,6 +29,7 @@ public class UaLegantoEntry {
     private transient List<Language> languageOrder;
     private transient String sectionId;
     private transient String academicDepartment;
+    private transient String term1;
 
     public UaLegantoEntry() {
     }
@@ -36,7 +39,12 @@ public class UaLegantoEntry {
         this.courseTitle = initCourseTitle();
         this.sectionId = iniSectionId();
         this.academicDepartment = initAcademicDepartment();
+        this.term1 = initTerm1();
         return this;
+    }
+
+    private String initTerm1() {
+        return this.term1 = ua.getUndervisning().getUaSemester().getSemesterCode().toString();
     }
 
     private String initAcademicDepartment() {
@@ -58,12 +66,13 @@ public class UaLegantoEntry {
                 .findAny().orElseThrow(() -> new IllegalArgumentException(INVALID_EMNE_RECORD))
                 .getValue());
 
-        return String.join(COURSE_TITLE_DELIMITER,
-            emneNavn,
+        return UaCourseTitle.DEFAULT.formatUaCourseTitle(
             uaNavn,
+            emneNavn,
             ua.getUndervisning().getEmne().getCode(),
-            ua.getUndervisning().getUaSemester().getSemesterCode().toString(),
-            ua.getUndervisning().getUaSemester().getYear().toString());
+            ua.getUndervisning().getUaSemester().getSemesterCode(),
+            ua.getUndervisning().getUaSemester().getYear());
+
     }
 
     public UaLegantoEntry setLanguageOrder(List<Language> languageOrder) {
@@ -123,5 +132,13 @@ public class UaLegantoEntry {
     public UaLegantoEntry setOrganizationEntity(OrganizationEntity organizationEntity) {
         this.organisationEntity = organizationEntity;
         return this;
+    }
+
+    public String getProcessingDepartment() {
+        return PROCESSING_DEPARTMENT_INVARIANT;
+    }
+
+    public String getTerm1() {
+        return term1;
     }
 }

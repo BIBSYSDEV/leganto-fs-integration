@@ -68,7 +68,7 @@ public final class JsonUtils {
         } else if (value instanceof Boolean) {
             node.put(key, (Boolean) value);
         } else if (value instanceof ArrayNode) {
-            node.put(key, (ArrayNode) value);
+            node.set(key, (ArrayNode) value);
         } else {
             throw new IllegalArgumentException(String.format(UNSUPPORTED_CLASS_EXCEPTION, value.getClass().toString()));
         }
@@ -115,7 +115,6 @@ public final class JsonUtils {
             ObjectNode parent = (ObjectNode) traverseCompositeKey(root, secondToLastKey);
             String lastKey = keys.get(keys.size() - 1);
             parent.remove(lastKey);
-            System.out.print(parent);
         }
         return root;
     }

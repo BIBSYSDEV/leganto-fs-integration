@@ -86,8 +86,8 @@ Feature:
     And CouseTitle is the string "NynorskEmneNavn_NynorskUANavn_emneKode_HØST_1980"
     And SectionId is  the string "emneVersjon"
     And AcademicDepartment is the  string "222_39_7"
-#    And ProcessingDepartment is set to the invariant value LEGANTO
-#    And Term1 is the string  "HØST"
+    And ProcessingDepartment is set to the invariant value LEGANTO
+    And Term1 is the string  "HØST"
 #    And Term2 is empty
 #    And Term3 is empty
 #    And Term4 is empty

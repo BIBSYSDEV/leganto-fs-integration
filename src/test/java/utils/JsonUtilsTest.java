@@ -6,71 +6,92 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static utils.JsonUtils.hasKey;
 import static utils.JsonUtils.newObjectNode;
 import static utils.JsonUtils.putKeyInNode;
+import static utils.JsonUtils.traverseCompositeKey;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class JsonUtilsTest {
+public class JsonUtilsTest {
 
     private static final String KEY_DELIMITER = ".";
     private static final String KEY_1 = "key1";
     private static final String KEY_2 = "key2";
     private static final String KEY_3A = "key3";
-    private static final String KEY_A = String.join(".", KEY_1, KEY_2, KEY_3A);
+    private static final String KEY_A = String.join(KEY_DELIMITER, KEY_1, KEY_2, KEY_3A);
     private static final String KEY_3B = "key4";
-    private static final String KEY_B = String.join(".", KEY_1, KEY_2, KEY_3B);
+    private static final String KEY_B = String.join(KEY_DELIMITER, KEY_1, KEY_2, KEY_3B);
     private static final String KEY_A_VALUE = "valueA";
     private static final String KEY_B_VALUE = "valueB";
+    private static final double UNSUPPORTED_CLASS = 3.4;
+    private static final String NON_EXISTING_KEY = String.join(KEY_DELIMITER, KEY_1, "nonexisting");
 
     @Test
-    void putKeyInNodeShouldPutASingleKeyInTheObjectNode() {
+    public void putKeyInNodeShouldPutASingleKeyInTheObjectNode() {
         ObjectNode root = newObjectNode();
         String key = "key";
         String value = "value";
         putKeyInNode(root, key, value);
         String actualValue = root.get(key).asText();
+
         assertThat(actualValue, is(equalTo(value)));
     }
 
     @Test
-    void putMultipleKeyInNodeShouldPutAMutlipleeKeyInTheObjectNode() {
+    public void putMultipleKeyInNodeShouldPutAMutlipleKeyInTheObjectNode() {
         ObjectNode root = newObjectNode();
-        String key1 = "key1";
-        String key2 = "key2";
-        String key3 = "key3";
-        String key = String.join(".", key1, key2, key3);
-        String value = "value";
-        putKeyInNode(root, key, value);
-        String actualValue = root.get(key1).get(key2).get(key3).asText();
-        assertThat(actualValue, is(equalTo(value)));
+
+        putKeyInNode(root, KEY_A, KEY_A_VALUE);
+        String actualValue = root.get(KEY_1).get(KEY_2).get(KEY_3A).asText();
+        assertThat(actualValue, is(equalTo(KEY_A_VALUE)));
     }
 
     @Test
-    void putMKeyInNodeShouldMaintainCommonParentsInKeysInTheObjectNode() {
+    public void putMKeyInNodeShouldMaintainCommonParentsInKeysInTheObjectNode() {
         ObjectNode root = newObjectNode();
-        String key1 = "key1";
-        String key2 = "key2";
-        String key3 = "key3";
-        String key4 = "key4";
 
-        String keyA = String.join(KEY_DELIMITER, key1, key2, key3);
-        String keyB = String.join(".", key1, key2, key4);
+        putKeyInNode(root, KEY_A, KEY_A_VALUE);
+        putKeyInNode(root, KEY_B, KEY_B_VALUE);
+        String actualValueA = root.get(KEY_1).get(KEY_2).get(KEY_3A).asText();
+        assertThat(actualValueA, is(equalTo(KEY_A_VALUE)));
+        String actualValueB = root.get(KEY_1).get(KEY_2).get(KEY_3B).asText();
+        assertThat(actualValueB, is(equalTo(KEY_B_VALUE)));
+    }
 
-        String valueA = "valueA";
-        String valueB = "valueB";
-        putKeyInNode(root, keyA, valueA);
-        putKeyInNode(root, keyB, valueB);
-        String actualValueA = root.get(key1).get(key2).get(key3).asText();
-        assertThat(actualValueA, is(equalTo(valueA)));
-        String actualValueB = root.get(key1).get(key2).get(key4).asText();
-        assertThat(actualValueB, is(equalTo(valueB)));
+    @Test(expected = IllegalArgumentException.class)
+    public void putMKeyInNodeShouldThrowExceptionForUnsupportedClasses() {
+        ObjectNode root = newObjectNode();
+        putKeyInNode(root, KEY_A, UNSUPPORTED_CLASS);
+
     }
 
     @Test
-    void removeKeyFromNodeShouldDoNothingIfKeyDoesNotExist() {
+    public void hasKeyShouldReturnTrueForExistingKeys() {
+        ObjectNode root = newObjectNode();
+        putKeyInNode(root, KEY_A, KEY_A_VALUE);
+        assertThat(hasKey(root, KEY_A), is(equalTo(true)));
+    }
+
+    @Test
+    public void hasKeyShouldReturnFalseForNonExistingLeafLevelKey() {
+        ObjectNode root = newObjectNode();
+        putKeyInNode(root, KEY_A, KEY_A_VALUE);
+        assertThat(hasKey(root, KEY_B), is(equalTo(false)));
+    }
+
+    @Test
+    public void hasKeyShouldReturnFalseForNonExistingNonLeafLevelKey() {
+        ObjectNode root = newObjectNode();
+        putKeyInNode(root, KEY_A, KEY_A_VALUE);
+
+        assertThat(hasKey(root, NON_EXISTING_KEY), is(equalTo(false)));
+    }
+
+    @Test
+    public void removeKeyFromNodeShouldDoNothingIfKeyDoesNotExist() {
         ObjectNode root = newObjectNode();
         putKeyInNode(root, KEY_A, KEY_A_VALUE);
         JsonUtils.removeKeyFromNode(root, KEY_B);
@@ -79,7 +100,7 @@ class JsonUtilsTest {
     }
 
     @Test
-    void removeKeyFromNodeShouldDoRemoveKeyIfKeyExists() {
+    public void removeKeyFromNodeShouldRemoveKeyIfKeyExists() {
         ObjectNode root = newObjectNode();
         putKeyInNode(root, KEY_A, KEY_A_VALUE);
         putKeyInNode(root, KEY_B, KEY_B_VALUE);
@@ -89,7 +110,7 @@ class JsonUtilsTest {
     }
 
     @Test
-    void putElementArrayInNodeShouldCreateAnArrayNodeForTheKey() {
+    public void putElementArrayInNodeShouldCreateAnArrayNodeForTheKey() {
         ObjectNode root = newObjectNode();
         ObjectNode node1 = newObjectNode().put(KEY_3A, KEY_A_VALUE);
         ObjectNode node2 = newObjectNode().put(KEY_3B, KEY_B_VALUE);
@@ -105,6 +126,22 @@ class JsonUtilsTest {
         assertThat(node.size(), is(equalTo(nodeList.size())));
 
         assertAllElementsInArrayElementAreContainedInInputLIst(nodeList, node);
+    }
+
+    @Test
+    public void traverseCompositeKeyShouldFindExistingCompositeKey() {
+        ObjectNode root = newObjectNode();
+        putKeyInNode(root, KEY_A, KEY_A_VALUE);
+        JsonNode value = traverseCompositeKey(root, KEY_A);
+        assertThat(value.asText(), is(equalTo(KEY_A_VALUE)));
+    }
+
+    @Test
+    public void traverseCompositeKeyShouldReturnNullForNonExistingKeys() {
+        ObjectNode root = newObjectNode();
+        putKeyInNode(root, KEY_A, KEY_A_VALUE);
+        JsonNode value = traverseCompositeKey(root, KEY_B);
+        assertThat(value, is(equalTo(null)));
     }
 
     private void assertAllElementsInArrayElementAreContainedInInputLIst(List<ObjectNode> nodeList, ArrayNode node) {

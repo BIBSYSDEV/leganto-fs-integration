@@ -158,5 +158,13 @@ public class UAFeatureTest extends CucumberTestProcessor {
         assertThat(uaLegantoEntry.getAcademicDepartment(), is(equalTo(expectedAcedemicDepartment)));
     }
 
+    @Then("ProcessingDepartment is set to the invariant value LEGANTO")
+    public void processingdepartmentIsSetToTheInvariantValueLEGANTO() {
+        assertThat(uaLegantoEntry.getProcessingDepartment(), is(equalTo("LEGANTO")));
+    }
 
+    @Then("Term1 is the string  {string}")
+    public void termIsTheString(String semesterCode) {
+        assertThat(uaLegantoEntry.getTerm1(), is(equalTo(semesterCode)));
+    }
 }
