@@ -6,21 +6,21 @@ Feature:
 
   Background:
     Given  there is a user input
-    And the user input has a field with name "operation" with value "operation_value"
+    And the user input has no field with name "operation"
     And the user input has a field with name "number_of_course_participants" with value 100
-    And the user input has a field with name "campus_participants" is an array  with values
+    And the user input has a field with name "campus_participants" that is an array with string values
       | GLØS |
       | DRAG |
     And there is a request to /undervisningsaktiviteter/UA_ID
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.emne.kode" with value "emneKode"
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.emne.versjon" with value "emneVersjon"
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.semester.ar" with value "1980"
-    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisningsaktivitet.navn" that is an array with the key-value pairs
+
+    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "navn" that is an array with the key-value pairs
       | lang | nb | value | BokmalUANavn  |
-      | lang | nn | value | NynorkUANavn  |
+      | lang | nn | value | NynorskUANavn |
       | lang | en | value | EngelskUANavn |
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.terminnr" with value 1
-
     And there is a request to /emne/emneId
     And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
       | lang | nb | value | BokmalEmneNavn  |
@@ -29,104 +29,105 @@ Feature:
     And the response from /emne/emneId from FS has a field "organisasjonsenheter" that is an array with the key-element pairs
       | href | organisasjonsEnhetStudieUrl | type | STUDIE         |
       | href | organizationEnhetAdminUrl   | type | ADMINISTRATIVT |
-
-    And there is a request to "organisasjonsEnhetStudieUrl"
+    And there is a request to organisasjonsEnhetStudieUrl
     And the response to organisasjonsEnhetUrl has a field "institusjon" with value 222
-    And the response to organisasjonsEnhetUrl has a filed "fakultet" with value 39
-    And the response to organisasjonsEnhetUrl has a filed "institutt" with value 7
+    And the response to organisasjonsEnhetUrl has a field "fakultet" with value 39
+    And the response to organisasjonsEnhetUrl has a field "institutt" with value 7
 
 
   Scenario: Update Leganto with new course information
-    Given the user input has a field with name "preferred_language" that is an array with values
+    Given the user input has a field with name "language_order" that is an array with string values
       | nn |
       | nb |
       | en |
     And the user input has field with name "include_institutt_in_acad_department" with value true
     And the user input has a field with name "UA_emneNavn_format" with value 1
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.semester.termin" with value "HØST"
-
     And the response from /undervisningsaktiviteter/UA_ID from FS has no field "perioder"
 
     When new UA entry has been generated
     Then the courses in FS are populated in Leganto with the following data:
-      | Course Code (mandatory)               |
-      | Course Title (mandatory)              |
-      | Section ID                            |
-      | Academic Department                   |
-      | Processing Department (mandatory)     |
-      | Term1                                 |
-      | Term2                                 |
-      | Term3                                 |
-      | Term4                                 |
-      | Start Date                            |
-      | End Date                              |
-      | Number of Participants                |
-      | Weekly Hours                          |
-      | Year                                  |
-      | Searchable ID 1                       |
-      | Searchable ID 2                       |
-      | ALL_SEARCHABLE_IDS                    |
-      | Instructor 1                          |
-      | Instructor 2                          |
-      | Instructor 3                          |
-      | Instructor 4                          |
-      | Instructor 5                          |
-      | Instructor 6                          |
-      | Instructor 7                          |
-      | Instructor 8                          |
-      | Instructor 9                          |
-      | Instructor 10                         |
-      | ALL_INSTRUCTORS                       |
-      | Operation (mandatory)                 |
-      | Old Course Code (rollover only)       |
-      | Old Course Section ID (rollover only) |
-      | Submit By Date                        |
-      | Campuses and Campus Participants      |
-      | Reading List Name                     |
+      | CourseCode (mandatory)             |
+      | CourseTitle (mandatory)            |
+      | SectionId                          |
+      | AcademicDepartment                 |
+      | ProcessingDepartment (mandatory)   |
+      | Term1                              |
+      | Term2                              |
+      | Term3                              |
+      | Term4                              |
+      | StartDate                          |
+      | EndDate                            |
+      | NumberOfParticipants               |
+      | WeeklyHours                        |
+      | Year                               |
+      | SearchableId1                      |
+      | SearchableId2                      |
+      | AllSearchableIds                   |
+      | Instructor1                        |
+      | Instructor2                        |
+      | Instructor3                        |
+      | Instructor4                        |
+      | Instructor5                        |
+      | Instructor6                        |
+      | Instructor7                        |
+      | Instructor8                        |
+      | Instructor9                        |
+      | Instructor10                       |
+      | AllInstructors                     |
+      | Operation (mandatory)              |
+      | OldCourseCode (rollover only)      |
+      | OldCourseSectionId (rollover only) |
+      | SubmitByDate                       |
+      | CampusesAndCampusParticipants      |
+      | ReadingListName                    |
+
     And CourseCode is the string "UA_emneKode-emneVersjon-1980-HØST"
-    And CouseTitle is the string "NynorskEmneNavn_NynorkUANavn_emneKode_HØST_1980"
-    And Section ID is  the string "emneVersjon"
-    And Academic Department is the  string "222_39_7"
-    And Processing Department is set to the invariant value LEGANTO
-    And Term1 is the string  "HØST"
-    And Term2 is empty
-    And Term3 is empty
-    And Term4 is empty
-    And StartDate is the string "01.08.1980"
-    And EndDate is  the string "31.01.1981"
-    And NumberOfParticipants has the value 100
-    And WeeklyHours is empty
-    And Year has the value 1980
-    And SearchableId1 is empty
-    And SearchableId2 is empty
-    And ALL_SEARCHABLE_IDS is the string "UA_222_emneKode_emneVersjon_1980_HØST_1"
-    And Instructor1 is empty
-    And Instructor2 is empty
-    And Instructor3 is empty
-    And Instructor4 is empty
-    And Instructor5 is empty
-    And Instructor6 is empty
-    And Instructor7 is empty
-    And Instructor8 is empty
-    And Instructor9 is empty
-    And Instructor10 is empty
-    And ALL_INSTRUCTORS is not empty
-    And Operation is value of the field "operation" of the input
-    And Submit By Date is empty
-    And Campuses and Campus Participants has the value of the user input field "campus_participants"
-    And Reading List Name is empty
+    And CouseTitle is the string "NynorskEmneNavn_NynorskUANavn_emneKode_HØST_1980"
+    And SectionId is  the string "emneVersjon"
+    And AcademicDepartment is the  string "222_39_7"
+#    And ProcessingDepartment is set to the invariant value LEGANTO
+#    And Term1 is the string  "HØST"
+#    And Term2 is empty
+#    And Term3 is empty
+#    And Term4 is empty
+#    And StartDate is the string "01.08.1980"
+#    And EndDate is  the string "31.01.1981"
+#    And NumberOfParticipants has the value 100
+#    And WeeklyHours is empty
+#    And Year has the value 1980
+#    And SearchableId1 is empty
+#    And SearchableId2 is empty
+#    And AllSearchableIds is the string "UA_222_emneKode_emneVersjon_1980_HØST_1"
+#    And Instructor1 is empty
+#    And Instructor2 is empty
+#    And Instructor3 is empty
+#    And Instructor4 is empty
+#    And Instructor5 is empty
+#    And Instructor6 is empty
+#    And Instructor7 is empty
+#    And Instructor8 is empty
+#    And Instructor9 is empty
+#    And Instructor10 is empty
+#    And AllInstructors is not empty
+#    And Operation is empty
+#    And Submit By Date is empty
+#    And Campuses and Campus Participants has the value of the user input field "campus_participants"
+#    And Reading List Name is empty
+#
+#
+#  Scenario: Update Leganto with new course information
+#    Given the user input field "operation" has the value "ROLLOVER"
+#    When new UA entry has been generated
+#    Then Old Course Code is the string "UA_emneKode-emneVersjon-1979-HØST"
+#    And Old Course Section ID is the string  "emneVersjon"
+#    And Operation is the string "ROLLOVER"
+#
+#  Scenario: Update Leganto with new course information
+#    Given the user input field "operation" has the value "DELETE"
+#    When the scheduling system requests an update
+#    Then Operation is the string "DELETE"
 
 
-  Scenario: Update Leganto with new course information
-    Given the user input field "operation" has the value "rollover"
-    When the scheduling system requests an update
-    Then all the fields are populated correctly
-    And Old Course Code is the string "UA_emneKode-emneVersjon-1979-HØST"
-    And Old Course Section ID is the string  "emneVersjon"
 
-  Scenario: Update Leganto with new course information
-    Given the user input field "operation" has not the value "rollover"
-    When the scheduling system requests an update
-    Then all the fields are populated correctly
-    And Old Course Code is empty
-    And Old Course Section empty
+  

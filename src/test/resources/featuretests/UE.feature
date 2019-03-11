@@ -1,7 +1,7 @@
-Feature:
-  Trasnformation of Undervisningsenheter (UE: Teaching entities)
-  UE records are transformed to Leganto Records in form of comma separated fields.
-  FS: Felles Studentsystem
+#Feature:
+#  Trasnformation of Undervisningsenheter (UE: Teaching entities)
+#  UE records are transformed to Leganto Records in form of comma separated fields.
+#  FS: Felles Studentsystem
 
 
 #  Background:
