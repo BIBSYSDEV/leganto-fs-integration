@@ -24,14 +24,12 @@ dependencies {
 
 
     implementation 'io.cucumber:cucumber-java:4.2.0'
-    implementation  'com.fasterxml.jackson.core:jackson-core:2.9.8'
-    implementation  'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
     compile group: 'io.cucumber', name: 'cucumber-picocontainer', version: '4.2.0'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.hamcrest:hamcrest:2.1'
-
-
 
 
 }
@@ -69,18 +67,16 @@ test {
 }
 
 
-
 task cucumber() {
     dependsOn assemble, compileTestJava
     doLast {
         javaexec {
             main = "cucumber.api.cli.Main"
-            classpath = configurations.cucumberRuntime+ sourceSets.test.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
+            classpath = configurations.cucumberRuntime + sourceSets.test.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
             args = ['--plugin', 'pretty', '--glue', 'featuretests', 'src/test/resources']
         }
     }
 }
-
 
 
 jacocoTestReport {
