@@ -3,7 +3,6 @@ Feature:
   UA records are transformed to Leganto Records in form of comma separated fields.
   FS: Felles Studentsystem
 
-
   Background:
     Given  there is a user input
     And the user input has no field with name "operation"
@@ -11,6 +10,10 @@ Feature:
     And the user input has a field with name "campus_participants" that is an array with string values
       | GLØS |
       | DRAG |
+    And the user input has a field with name "language_order" that is an array with string values
+      | nn |
+      | nb |
+      | en |
     And there is a request to /undervisningsaktiviteter/UA_ID
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.emne.kode" with value "emneKode"
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.emne.versjon" with value "emneVersjon"
@@ -36,10 +39,7 @@ Feature:
 
 
   Scenario: Update Leganto with new course information
-    Given the user input has a field with name "language_order" that is an array with string values
-      | nn |
-      | nb |
-      | en |
+
     And the user input has field with name "include_institutt_in_acad_department" with value true
     And the user input has a field with name "UA_emneNavn_format" with value 1
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.semester.termin" with value "HØST"
@@ -88,12 +88,12 @@ Feature:
     And AcademicDepartment is the  string "222_39_7"
     And ProcessingDepartment is set to the invariant value LEGANTO
     And Term1 is the string  "HØST"
-#    And Term2 is empty
-#    And Term3 is empty
-#    And Term4 is empty
-#    And StartDate is the string "01.08.1980"
-#    And EndDate is  the string "31.01.1981"
-#    And NumberOfParticipants has the value 100
+    And Term2 is empty
+    And Term3 is empty
+    And Term4 is empty
+    And StartDate is the string "1980-08-01"
+    And EndDate is the string "1980-01-31"
+    And NumberOfParticipants has the value 100
 #    And WeeklyHours is empty
 #    And Year has the value 1980
 #    And SearchableId1 is empty
@@ -115,6 +115,12 @@ Feature:
 #    And Campuses and Campus Participants has the value of the user input field "campus_participants"
 #    And Reading List Name is empty
 #
+  Scenario: Start date for the Spring semester
+    Given the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.semester.termin" with value "VÅR"
+    When new UA entry has been generated
+    Then StartDate is the string "1980-01-01"
+    And EndDate is the string "1980-07-31"
+
 #
 #  Scenario: Update Leganto with new course information
 #    Given the user input field "operation" has the value "ROLLOVER"

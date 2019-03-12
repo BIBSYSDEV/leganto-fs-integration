@@ -30,6 +30,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
     private static final int EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL = 1;
 
     private static final String NOT = "not";
+    private static final String EMPTY_STRING = new String();
 
     private final World world;
 
@@ -164,5 +165,30 @@ public class UAFeatureTest extends CucumberTestProcessor {
     @Then("Term1 is the string  {string}")
     public void termIsTheString(String semesterCode) {
         assertThat(uaLegantoEntry.getTerm1(), is(equalTo(semesterCode)));
+    }
+
+    @Then("Term2 is empty")
+    public void term2_is_empty() {
+        assertThat(uaLegantoEntry.getTerm2(), is(equalTo(EMPTY_STRING)));
+    }
+
+    @Then("Term3 is empty")
+    public void term3_is_empty() {
+        assertThat(uaLegantoEntry.getTerm3(), is(equalTo(EMPTY_STRING)));
+    }
+
+    @Then("Term4 is empty")
+    public void term4_is_empty() {
+        assertThat(uaLegantoEntry.getTerm4(), is(equalTo(EMPTY_STRING)));
+    }
+
+    @Then("StartDate is the string {string}")
+    public void startdate_is_the_string(String startDate) {
+        assertThat(uaLegantoEntry.getStartDate(), is(equalTo(startDate)));
+    }
+
+    @Then("EndDate is the string {string}")
+    public void enddate_is_the_string(String endDate) {
+        assertThat(uaLegantoEntry.getEndDate(), is(equalTo(endDate)));
     }
 }

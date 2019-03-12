@@ -3,8 +3,11 @@ package leganto;
 import fs.common.Language;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
+import fs.ua.SemesterCode;
 import fs.ua.UaCourseTitle;
 import fs.ua.UndervisningsAktivitet;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class UaLegantoEntry {
@@ -13,10 +16,12 @@ public class UaLegantoEntry {
     public static final String COURSE_CODE_DELIMITER = "-";
     public static final String COURSE_CODE_PREFIX_DELIMITER = "_";
     public static final String PREFIX = "UA";
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
     private static final int NUMBER_OF_FIELDS = 34;
     private static final String ORGANIZATION_DELIMITER = "_";
     private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
     private static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
+    private static final String EMPTY_STRING = "";
     private final transient UndervisningsAktivitet ua;
     private transient String courseTitle;
     private transient String courseCode;
@@ -27,6 +32,8 @@ public class UaLegantoEntry {
     private transient String sectionId;
     private transient String academicDepartment;
     private transient String term1;
+    private transient String startDate;
+    private transient String endDate;
 
     public UaLegantoEntry(UndervisningsAktivitet ua) {
         this.ua = ua;
@@ -38,11 +45,25 @@ public class UaLegantoEntry {
         this.sectionId = iniSectionId();
         this.academicDepartment = initAcademicDepartment();
         this.term1 = initTerm1();
+        this.startDate = initStartDate();
+        this.endDate = initEndDate();
         return this;
     }
 
+    private String initEndDate() {
+        Integer year = ua.getSemester().getYear();
+        LocalDate endDate = getSemesterCode().semesterEndDate(year);
+        return dateFormatter.format(endDate);
+    }
+
+    private String initStartDate() {
+        Integer year = ua.getSemester().getYear();
+        LocalDate startDate = getSemesterCode().semesterStartDate(year);
+        return dateFormatter.format(startDate);
+    }
+
     private String initTerm1() {
-        return this.term1 = ua.getUndervisning().getUaSemester().getSemesterCode().toString();
+        return this.term1 = getSemesterCode().toString();
     }
 
     private String initAcademicDepartment() {
@@ -68,7 +89,7 @@ public class UaLegantoEntry {
             uaNavn,
             emneNavn,
             ua.getUndervisning().getEmne().getCode(),
-            ua.getUndervisning().getUaSemester().getSemesterCode(),
+            getSemesterCode(),
             ua.getUndervisning().getUaSemester().getYear());
     }
 
@@ -83,7 +104,8 @@ public class UaLegantoEntry {
             codePrefix,
             ua.getEmne().getVersion(),
             ua.getUndervisning().getUaSemester().getYear().toString(),
-            ua.getUndervisning().getUaSemester().getSemesterCode().toString());
+            getSemesterCode().toString()
+        );
     }
 
     private String iniSectionId() {
@@ -132,5 +154,29 @@ public class UaLegantoEntry {
 
     public String getTerm1() {
         return term1;
+    }
+
+    public String getTerm2() {
+        return EMPTY_STRING;
+    }
+
+    public String getTerm3() {
+        return EMPTY_STRING;
+    }
+
+    public String getTerm4() {
+        return EMPTY_STRING;
+    }
+
+    public String getStartDate() {
+        return this.startDate;
+    }
+
+    private SemesterCode getSemesterCode() {
+        return ua.getSemester().getSemesterCode();
+    }
+
+    public String getEndDate() {
+        return this.endDate;
     }
 }

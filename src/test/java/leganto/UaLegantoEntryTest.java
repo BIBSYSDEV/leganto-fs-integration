@@ -133,5 +133,29 @@ public class UaLegantoEntryTest {
         assertThat(entry.getCourseTitle(), containsString(UASEMESTER_YEAR.toString()));
     }
 
+    @Test
+    public void getTerm2ShouldReturnEmptyString() {
+        assertThat(entry.getTerm2(), is(emptyString()));
+    }
+
+    @Test
+    public void getTerm3ShouldReturnEmptyString() {
+        assertThat(entry.getTerm3(), is(emptyString()));
+    }
+
+    @Test
+    public void getTerm4ShouldReturnEmptyString() {
+        assertThat(entry.getTerm4(), is(emptyString()));
+    }
+
+    @Test
+    public void getStartDateShouldReturnANonEmptyStartDate() {
+        assertThat(entry.getStartDate(), is(not(equalTo(null))));
+    }
+
+    @Test
+    public void getStartDateShouldCANonEmptyStartDate() {
+        assertThat(entry.getStartDate(), is(not(equalTo(null))));
+    }
 
 }
