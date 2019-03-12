@@ -52,13 +52,13 @@ public class UaLegantoEntryTest {
 
     public UaLegantoEntryTest() {
 
-        UaEmne uaEmne = new UaEmne().setCode(EMNE_CODE).setHref(EMNE_HREF).setInstitution(EMNE_INSITUTION)
+        final UaEmne uaEmne = new UaEmne().setCode(EMNE_CODE).setHref(EMNE_HREF).setInstitution(EMNE_INSITUTION)
             .setVersion(EMNE_VERSION);
-        UaSemester uaSemester = new UaSemester()
+        final UaSemester uaSemester = new UaSemester()
             .setHref(UA_SEMESTER_HREF)
             .setYear(UASEMESTER_YEAR)
             .setSemesterCode(SEMESTER_INPUT);
-        UaUndervisning undervisning = new UaUndervisning()
+        final UaUndervisning undervisning = new UaUndervisning()
             .setHref(UNDERVISNING_HREF)
             .setEmne(uaEmne)
             .setUaSemester(uaSemester);

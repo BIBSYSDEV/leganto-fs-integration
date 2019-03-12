@@ -43,8 +43,7 @@ public class LanguageValue {
             return false;
         }
         LanguageValue that = (LanguageValue) o;
-        return getLang().equals(that.getLang()) &&
-            getValue().equals(that.getValue());
+        return getLang().equals(that.getLang()) && getValue().equals(that.getValue());
     }
 
     @Override

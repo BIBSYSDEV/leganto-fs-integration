@@ -24,16 +24,15 @@ public class Background extends CucumberTestProcessor {
         world.setUserInput(JsonUtils.newObjectNode());
     }
 
-    @Given("the user input has a field with name {string} with value {string}")
-    public void the_user_input_has_a_field_with_name_with_value(String key, String value) {
-        putKeyInNode(world.getUserInput(), key, value);
-    }
-
     @Given("the user input has no field with name {string}")
     public void the_user_input_has_no_field_with_name(String key) {
         removeKeyFromNode(world.getUserInput(), key);
     }
 
+    @Given("the user input has a field with name {string} with value {string}")
+    public void the_user_input_has_a_field_with_name_with_value(String key, String value) {
+        putKeyInNode(world.getUserInput(), key, value);
+    }
 
     @Given("the user input has a field with name {string} with value {int}")
     public void the_user_input_has_a_field_with_name_with_value(String key, Integer value) {
@@ -61,7 +60,5 @@ public class Background extends CucumberTestProcessor {
         String key, DataTable keyValuePairs) {
         List<ObjectNode> arrayElements = createElementList(keyValuePairs);
         putElementArrayInNode(world.getEmneResponse(), key, arrayElements);
-
-
     }
 }

@@ -67,8 +67,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
 
     @Given("the response from \\/undervisningsaktiviteter\\/UA_ID from FS has a field {string} that is an array with "
         + "the key-value pairs")
-    public void
-    the_response_from_undervisningsaktiviteter_UA_ID_from_FS_has_a_field_that_is_an_array_with_the_key_value_pairs(
+    public void the_response_from_UAaktiviteter_UA_ID_from_FS_has_a_field_that_is_an_array_with_the_key_value_pairs(
         String key, DataTable keyValuePairs) {
         ObjectNode root = uaResponse;
         List<ObjectNode> arrayValues = createElementList(keyValuePairs);
@@ -158,7 +157,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
     }
 
     @Then("ProcessingDepartment is set to the invariant value LEGANTO")
-    public void processingdepartmentIsSetToTheInvariantValueLEGANTO() {
+    public void processingdepartmentIsSetToTheInvariantValueLeganto() {
         assertThat(uaLegantoEntry.getProcessingDepartment(), is(equalTo("LEGANTO")));
     }
 
