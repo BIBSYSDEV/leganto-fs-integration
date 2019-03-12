@@ -1,6 +1,7 @@
 package fs.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 
 public class LanguageValue {
 
@@ -31,5 +32,23 @@ public class LanguageValue {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof LanguageValue)) {
+            return false;
+        }
+        LanguageValue that = (LanguageValue) o;
+        return getLang().equals(that.getLang()) &&
+            getValue().equals(that.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLang(), getValue());
     }
 }

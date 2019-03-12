@@ -33,7 +33,15 @@ public enum Language {
         }
     }
 
-    public static Optional<String> getValueForLanguage(List<LanguageValue> values, List<Language> languageOrder) {
+    /**
+     * Selects a value among a list of {@link LanguageValue} elements bases on a sorted preference list.
+     *
+     * @param values A set of values to select from
+     * @param languageOrder A list of languages ordered from the most preferable to the least preferable.
+     * @return An {@link Optional} containing the value of the most preferable available {@link LanguageValue} element
+     * or an empty {@link Optional} if no element is found for one of the preferred languages
+     */
+    public static Optional<String> getValueForLanguagePref(List<LanguageValue> values, List<Language> languageOrder) {
         Map<Language, String> valuesMap = values.stream()
             .collect(Collectors.toMap(langValue -> Language.fromString(langValue.getLang()), LanguageValue::getValue));
         for (Language language : languageOrder) {
@@ -41,22 +49,19 @@ public enum Language {
                 return Optional.ofNullable(valuesMap.get(language));
             }
         }
-
         return Optional.empty();
     }
 
     @Override
     public String toString() {
-
         switch (this) {
-            case NB:
-                return NB_STRING;
             case NN:
                 return NN_STRING;
             case EN:
                 return EN_STRING;
+            case NB:
             default:
-                throw new IllegalStateException(WRONG_STATE_MESSAGE);
+                return NB_STRING;
         }
     }
 

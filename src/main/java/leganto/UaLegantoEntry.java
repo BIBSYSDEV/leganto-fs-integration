@@ -56,12 +56,12 @@ public class UaLegantoEntry {
 
     private String initCourseTitle() {
 
-        String emneNavn = Language.getValueForLanguage(emne.getNavn(), languageOrder)
+        String emneNavn = Language.getValueForLanguagePref(emne.getNavn(), languageOrder)
             .orElse(emne.getNavn().stream()
                 .findAny().orElseThrow(() -> new IllegalArgumentException(INVALID_EMNE_RECORD))
                 .getValue());
 
-        String uaNavn = Language.getValueForLanguage(ua.getNanv(), languageOrder)
+        String uaNavn = Language.getValueForLanguagePref(ua.getNanv(), languageOrder)
             .orElse(ua.getNanv().stream()
                 .findAny().orElseThrow(() -> new IllegalArgumentException(INVALID_EMNE_RECORD))
                 .getValue());
