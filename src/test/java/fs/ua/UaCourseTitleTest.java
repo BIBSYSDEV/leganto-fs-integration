@@ -1,7 +1,6 @@
 package fs.ua;
 
 import static fs.ua.UaCourseTitle.DEFAULT;
-import static fs.ua.UaCourseTitle.fromNumber;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
@@ -18,12 +17,6 @@ public class UaCourseTitleTest {
     private static final String UA_NANV = "uaNanv";
     private static final String DELIMITER = "_";
     private static final SemesterCode SEMESTER_CODE = SemesterCode.AUTUMN;
-
-    @Test
-    public void fromNumberShouldReturnAlwaysDefault() {
-        assertThat(fromNumber(DEFAULT_FORMAT), is(equalTo(DEFAULT)));
-        assertThat(fromNumber(NON_DEFAULT_FORMAT), is(equalTo(DEFAULT)));
-    }
 
     @Test
     public void formatUAemneNanvShouldReturnDefaultFormat() {

@@ -40,7 +40,7 @@ public class LanguageValueTest {
     public void equalsShouldReturnTrueForObjectsWithSameValues() {
         LanguageValue newLanguageValue = new LanguageValue(Language.NB.toString(), VALUE);
         assertThat(newLanguageValue.equals(languageValue), is(equalTo(true)));
-        assertThat(languageValue.equals(languageValue), is(equalTo(false)));
+        assertThat(languageValue.equals(languageValue), is(equalTo(true)));
         assertThat(languageValue.equals(DIFFERENT_CLASS_OBJECT), is(equalTo(false)));
     }
 

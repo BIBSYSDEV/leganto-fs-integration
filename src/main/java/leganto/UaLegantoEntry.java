@@ -10,19 +10,16 @@ import java.util.List;
 public class UaLegantoEntry {
 
     public static final String FIELD_DELIMITER = "\t";
-    public static final String FIELD_DELIMITER_REGEX = "\\t";
     public static final String COURSE_CODE_DELIMITER = "-";
     public static final String COURSE_CODE_PREFIX_DELIMITER = "_";
     public static final String PREFIX = "UA";
     private static final int NUMBER_OF_FIELDS = 34;
-    private static final String COURSE_TITLE_DELIMITER = "_";
     private static final String ORGANIZATION_DELIMITER = "_";
     private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
     private static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
-
+    private final transient UndervisningsAktivitet ua;
     private transient String courseTitle;
     private transient String courseCode;
-    private transient UndervisningsAktivitet ua;
     private transient OrganizationEntity organisationEntity;
     private transient Emne emne;
 
@@ -31,7 +28,8 @@ public class UaLegantoEntry {
     private transient String academicDepartment;
     private transient String term1;
 
-    public UaLegantoEntry() {
+    public UaLegantoEntry(UndervisningsAktivitet ua) {
+        this.ua = ua;
     }
 
     public UaLegantoEntry populateFields() {
@@ -72,7 +70,6 @@ public class UaLegantoEntry {
             ua.getUndervisning().getEmne().getCode(),
             ua.getUndervisning().getUaSemester().getSemesterCode(),
             ua.getUndervisning().getUaSemester().getYear());
-
     }
 
     public UaLegantoEntry setLanguageOrder(List<Language> languageOrder) {
@@ -109,11 +106,6 @@ public class UaLegantoEntry {
 
     public String getCourseTitle() {
         return courseTitle;
-    }
-
-    public UaLegantoEntry setUndervisningsAktivitet(UndervisningsAktivitet ua) {
-        this.ua = ua;
-        return this;
     }
 
     public UaLegantoEntry setEmne(Emne emne) {

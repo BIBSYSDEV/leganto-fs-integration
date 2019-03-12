@@ -113,8 +113,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
         UndervisningsAktivitet uaEntry = readValue(uaResponse, UndervisningsAktivitet.class);
         UserInput userInput = readValue(world.getUserInput(), UserInput.class);
         OrganizationEntity organizationEntity = readValue(organisasjon, OrganizationEntity.class);
-        uaLegantoEntry = new UaLegantoEntry()
-            .setUndervisningsAktivitet(uaEntry)
+        uaLegantoEntry = new UaLegantoEntry(uaEntry)
             .setOrganizationEntity(organizationEntity)
             .setEmne(readValue(world.getEmneResponse(), Emne.class))
             .setLanguageOrder(userInput.getLanguages())

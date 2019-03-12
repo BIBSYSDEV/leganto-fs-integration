@@ -7,15 +7,6 @@ public enum UaCourseTitle {
     private static final String FOUR_DIGIT_NUMBER = "%04d";
     private static final String DELIMITER = "_";
 
-    public static UaCourseTitle fromNumber(int number) {
-        switch (number) {
-            case 1:
-                return DEFAULT;
-            default:
-                return DEFAULT;
-        }
-    }
-
     public String formatUaCourseTitle(String uaNanv, String emneNanv, String emneKode, SemesterCode semesterCode,
         int year) {
         //more formatting cases will go here

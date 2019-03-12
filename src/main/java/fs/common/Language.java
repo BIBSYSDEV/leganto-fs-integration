@@ -2,6 +2,7 @@ package fs.common;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ public enum Language {
     private static final String WRONG_STATE_MESSAGE = String.join(",", "Allowed enum values:" + names);
 
     public static Language fromString(String lang) {
-        String lowerCase = lang.toLowerCase();
+        String lowerCase = lang.toLowerCase(Locale.getDefault());
         switch (lowerCase) {
             case NB_STRING:
                 return NB;
@@ -39,7 +40,7 @@ public enum Language {
      * @param values A set of values to select from
      * @param languageOrder A list of languages ordered from the most preferable to the least preferable.
      * @return An {@link Optional} containing the value of the most preferable available {@link LanguageValue} element
-     * or an empty {@link Optional} if no element is found for one of the preferred languages
+     *         or an empty {@link Optional} if no element is found for one of the preferred languages
      */
     public static Optional<String> getValueForLanguagePref(List<LanguageValue> values, List<Language> languageOrder) {
         Map<Language, String> valuesMap = values.stream()

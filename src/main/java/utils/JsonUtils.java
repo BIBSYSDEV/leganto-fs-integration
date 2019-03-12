@@ -13,7 +13,7 @@ import java.util.List;
 
 public final class JsonUtils {
 
-    protected static final String JSON_FIELDS_DELIMITER = ".";
+    public static final String JSON_FIELDS_DELIMITER = ".";
     private static final String UNSUPPORTED_CLASS_EXCEPTION = "Class %s is not yet supported. Add it in JsonTools";
     private static final int EXCLUDE_LAST_KEY = 1;
     private static final String JSON_FIELDS_SPlIT_REGEX = "\\.";

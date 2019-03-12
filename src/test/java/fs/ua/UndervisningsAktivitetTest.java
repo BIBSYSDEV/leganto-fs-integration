@@ -14,6 +14,9 @@ import utils.JsonUtils;
 
 public class UndervisningsAktivitetTest {
 
+    private static final SemesterCode INPUT_FILE_SEMESTER = SemesterCode.AUTUMN;
+    private static final int INPUT_FILE_YEAR = 1999;
+    private static final String INPUT_FILE_SEMESTER_HREF = "https://api.fellesstudentsystem.no/semestre/1999,H%C3%98ST";
     private String uaJson = IoUtils.resourceAsString(Paths.get("ua", "UA.json"));
 
     @Test
@@ -27,5 +30,13 @@ public class UndervisningsAktivitetTest {
         UaUndervisning uau = new UaUndervisning();
         UndervisningsAktivitet ua = new UndervisningsAktivitet().setUndervising(uau);
         assertThat(ua.getUndervisning(), is(not(equalTo(null))));
+    }
+
+    @Test
+    public void fromJsonShouldParseAJsonObject() throws IOException {
+        UndervisningsAktivitet ua = UndervisningsAktivitet.fromJson(uaJson);
+        assertThat(ua.getUndervisning().getUaSemester().getYear(), is(equalTo(INPUT_FILE_YEAR)));
+        assertThat(ua.getUndervisning().getUaSemester().getSemesterCode(), is(equalTo(SemesterCode.AUTUMN)));
+        assertThat(ua.getUndervisning().getUaSemester().getHref(), is(equalTo(INPUT_FILE_SEMESTER_HREF)));
     }
 }

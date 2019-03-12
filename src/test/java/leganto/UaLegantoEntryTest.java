@@ -86,8 +86,7 @@ public class UaLegantoEntryTest {
             .setFaculty(FACULTY_NUMBER)
             .setInstitute(INSTITUTE_NUMBER);
 
-        entry = new UaLegantoEntry()
-            .setUndervisningsAktivitet(ua)
+        entry = new UaLegantoEntry(ua)
             .setLanguageOrder(languageOrder)
             .setEmne(emne)
             .setOrganizationEntity(organizationEntity)
