@@ -26,8 +26,9 @@ dependencies {
     implementation 'io.cucumber:cucumber-java:4.2.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
-    compile group: 'io.cucumber', name: 'cucumber-picocontainer', version: '4.2.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
+    testCompile group: 'io.cucumber', name: 'cucumber-picocontainer', version: '4.2.0'
     testCompile 'junit:junit:4.12'
     testCompile 'org.hamcrest:hamcrest:2.1'
 
