@@ -12,6 +12,9 @@ public class UserInput {
 
     private List<Language> languageOrder;
 
+    @JsonProperty("campus_participants")
+    private List<String> campuses;
+
     public List<String> getLanguageOrder() {
         return languageOrder.stream()
             .map(Language::toString).collect(Collectors.toList());
@@ -28,5 +31,14 @@ public class UserInput {
     @JsonIgnore
     public List<Language> getLanguages() {
         return languageOrder;
+    }
+
+    public List<String> getCampuses() {
+        return campuses;
+    }
+
+    public UserInput setCampuses(List<String> campuses) {
+        this.campuses = campuses;
+        return this;
     }
 }

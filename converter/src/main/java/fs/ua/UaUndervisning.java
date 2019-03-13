@@ -15,6 +15,9 @@ public class UaUndervisning {
     @JsonProperty("semester")
     private UaSemester uaSemester;
 
+    @JsonProperty("terminnummer")
+    private Integer terminnumer;
+
     public String getHref() {
         return href;
     }
@@ -39,6 +42,15 @@ public class UaUndervisning {
 
     public UaUndervisning setUaSemester(UaSemester uaSemester) {
         this.uaSemester = uaSemester;
+        return this;
+    }
+
+    public Integer getTerminnumer() {
+        return terminnumer;
+    }
+
+    public UaUndervisning setTerminnumer(Integer terminnumer) {
+        this.terminnumer = terminnumer;
         return this;
     }
 }

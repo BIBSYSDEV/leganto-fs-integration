@@ -18,6 +18,10 @@ public class UndervisningsAktivitet {
     @JsonProperty("navn")
     private List<LanguageValue> nanv;
 
+    @JsonProperty("aktivitet")
+    private String aktivitet;
+
+
     public static UndervisningsAktivitet fromJson(String json) throws IOException {
         return mapper.readValue(json, UndervisningsAktivitet.class);
     }
@@ -43,6 +47,14 @@ public class UndervisningsAktivitet {
     public UndervisningsAktivitet setNanv(List<LanguageValue> nanv) {
         this.nanv = nanv;
         return this;
+    }
+
+    public String getAktivitet() {
+        return aktivitet;
+    }
+
+    public void setAktivitet(String aktivitet) {
+        this.aktivitet = aktivitet;
     }
 
     @JsonIgnore

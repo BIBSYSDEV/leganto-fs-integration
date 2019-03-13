@@ -16,26 +16,32 @@ public class UaUndervisningTest {
 
     private static final String UA_RESOURCES = "ua";
     private static final String SAMPLE_UA_FILE = "UA.json";
-    private final UndervisningsAktivitet undervisningsAktivitet;
+    private static final Integer INPUT_FILE_TERMIN_NUMMER = 1;
+    private final UndervisningsAktivitet ua;
 
     public UaUndervisningTest() throws IOException {
         String uaJson = IoUtils.resourceAsString(Paths.get(UA_RESOURCES, SAMPLE_UA_FILE));
-        undervisningsAktivitet = JsonUtils.mapper.readValue(uaJson, UndervisningsAktivitet.class);
+        ua = JsonUtils.mapper.readValue(uaJson, UndervisningsAktivitet.class);
     }
 
     @Test
     public void getHrefShouldNotReturnEmpty() {
-        assertThat(undervisningsAktivitet.getUndervisning().getHref(), is(not(emptyString())));
+        assertThat(ua.getUndervisning().getHref(), is(not(emptyString())));
     }
 
     @Test
     public void getEmneShouldBeTheSameAsUndervisingsEmne() {
-        assertThat(undervisningsAktivitet.getEmne(), is(equalTo(undervisningsAktivitet.getUndervisning().getEmne())));
+        assertThat(ua.getEmne(), is(equalTo(ua.getUndervisning().getEmne())));
     }
 
     @Test
     public void getUaSemesterShouldBeTheSameAsUndervinginsSemester() {
-        assertThat(undervisningsAktivitet.getSemester(),
-            is(equalTo(undervisningsAktivitet.getUndervisning().getUaSemester())));
+        assertThat(ua.getSemester(),
+            is(equalTo(ua.getUndervisning().getUaSemester())));
+    }
+
+    @Test
+    public void terminNumberShouldBeParsedCorrectly() {
+        assertThat(ua.getUndervisning().getTerminnumer(), is(equalTo(INPUT_FILE_TERMIN_NUMMER)));
     }
 }

@@ -50,8 +50,8 @@ public class UAFeatureTest extends CucumberTestProcessor {
         uaResponse = JsonUtils.newObjectNode();
     }
 
-    @Given("the response from \\/undervisningsaktiviteter\\/UA_ID from FS has a field {string} with value {string}")
-    public void the_response_from_undervisningsaktiviteter_UA_ID_from_FS_has_a_field_with_value(String key,
+    @Given("the response from \\/undervisningsaktiviteter\\/UA_ID has a field {string} with value {string}")
+    public void the_response_from_undervisningsaktiviteter_UA_ID_has_a_field_with_value(String key,
         String value) {
         JsonUtils.putKeyInNode(uaResponse, key, value);
     }
@@ -202,7 +202,43 @@ public class UAFeatureTest extends CucumberTestProcessor {
         assertThat(uaLegantoEntry.getYear(), is(equalTo(year)));
     }
 
+    @Then("SearchableId1 is empty")
+    public void searchableid1_is_empty() {
+        assertThat(uaLegantoEntry.getSearchableId1(), is(emptyString()));
+    }
 
+    @Then("SearchableId2 is empty")
+    public void searchableid2_is_empty() {
+        assertThat(uaLegantoEntry.getSearchableId2(), is(emptyString()));
+    }
 
+    @Then("AllSearchableIds is the string {string}")
+    public void allsearchableids_is_the_string(String searchableId) {
+        assertThat(uaLegantoEntry.getAllSearchableIds(), is(equalTo(searchableId)));
+    }
 
+    @Then("Instructor{int} is empty")
+    public void instructor_is_empty(Integer index) {
+        assertThat(uaLegantoEntry.getInstructor(), is(emptyString()));
+    }
+
+    @Then("Operation is empty")
+    public void operationIsEmpty() {
+        assertThat(uaLegantoEntry.getOperation(), is(emptyString()));
+    }
+
+    @Then("SubmitByDate is empty")
+    public void submitByDateIsEmpty() {
+        assertThat(uaLegantoEntry.getSubmitByDate(), is(emptyString()));
+    }
+
+    @Then("CampusParticipants is the string {string}")
+    public void campusparticipantsIsTheString(String campuses) {
+        assertThat(uaLegantoEntry.getCampusParticipants(), is(equalTo(campuses)));
+    }
+
+    @Then("Reading List Name is empty")
+    public void readingListNameIsEmpty() {
+        assertThat(uaLegantoEntry.getReadingListName(), is(emptyString()));
+    }
 }

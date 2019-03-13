@@ -16,7 +16,9 @@ public class UndervisningsAktivitetTest {
 
     private static final SemesterCode INPUT_FILE_SEMESTER = SemesterCode.AUTUMN;
     private static final int INPUT_FILE_YEAR = 1999;
+    private static final String INPUT_FILE_AKTIVITET_VALUE = "MEAKB00000";
     private static final String INPUT_FILE_SEMESTER_HREF = "https://api.fellesstudentsystem.no/semestre/1999,H%C3%98ST";
+
     private String uaJson = IoUtils.resourceAsString(Paths.get("ua", "UA.json"));
 
     @Test
@@ -38,5 +40,6 @@ public class UndervisningsAktivitetTest {
         assertThat(ua.getUndervisning().getUaSemester().getYear(), is(equalTo(INPUT_FILE_YEAR)));
         assertThat(ua.getUndervisning().getUaSemester().getSemesterCode(), is(equalTo(INPUT_FILE_SEMESTER)));
         assertThat(ua.getUndervisning().getUaSemester().getHref(), is(equalTo(INPUT_FILE_SEMESTER_HREF)));
+        assertThat(ua.getAktivitet(), is(equalTo(INPUT_FILE_AKTIVITET_VALUE)));
     }
 }

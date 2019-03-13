@@ -9,7 +9,6 @@ import fs.ua.UndervisningsAktivitet;
 import fs.user.UserInput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class UaLegantoEntry {
 
@@ -17,16 +16,19 @@ public class UaLegantoEntry {
     public static final String COURSE_CODE_DELIMITER = "-";
     public static final String COURSE_CODE_PREFIX_DELIMITER = "_";
     public static final String PREFIX = "UA";
+    private static final String DEFAULT_DELIMITER = "_";
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
     private static final int NUMBER_OF_FIELDS = 34;
-    private static final String ORGANIZATION_DELIMITER = "_";
+
     private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
     private static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
     private static final String EMPTY_STRING = "";
+    private static final String CAMPUS_PARTICIPANTS_DELIMITER = ",";
 
     private final transient UndervisningsAktivitet ua;
 
-    private final transient List<Language> languageOrder;
+    private final transient UserInput userInput;
+
     private transient OrganizationEntity organisationEntity;
     private transient Emne emne;
     private transient String courseTitle;
@@ -41,7 +43,7 @@ public class UaLegantoEntry {
 
     public UaLegantoEntry(UndervisningsAktivitet ua, UserInput userInput) {
         this.ua = ua;
-        this.languageOrder = userInput.getLanguages();
+        this.userInput = userInput;
     }
 
     public UaLegantoEntry populateFields() {
@@ -77,7 +79,7 @@ public class UaLegantoEntry {
     }
 
     private String initAcademicDepartment() {
-        return String.join(ORGANIZATION_DELIMITER,
+        return String.join(DEFAULT_DELIMITER,
             organisationEntity.getInstitution().toString(),
             organisationEntity.getFaculty().toString(),
             organisationEntity.getInstitute().toString());
@@ -85,12 +87,12 @@ public class UaLegantoEntry {
 
     private String initCourseTitle() {
 
-        String emneNavn = Language.getValueForLanguagePref(emne.getNavn(), languageOrder)
+        String emneNavn = Language.getValueForLanguagePref(emne.getNavn(), userInput.getLanguages())
             .orElse(emne.getNavn().stream()
                 .findAny().orElseThrow(() -> new IllegalArgumentException(INVALID_EMNE_RECORD))
                 .getValue());
 
-        String uaNavn = Language.getValueForLanguagePref(ua.getNanv(), languageOrder)
+        String uaNavn = Language.getValueForLanguagePref(ua.getNanv(), userInput.getLanguages())
             .orElse(ua.getNanv().stream()
                 .findAny().orElseThrow(() -> new IllegalArgumentException(INVALID_EMNE_RECORD))
                 .getValue());
@@ -191,5 +193,50 @@ public class UaLegantoEntry {
 
     public Integer getYear() {
         return this.year;
+    }
+
+    public String getSearchableId1() {
+        return EMPTY_STRING;
+    }
+
+    public String getSearchableId2() {
+        return EMPTY_STRING;
+    }
+
+    public String getAllSearchableIds() {
+        return String.join(DEFAULT_DELIMITER,
+            PREFIX,
+            organisationEntity.getInstitution().toString(),
+            ua.getEmne().getCode(),
+            ua.getEmne().getVersion(),
+            ua.getSemester().getYear().toString(),
+            ua.getSemester().getSemesterCode().toString(),
+            ua.getUndervisning().getTerminnumer().toString(),
+            ua.getAktivitet()
+        );
+    }
+
+    public String getInstructor() {
+        return EMPTY_STRING;
+    }
+
+    public String getOperation() {
+        return EMPTY_STRING;
+    }
+
+    public String getSubmitByDate() {
+        return EMPTY_STRING;
+    }
+
+    public String getCampusParticipants() {
+        if (userInput.getCampuses().isEmpty()) {
+            return EMPTY_STRING;
+        } else {
+            return String.join(CAMPUS_PARTICIPANTS_DELIMITER, userInput.getCampuses());
+        }
+    }
+
+    public String getReadingListName() {
+        return EMPTY_STRING;
     }
 }

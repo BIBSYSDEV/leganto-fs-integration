@@ -15,15 +15,20 @@ Feature:
       | nb |
       | en |
     And there is a request to /undervisningsaktiviteter/UA_ID
-    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.emne.kode" with value "emneKode"
-    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.emne.versjon" with value "emneVersjon"
-    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.semester.ar" with value "1980"
+    And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.kode" with value "emneKode"
+    And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.versjon" with value "emneVersjon"
+    And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.ar" with value "1980"
+    And the response from /undervisningsaktiviteter/UA_ID has a field "aktivitet" with value "MEAKB00000"
 
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "navn" that is an array with the key-value pairs
       | lang | nb | value | BokmalUANavn  |
       | lang | nn | value | NynorskUANavn |
       | lang | en | value | EngelskUANavn |
-    And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.terminnr" with value 1
+    And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.terminnummer" with value 12
+
+
+
+
     And there is a request to /emne/emneId
     And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
       | lang | nb | value | BokmalEmneNavn  |
@@ -32,6 +37,7 @@ Feature:
     And the response from /emne/emneId from FS has a field "organisasjonsenheter" that is an array with the key-element pairs
       | href | organisasjonsEnhetStudieUrl | type | STUDIE         |
       | href | organizationEnhetAdminUrl   | type | ADMINISTRATIVT |
+
     And there is a request to organisasjonsEnhetStudieUrl
     And the response to organisasjonsEnhetUrl has a field "institusjon" with value 222
     And the response to organisasjonsEnhetUrl has a field "fakultet" with value 39
@@ -39,10 +45,9 @@ Feature:
 
 
   Scenario: Update Leganto with new course information
-
     And the user input has field with name "include_institutt_in_acad_department" with value true
     And the user input has a field with name "UA_emneNavn_format" with value 1
-    And the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.semester.termin" with value "HØST"
+    And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.termin" with value "HØST"
     And the response from /undervisningsaktiviteter/UA_ID from FS has no field "perioder"
 
     When new UA entry has been generated
@@ -79,7 +84,7 @@ Feature:
       | OldCourseCode (rollover only)      |
       | OldCourseSectionId (rollover only) |
       | SubmitByDate                       |
-      | CampusesAndCampusParticipants      |
+      | CampusParticipants                 |
       | ReadingListName                    |
 
     And CourseCode is the string "UA_emneKode-emneVersjon-1980-HØST"
@@ -96,27 +101,27 @@ Feature:
 #    And NumberOfParticipants has the value 100
     And WeeklyHours is empty
     And Year has the value 1980
-#    And SearchableId1 is empty
-#    And SearchableId2 is empty
-#    And AllSearchableIds is the string "UA_222_emneKode_emneVersjon_1980_HØST_1"
-#    And Instructor1 is empty
-#    And Instructor2 is empty
-#    And Instructor3 is empty
-#    And Instructor4 is empty
-#    And Instructor5 is empty
-#    And Instructor6 is empty
-#    And Instructor7 is empty
-#    And Instructor8 is empty
-#    And Instructor9 is empty
-#    And Instructor10 is empty
+    And SearchableId1 is empty
+    And SearchableId2 is empty
+    And AllSearchableIds is the string "UA_222_emneKode_emneVersjon_1980_HØST_12_MEAKB00000"
+    And Instructor1 is empty
+    And Instructor2 is empty
+    And Instructor3 is empty
+    And Instructor4 is empty
+    And Instructor5 is empty
+    And Instructor6 is empty
+    And Instructor7 is empty
+    And Instructor8 is empty
+    And Instructor9 is empty
+    And Instructor10 is empty
 #    And AllInstructors is not empty
-#    And Operation is empty
-#    And Submit By Date is empty
-#    And Campuses and Campus Participants has the value of the user input field "campus_participants"
-#    And Reading List Name is empty
+    And Operation is empty
+    And SubmitByDate is empty
+    And CampusParticipants is the string "GLØS,DRAG"
+    And Reading List Name is empty
 #
   Scenario: Start date for the Spring semester
-    Given the response from /undervisningsaktiviteter/UA_ID from FS has a field "undervisning.semester.termin" with value "VÅR"
+    Given the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.termin" with value "VÅR"
     When new UA entry has been generated
     Then StartDate is the string "1980-01-01"
     And EndDate is the string "1980-07-31"
