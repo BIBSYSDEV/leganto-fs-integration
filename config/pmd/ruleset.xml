@@ -33,6 +33,7 @@
     <exclude name="TooManyStaticImports"/>
     <exclude name="ClassNamingConventions"/>
     <exclude name="ConfusingTernary"/>
+    <exclude name="ShortClassName"/>
 
     <!-- This rule does not allow us the following:
             private static final Logger logger=...

@@ -2,20 +2,35 @@
 #  Trasnformation of Undervisningsenheter (UE: Teaching entities)
 #  UE records are transformed to Leganto Records in form of comma separated fields.
 #  FS: Felles Studentsystem
-#
-#
+
+
 #  Background:
-#    Given that it is time for an update
-#    And there is a scheduling system setup to request course updates in Leganto
-#    And there is a user input
-#    And the user input has a field with name "operation" with a non-empty value
-#    And the user input has a field with name "number_of_participants"
-#    And the user input has a filed with name "campus_participants"
-#    And the value of the field  "campus_participants" is an array
+#    Given there is a user input
+#    And the user input has a field with name "operation" with value "operation_value"
+#    And the user input has a field with name "number_of_participants" with value 2
+#    And the user input has a field with name "campus_participants" is an array  with values
+#      | participant1 |
+#      | particiapnt2 |
 #
+#    And there is a request to /undervisning/UE_ID
+#    And the response from /undervising/UE_ID has a field with name "emne.href" with value "emneHref"
+#    And the response from /undervising/UE_ID has a field with name "emne.institusjon" with value "emneInstitusjon"
+#    And the response from /undervising/UE_ID has a field with name "emne.kode" with value "emneKode"
+#    And the response from /undervising/UE_ID has a field with name "emne.versjon" with value "emneVersjon"
+#    And there is a request to /emne/emneId
+#    And there is a request to /emne/emneId
+#    And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
+#      | lang | nb | value | BokmalText |
+#      | lang | nn | value | NynorskText|
+#      | lang | en | value | EnglishText|
 #
-#  Scenario: Update Leganto with new course information
-#    When the scheduling system requests an update
+#    And the response from /emne/emneId from FS has a field "organisasjonsenheter" that is an array with the key-element pairs
+#      | href | organizationEnhetUrl | type| STUDIE|
+#      | href | organizationEnhetUrl | type| ADMINISTRATIVT |
+##
+##
+#  Scenario: Update Leganto with new undervisning information
+#   When a new UE entry is generated
 #    Then the courses in FS are populated in Leganto with the following data:
 #      | Course Code (mandatory)               |
 #      | Course Title (mandatory)              |
@@ -51,8 +66,9 @@
 #      | Submit By Date                        |
 #      | Campuses and Campus Participants      |
 #      | Reading List Name                     |
-#    And CourseCode is the concatenation  of the values emne.kode, emne.versjon, semester.ar, semester.termin from FS-API: /undervisngsaktiviteter/{id}
-#    And CouseTitle is the value of emne.navn from FS-API: /emner/{id}
+#    Then CourseCode is the string "emneKode-emneVersjon-1980-HØST"
+#    And CouseTitle is the string "BokmalText"
+#    And Section ID is the string
 #    And Section ID is the concatenation of the values emne.versjon, undervisningsaktivitetet.navn from FS-API: /undervisingsaktiviteter/{id}
 #    And Academic Department is the snake-case concatenation of values of organisasjonsenheter.institusjon, organisasjonsenheter.fakultet, organisasjonsenheter.institutt from the FS-API: /organisasjonsenheter/{id}
 #    And Processing Department is set to invariant value LEGANTO
