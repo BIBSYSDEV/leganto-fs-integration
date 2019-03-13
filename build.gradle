@@ -14,70 +14,72 @@ allprojects {
     }
 
     apply plugin: 'java'
-    apply plugin: 'checkstyle'
-    apply plugin: 'pmd'
-    apply plugin: 'jacoco'
     apply plugin: 'base'
-
-
-    checkstyle {
-        configFile = rootProject.resources.text.fromFile('config/checkstyle/checkstyle.xml').asFile()
-        showViolations = true
-        toolVersion '8.13'
-    }
-
-    tasks.withType(Checkstyle) {
-        reports {
-            xml.enabled false
-            html.enabled true
-            html.stylesheet rootProject.resources.text.fromFile('config/checkstyle/checkstyle-simple.xsl')
+    
+    if (!project.name.equals("model")) {
+        apply plugin: 'checkstyle'
+        apply plugin: 'pmd'
+        apply plugin: 'jacoco'
+        checkstyle {
+            configFile = rootProject.resources.text.fromFile('config/checkstyle/checkstyle.xml').asFile()
+            showViolations = true
+            toolVersion '8.13'
         }
-    }
 
-
-    pmd {
-        toolVersion = "6.7.0"
-        ruleSetConfig = rootProject.resources.text.fromFile('config/pmd/ruleset.xml')
-        ruleSets = []
-        ignoreFailures = false
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.enabled false
-            csv.enabled false
-            html.destination file("${buildDir}/reports/jacoco")
-        }
-    }
-
-    jacoco {
-        toolVersion = "0.8.3"
-    }
-
-
-    check.dependsOn jacocoTestCoverageVerification
-    jacocoTestCoverageVerification.dependsOn(jacocoTestReport)
-
-    jacocoTestCoverageVerification {
-        violationRules {
-            rule {
-                limit {
-                    counter = 'METHOD'
-                    value = 'COVEREDRATIO'
-                    minimum = 0.95
-                }
+        tasks.withType(Checkstyle) {
+            reports {
+                xml.enabled false
+                html.enabled true
+                html.stylesheet rootProject.resources.text.fromFile('config/checkstyle/checkstyle-simple.xsl')
             }
-
-            rule {
-                limit {
-                    counter = 'CLASS'
-                    value = 'COVEREDRATIO'
-
-                    minimum = 0.95
-                }
-            }
-
         }
+
+
+        pmd {
+            toolVersion = "6.7.0"
+            ruleSetConfig = rootProject.resources.text.fromFile('config/pmd/ruleset.xml')
+            ruleSets = []
+            ignoreFailures = false
+        }
+
+        jacocoTestReport {
+            reports {
+                xml.enabled false
+                csv.enabled false
+                html.destination file("${buildDir}/reports/jacoco")
+            }
+        }
+
+        jacoco {
+            toolVersion = "0.8.3"
+        }
+
+
+        check.dependsOn jacocoTestCoverageVerification
+        jacocoTestCoverageVerification.dependsOn(jacocoTestReport)
+
+        jacocoTestCoverageVerification {
+            violationRules {
+                rule {
+                    limit {
+                        counter = 'METHOD'
+                        value = 'COVEREDRATIO'
+                        minimum = 0.95
+                    }
+                }
+
+                rule {
+                    limit {
+                        counter = 'CLASS'
+                        value = 'COVEREDRATIO'
+
+                        minimum = 0.95
+                    }
+                }
+
+            }
+        }
+
     }
 
 

@@ -1,0 +1,7 @@
+{
+  "groupId": "no.bibsys",
+  "artifactId": "fs-api",
+  "artifactVersion": "1.2.0",
+  "library": "feign",
+  "modelPackage": "no.bibsys"
+}
