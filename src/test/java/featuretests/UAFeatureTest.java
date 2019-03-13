@@ -3,6 +3,7 @@ package featuretests;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.text.IsEmptyString.emptyString;
 import static utils.JsonUtils.newObjectNode;
 import static utils.JsonUtils.putElementArrayInNode;
 import static utils.JsonUtils.putKeyInNode;
@@ -113,10 +114,9 @@ public class UAFeatureTest extends CucumberTestProcessor {
         UndervisningsAktivitet uaEntry = readValue(uaResponse, UndervisningsAktivitet.class);
         UserInput userInput = readValue(world.getUserInput(), UserInput.class);
         OrganizationEntity organizationEntity = readValue(organisasjon, OrganizationEntity.class);
-        uaLegantoEntry = new UaLegantoEntry(uaEntry)
+        uaLegantoEntry = new UaLegantoEntry(uaEntry, userInput)
             .setOrganizationEntity(organizationEntity)
             .setEmne(readValue(world.getEmneResponse(), Emne.class))
-            .setLanguageOrder(userInput.getLanguages())
             .populateFields();
     }
 
@@ -191,4 +191,18 @@ public class UAFeatureTest extends CucumberTestProcessor {
     public void enddate_is_the_string(String endDate) {
         assertThat(uaLegantoEntry.getEndDate(), is(equalTo(endDate)));
     }
+
+    @Then("WeeklyHours is empty")
+    public void weeklyhours_is_empty() {
+        assertThat(uaLegantoEntry.getWeeklyHours(), is(emptyString()));
+    }
+
+    @Then("Year has the value {int}")
+    public void year_has_the_value(Integer year) {
+        assertThat(uaLegantoEntry.getYear(), is(equalTo(year)));
+    }
+
+
+
+
 }

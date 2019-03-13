@@ -16,6 +16,7 @@ import fs.ua.UaEmne;
 import fs.ua.UaSemester;
 import fs.ua.UaUndervisning;
 import fs.ua.UndervisningsAktivitet;
+import fs.user.UserInput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -78,16 +79,16 @@ public class UaLegantoEntryTest {
         emneNames.add(new LanguageValue(Language.EN.toString(), ENGLISH_EMNE_NAME));
         emne = new Emne().setNavn(emneNames);
 
-        Language[] languagesArray = {Language.NB, Language.NN, Language.EN};
-        List<Language> languageOrder = Arrays.asList(languagesArray);
+        String[] languagesArray = {Language.NB.toString(), Language.NN.toString(), Language.EN.toString()};
+        List<String> languageOrder = Arrays.asList(languagesArray);
 
         OrganizationEntity organizationEntity = new OrganizationEntity()
             .setInstitution(INSTITUTION_NUMBER)
             .setFaculty(FACULTY_NUMBER)
             .setInstitute(INSTITUTE_NUMBER);
 
-        entry = new UaLegantoEntry(ua)
-            .setLanguageOrder(languageOrder)
+        UserInput userInput = new UserInput().setLanguageOrder(languageOrder);
+        entry = new UaLegantoEntry(ua, userInput)
             .setEmne(emne)
             .setOrganizationEntity(organizationEntity)
             .populateFields();

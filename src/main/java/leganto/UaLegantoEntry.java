@@ -6,6 +6,7 @@ import fs.organizations.OrganizationEntity;
 import fs.ua.SemesterCode;
 import fs.ua.UaCourseTitle;
 import fs.ua.UndervisningsAktivitet;
+import fs.user.UserInput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,21 +23,25 @@ public class UaLegantoEntry {
     private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
     private static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
     private static final String EMPTY_STRING = "";
+
     private final transient UndervisningsAktivitet ua;
-    private transient String courseTitle;
-    private transient String courseCode;
+
+    private final transient List<Language> languageOrder;
     private transient OrganizationEntity organisationEntity;
     private transient Emne emne;
+    private transient String courseTitle;
+    private transient String courseCode;
 
-    private transient List<Language> languageOrder;
     private transient String sectionId;
     private transient String academicDepartment;
     private transient String term1;
     private transient String startDate;
     private transient String endDate;
+    private transient Integer year;
 
-    public UaLegantoEntry(UndervisningsAktivitet ua) {
+    public UaLegantoEntry(UndervisningsAktivitet ua, UserInput userInput) {
         this.ua = ua;
+        this.languageOrder = userInput.getLanguages();
     }
 
     public UaLegantoEntry populateFields() {
@@ -47,7 +52,12 @@ public class UaLegantoEntry {
         this.term1 = initTerm1();
         this.startDate = initStartDate();
         this.endDate = initEndDate();
+        this.year = initYear();
         return this;
+    }
+
+    private Integer initYear() {
+        return this.ua.getSemester().getYear();
     }
 
     private String initEndDate() {
@@ -91,11 +101,6 @@ public class UaLegantoEntry {
             ua.getUndervisning().getEmne().getCode(),
             getSemesterCode(),
             ua.getUndervisning().getUaSemester().getYear());
-    }
-
-    public UaLegantoEntry setLanguageOrder(List<Language> languageOrder) {
-        this.languageOrder = languageOrder;
-        return this;
     }
 
     private String initCourseCode() {
@@ -178,5 +183,13 @@ public class UaLegantoEntry {
 
     public String getEndDate() {
         return this.endDate;
+    }
+
+    public String getWeeklyHours() {
+        return EMPTY_STRING;
+    }
+
+    public Integer getYear() {
+        return this.year;
     }
 }

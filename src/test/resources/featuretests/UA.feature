@@ -93,9 +93,9 @@ Feature:
     And Term4 is empty
     And StartDate is the string "1980-08-01"
     And EndDate is the string "1980-01-31"
-    And NumberOfParticipants has the value 100
-#    And WeeklyHours is empty
-#    And Year has the value 1980
+#    And NumberOfParticipants has the value 100
+    And WeeklyHours is empty
+    And Year has the value 1980
 #    And SearchableId1 is empty
 #    And SearchableId2 is empty
 #    And AllSearchableIds is the string "UA_222_emneKode_emneVersjon_1980_HØST_1"

@@ -18,10 +18,11 @@ public class UserInput {
     }
 
     @JsonProperty("language_order")
-    public void setLanguageOrder(List<String> languageOrder) {
+    public UserInput setLanguageOrder(List<String> languageOrder) {
         this.languageOrder = languageOrder.stream()
             .map(Language::fromString)
             .collect(Collectors.toList());
+        return this;
     }
 
     @JsonIgnore
