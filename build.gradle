@@ -6,6 +6,9 @@ plugins {
     id "base"
 }
 
+dependencies {
+    implementation project(":converter")
+}
 
 allprojects {
 
@@ -100,6 +103,8 @@ subprojects {
 
     }
 }
+
+
 
 
 
