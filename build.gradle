@@ -10,6 +10,7 @@ dependencies {
     implementation project(":converter")
 }
 
+
 allprojects {
 
     repositories {
@@ -18,7 +19,7 @@ allprojects {
 
     apply plugin: 'java'
     apply plugin: 'base'
-    
+
     if (!project.name.equals("model")) {
         apply plugin: 'checkstyle'
         apply plugin: 'pmd'
