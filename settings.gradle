@@ -1,2 +1,4 @@
 
 rootProject.name = "leganto2019"
+include "converter"
+include "model"

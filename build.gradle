@@ -7,113 +7,101 @@ plugins {
 }
 
 
-apply plugin: 'java'
-apply plugin: 'checkstyle'
-apply plugin: 'pmd'
-apply plugin: 'jacoco'
-apply plugin: 'base'
+allprojects {
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-
-    testCompile 'io.cucumber:cucumber-java:4.2.0'
-    testCompile 'io.cucumber:cucumber-junit:4.2.0'
-
-
-    implementation 'io.cucumber:cucumber-java:4.2.0'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
-
-    testCompile group: 'io.cucumber', name: 'cucumber-picocontainer', version: '4.2.0'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.hamcrest:hamcrest:2.1'
-
-
-}
-
-configurations {
-    cucumberRuntime {
-        extendsFrom testRuntime
+    repositories {
+        mavenCentral()
     }
-}
 
-checkstyle {
-    configFile = rootProject.resources.text.fromFile('config/checkstyle/checkstyle.xml').asFile()
-    showViolations = true
-    toolVersion '8.13'
-}
+    apply plugin: 'java'
+    apply plugin: 'checkstyle'
+    apply plugin: 'pmd'
+    apply plugin: 'jacoco'
+    apply plugin: 'base'
 
-tasks.withType(Checkstyle) {
-    reports {
-        xml.enabled false
-        html.enabled true
-        html.stylesheet rootProject.resources.text.fromFile('config/checkstyle/checkstyle-simple.xsl')
+
+    checkstyle {
+        configFile = rootProject.resources.text.fromFile('config/checkstyle/checkstyle.xml').asFile()
+        showViolations = true
+        toolVersion '8.13'
     }
-}
 
-
-pmd {
-    toolVersion = "6.7.0"
-    ruleSetConfig = rootProject.resources.text.fromFile('config/pmd/ruleset.xml')
-    ruleSets = []
-    ignoreFailures = false
-}
-
-
-
-
-task cucumber() {
-    dependsOn assemble, compileTestJava
-    doLast {
-        javaexec {
-            main = "cucumber.api.cli.Main"
-            classpath = configurations.cucumberRuntime + sourceSets.test.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
-            args = ['--plugin', 'pretty', '--glue', 'featuretests', 'src/test/resources']
+    tasks.withType(Checkstyle) {
+        reports {
+            xml.enabled false
+            html.enabled true
+            html.stylesheet rootProject.resources.text.fromFile('config/checkstyle/checkstyle-simple.xsl')
         }
     }
-}
 
 
-jacocoTestReport {
-    reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination file("${buildDir}/reports/jacoco")
+    pmd {
+        toolVersion = "6.7.0"
+        ruleSetConfig = rootProject.resources.text.fromFile('config/pmd/ruleset.xml')
+        ruleSets = []
+        ignoreFailures = false
     }
-}
 
-jacoco {
-    toolVersion = "0.8.3"
-}
+    jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled false
+            html.destination file("${buildDir}/reports/jacoco")
+        }
+    }
+
+    jacoco {
+        toolVersion = "0.8.3"
+    }
 
 
-check.dependsOn jacocoTestCoverageVerification
-jacocoTestCoverageVerification.dependsOn(jacocoTestReport)
+    check.dependsOn jacocoTestCoverageVerification
+    jacocoTestCoverageVerification.dependsOn(jacocoTestReport)
 
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                counter = 'METHOD'
-                value = 'COVEREDRATIO'
-                minimum = 0.95
+    jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+                limit {
+                    counter = 'METHOD'
+                    value = 'COVEREDRATIO'
+                    minimum = 0.95
+                }
             }
-        }
 
-        rule {
-            limit {
-                counter = 'CLASS'
-                value = 'COVEREDRATIO'
+            rule {
+                limit {
+                    counter = 'CLASS'
+                    value = 'COVEREDRATIO'
 
-                minimum = 0.95
+                    minimum = 0.95
+                }
             }
+
         }
+    }
+
+
+}
+
+subprojects {
+
+    dependencies {
+
+        implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+        implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
+
+        testCompile 'junit:junit:4.12'
+        testCompile 'org.hamcrest:hamcrest:2.1'
+
 
     }
 }
+
+
+
+
+
 
 
