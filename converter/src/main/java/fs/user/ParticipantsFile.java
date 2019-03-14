@@ -1,37 +1,39 @@
 package fs.user;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import utils.IoUtils;
 
 public class ParticipantsFile {
 
-    private static final String CSV_DELIMITER = ",";
+    public static final String CSV_DELIMITER = ";";
     private static final int COURSE_CODE_INDEX = 0;
     private static final int PARTICIPANTS_INDEX = 1;
-    private static File participantsFile;
-    private Map<String, String> participantsMap;
 
-    public ParticipantsFile(String participantsFilename) {
-        participantsFile = new File(participantsFilename);
+    private final transient InputStream participantsDataStream;
+    private transient Map<String, String> participantsMap;
+
+    public ParticipantsFile(InputStream participantsDataStream) {
+        this.participantsDataStream = participantsDataStream;
     }
 
-    public void init(String participantsFilename) throws FileNotFoundException {
-        participantsFile = new File(participantsFilename);
-        List<String> lines = fileAsList();
+    public ParticipantsFile init() throws FileNotFoundException {
+        List<String> lines = streamAsList();
         Map<String, String> map = lines.stream()
             .map(this::splitLine)
             .collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue));
         participantsMap = Collections.unmodifiableMap(map);
+        return this;
     }
 
-    private List<String> fileAsList() throws FileNotFoundException {
-        return IoUtils.fileAsList(participantsFile);
+    private List<String> streamAsList() throws FileNotFoundException {
+        return IoUtils.streamAsList(participantsDataStream);
     }
 
     private SimpleEntry<String, String> splitLine(String line) {
@@ -41,7 +43,8 @@ public class ParticipantsFile {
         return new SimpleEntry<>(courseCode, participants);
     }
 
-    public Map<String, String> getParticipantsMap() {
-        return participantsMap;
+
+    public Optional<String> getPartcipants(String courseCode) {
+        return Optional.ofNullable(participantsMap.get(courseCode));
     }
 }

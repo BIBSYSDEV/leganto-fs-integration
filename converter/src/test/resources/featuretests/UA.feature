@@ -15,7 +15,8 @@ Feature:
       | nb |
       | en |
 
-    And the participants file is a comma separated file
+    And the participants file is a semicolon separated file
+
     And the participants file contains a row with the following values
       | UA_emneKode-emneVersjon-1980-HØST | 123 |
 

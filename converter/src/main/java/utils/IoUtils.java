@@ -1,9 +1,6 @@
 package utils;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
@@ -30,8 +27,8 @@ public final class IoUtils {
         return String.join(System.lineSeparator(), resourceAsList(path));
     }
 
-    public static List<String> fileAsList(File file) throws FileNotFoundException {
-        return new BufferedReader(new InputStreamReader(new FileInputStream(file)))
+    public static List<String> streamAsList(InputStream inputStream) {
+        return new BufferedReader(new InputStreamReader(inputStream))
             .lines().collect(Collectors.toList());
     }
 }

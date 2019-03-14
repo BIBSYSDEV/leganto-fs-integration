@@ -1,22 +1,31 @@
 package featuretests;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fs.user.ParticipantsFile;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import utils.JsonUtils;
 
 public class World {
 
+    public static final int PREFIX = 0;
+    public static final int SUFFIX = 1;
+    private static final boolean APPEND_TRUE = true;
+    private static final String PREFIX_SUFFIX_SEPARATOR_REGEX = "\\.";
     private ObjectNode userInput;
 
     private ObjectNode emneResponse;
 
-    private List<String> courseParticipants;
-
+    private File courseParticipants;
 
 
     public World() {
         userInput = JsonUtils.newObjectNode();
+
     }
 
     public ObjectNode getUserInput() {
@@ -35,11 +44,19 @@ public class World {
         this.emneResponse = emneResponse;
     }
 
-    public void initCoursePartcipants() {
-        courseParticipants = new ArrayList<>();
+    public void initCoursePartcipants(String filename) throws IOException {
+        String[] splitFilenname = filename.split(PREFIX_SUFFIX_SEPARATOR_REGEX);
+        courseParticipants = new File(filename);
+//        if (courseParticipants.exists()) {
+//            courseParticipants.delete();
+//        }
+        courseParticipants.deleteOnExit();
     }
 
-    public void addToCourseParticipants(String line) {
-        courseParticipants.add(line);
+    public void addToCourseParticipants(String line) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(courseParticipants, APPEND_TRUE));
+        writer.write(line);
+        writer.flush();
+        writer.close();
     }
 }

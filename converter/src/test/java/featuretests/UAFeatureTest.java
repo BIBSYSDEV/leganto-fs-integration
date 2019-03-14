@@ -112,12 +112,11 @@ public class UAFeatureTest extends CucumberTestProcessor {
     public void new_UA_entry_has_been_generated() throws IOException {
 
         UndervisningsAktivitet uaEntry = readValue(uaResponse, UndervisningsAktivitet.class);
-        UserInput userInput = readValue(world.getUserInput(), UserInput.class);
+        UserInput userInput = readValue(world.getUserInput(), UserInput.class).initPartcipants();
         OrganizationEntity organizationEntity = readValue(organisasjon, OrganizationEntity.class);
         uaLegantoEntry = new UaLegantoEntry(uaEntry, userInput)
             .setOrganizationEntity(organizationEntity)
-            .setEmne(readValue(world.getEmneResponse(), Emne.class))
-            .populateFields();
+            .setEmne(readValue(world.getEmneResponse(), Emne.class));
     }
 
     @Then("CourseCode is the string {string}")
