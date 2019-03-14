@@ -1,0 +1,39 @@
+{
+  "href": "https://api.fellesstudentsystem.no/undervisningsaktiviteter/222,0-5,1,1999,H%C3%98ST,1,MEAKB00000",
+  "undervisning": {
+    "href": "https://api.fellesstudentsystem.no/undervisning/222,0-5,1,1999,H%C3%98ST,1",
+    "emne": {
+      "href": "https://api.fellesstudentsystem.no/emner/222,0-5,1",
+      "institusjon": 222,
+      "kode": "0-5",
+      "versjon": "1"
+    },
+    "semester": {
+      "href": "https://api.fellesstudentsystem.no/semestre/1999,H%C3%98ST",
+      "ar": 1999,
+      "termin": "HØST"
+    },
+    "terminnummer": 1
+  },
+  "aktivitet": "MEAKB00000",
+  "eier": {
+    "href": "https://api.fellesstudentsystem.no/undervisningsaktiviteter/222,0-5,1,1999,H%C3%98ST,1,0-5"
+  },
+  "parti": 3,
+  "form": "PRAKSIS",
+  "disiplin": "PRAKSIS",
+  "navn": [
+    {
+      "lang": "nb",
+      "value": "MEAKB00000"
+    }
+  ],
+  "nummer": 1,
+  "apentHvisHoySokning": false,
+  "publiseres": true,
+  "eksporterTimeplan": true,
+  "lms": {
+    "eksport": false
+  },
+  "lukket": false
+}
