@@ -14,24 +14,19 @@ Feature:
       | nn |
       | nb |
       | en |
-
     And the participants file is a semicolon separated file
-
     And the participants file contains a row with the following values
       | UA_emneKode-emneVersjon-1980-HØST | 123 |
-
     And there is a request to /undervisningsaktiviteter/UA_ID
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.kode" with value "emneKode"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.versjon" with value "emneVersjon"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.ar" with value "1980"
     And the response from /undervisningsaktiviteter/UA_ID has a field "aktivitet" with value "MEAKB00000"
-
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "navn" that is an array with the key-value pairs
       | lang | nb | value | BokmalUANavn  |
       | lang | nn | value | NynorskUANavn |
       | lang | en | value | EngelskUANavn |
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.terminnummer" with value 12
-
 
     And there is a request to /emne/emneId
     And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
