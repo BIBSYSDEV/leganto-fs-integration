@@ -145,7 +145,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
         assertThat(uaLegantoEntry.getCourseTitle(), is(equalTo(courseTitle)));
     }
 
-    @Then("SectionId is  the string {string}")
+    @Then("SectionId is the string {string}")
     public void sectionid_is_the_string(String expectedSectionId) {
         assertThat(uaLegantoEntry.getSectionId(), is(equalTo(expectedSectionId)));
     }
@@ -240,5 +240,10 @@ public class UAFeatureTest extends CucumberTestProcessor {
     @Then("Reading List Name is empty")
     public void readingListNameIsEmpty() {
         assertThat(uaLegantoEntry.getReadingListName(), is(emptyString()));
+    }
+
+    @Then("NumberOfParticipants has the value {string}")
+    public void numberofparticipants_has_the_value(String numberOfParticipants) {
+        assertThat(uaLegantoEntry.getNumberOfParticipants(), is(equalTo(numberOfParticipants)));
     }
 }

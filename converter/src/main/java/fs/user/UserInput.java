@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.Language;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,6 +16,11 @@ public class UserInput {
 
     @JsonProperty("campus_participants")
     private List<String> campuses;
+
+    @JsonProperty("participants_file")
+    private String participantsFilename;
+
+    private ParticipantsFile participantsFile;
 
     public List<String> getLanguageOrder() {
         return languageOrder.stream()
@@ -28,6 +35,11 @@ public class UserInput {
         return this;
     }
 
+    public void initPartcipants() throws FileNotFoundException {
+        participantsFile = new ParticipantsFile(participantsFilename);
+        participantsFile.init(participantsFilename);
+    }
+
     @JsonIgnore
     public List<Language> getLanguages() {
         return languageOrder;
@@ -39,6 +51,15 @@ public class UserInput {
 
     public UserInput setCampuses(List<String> campuses) {
         this.campuses = campuses;
+        return this;
+    }
+
+    public Map<String, String> getParticipantsMap() {
+        return this.participantsFile.getParticipantsMap();
+    }
+
+    public UserInput setParticipantsFile(String participantsFile) {
+        this.participantsFilename = participantsFile;
         return this;
     }
 }

@@ -8,11 +8,13 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cucumber.api.java.en.Given;
 import io.cucumber.datatable.DataTable;
+import java.util.ArrayList;
 import java.util.List;
 import utils.JsonUtils;
 
 public class Background extends CucumberTestProcessor {
 
+    private static final String CSV_DELIMITER = ",";
     private final World world;
 
     public Background(World world) {
@@ -32,6 +34,7 @@ public class Background extends CucumberTestProcessor {
     @Given("the user input has a field with name {string} with value {string}")
     public void the_user_input_has_a_field_with_name_with_value(String key, String value) {
         putKeyInNode(world.getUserInput(), key, value);
+
     }
 
     @Given("the user input has a field with name {string} with value {int}")
@@ -60,5 +63,23 @@ public class Background extends CucumberTestProcessor {
         String key, DataTable keyValuePairs) {
         List<ObjectNode> arrayElements = createElementList(keyValuePairs);
         putElementArrayInNode(world.getEmneResponse(), key, arrayElements);
+    }
+
+    @Given("the participants file is a comma separated file")
+    public void theParticipantsFileIsACommaSeparatedFile() {
+        world.initCoursePartcipants();
+    }
+
+    @Given("the participants file contains a row with the following values")
+    public void the_participants_file_contains_a_row_with_the_following_values(DataTable dataTable) {
+        for (int row = 0; row < dataTable.height(); row++) {
+            List<String> rowValues = new ArrayList<>();
+            for (int column = 0; column < dataTable.width(); column++) {
+                String value = dataTable.cell(row, column);
+                rowValues.add(value);
+            }
+            String csvLine = String.join(CSV_DELIMITER, rowValues);
+            world.addToCourseParticipants(csvLine);
+        }
     }
 }

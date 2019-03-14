@@ -40,6 +40,7 @@ public class UaLegantoEntry {
     private transient String startDate;
     private transient String endDate;
     private transient Integer year;
+    private transient String numberOfParticipants;
 
     public UaLegantoEntry(UndervisningsAktivitet ua, UserInput userInput) {
         this.ua = ua;
@@ -55,7 +56,12 @@ public class UaLegantoEntry {
         this.startDate = initStartDate();
         this.endDate = initEndDate();
         this.year = initYear();
+        this.numberOfParticipants = initNumberOfParticipants();
         return this;
+    }
+
+    private String initNumberOfParticipants() {
+        return userInput.getParticipantsMap().get(courseCode);
     }
 
     private Integer initYear() {
@@ -238,5 +244,9 @@ public class UaLegantoEntry {
 
     public String getReadingListName() {
         return EMPTY_STRING;
+    }
+
+    public String getNumberOfParticipants() {
+        return this.numberOfParticipants;
     }
 }

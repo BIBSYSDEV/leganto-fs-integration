@@ -6,7 +6,7 @@ Feature:
   Background:
     Given  there is a user input
     And the user input has no field with name "operation"
-    And the user input has a field with name "number_of_course_participants" with value 100
+    And the user input has a field with name "participants_file" with value "participants.csv"
     And the user input has a field with name "campus_participants" that is an array with string values
       | GLØS |
       | DRAG |
@@ -14,6 +14,11 @@ Feature:
       | nn |
       | nb |
       | en |
+
+    And the participants file is a comma separated file
+    And the participants file contains a row with the following values
+      | UA_emneKode-emneVersjon-1980-HØST | 123 |
+
     And there is a request to /undervisningsaktiviteter/UA_ID
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.kode" with value "emneKode"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.versjon" with value "emneVersjon"
@@ -25,8 +30,6 @@ Feature:
       | lang | nn | value | NynorskUANavn |
       | lang | en | value | EngelskUANavn |
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.terminnummer" with value 12
-
-
 
 
     And there is a request to /emne/emneId
@@ -89,7 +92,7 @@ Feature:
 
     And CourseCode is the string "UA_emneKode-emneVersjon-1980-HØST"
     And CouseTitle is the string "NynorskEmneNavn_NynorskUANavn_emneKode_HØST_1980"
-    And SectionId is  the string "emneVersjon"
+    And SectionId is the string "emneVersjon"
     And AcademicDepartment is the  string "222_39_7"
     And ProcessingDepartment is set to the invariant value LEGANTO
     And Term1 is the string  "HØST"
@@ -98,7 +101,7 @@ Feature:
     And Term4 is empty
     And StartDate is the string "1980-08-01"
     And EndDate is the string "1980-01-31"
-#    And NumberOfParticipants has the value 100
+    And NumberOfParticipants has the value "123"
     And WeeklyHours is empty
     And Year has the value 1980
     And SearchableId1 is empty
@@ -119,7 +122,7 @@ Feature:
     And SubmitByDate is empty
     And CampusParticipants is the string "GLØS,DRAG"
     And Reading List Name is empty
-#
+
   Scenario: Start date for the Spring semester
     Given the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.termin" with value "VÅR"
     When new UA entry has been generated
