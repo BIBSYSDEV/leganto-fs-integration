@@ -1,5 +1,7 @@
 package fs.common;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -18,8 +20,8 @@ public enum Language {
         "Allowed languages:" + String.join(",", NB_STRING, NN_STRING, EN_STRING);
     private static final List<String> names = Arrays.stream(Language.values()).map(Enum::name)
         .collect(Collectors.toList());
-    private static final String WRONG_STATE_MESSAGE = String.join(",", "Allowed enum values:" + names);
 
+    @JsonCreator
     public static Language fromString(String lang) {
         String lowerCase = lang.toLowerCase(Locale.getDefault());
         switch (lowerCase) {
@@ -64,6 +66,11 @@ public enum Language {
             default:
                 return NB_STRING;
         }
+    }
+
+    @JsonValue
+    public String toValue() {
+        return toString();
     }
 
 }

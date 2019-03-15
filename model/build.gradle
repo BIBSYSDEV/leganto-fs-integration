@@ -9,4 +9,5 @@ task updateFS(type: Exec) {
     commandLine './update-models.sh'
 }
 
-build.dependsOn(updateFS)
+// TODO: re-enable when FS fixes their API
+//build.dependsOn(updateFS)

@@ -69,8 +69,7 @@ public class UaLegantoEntryTest {
         emne = mockEmne();
         OrganizationEntity organizationEntity = mockOrganizationEntity();
 
-        String[] languagesArray = {Language.NB.toString(), Language.NN.toString(),
-            Language.EN.toString()};
+        Language[] languagesArray = {Language.NB, Language.NN, Language.EN};
         UserInput userInput = mockUserInput(languagesArray);
 
         entry = new UaLegantoEntry(ua, userInput)
@@ -82,8 +81,8 @@ public class UaLegantoEntryTest {
         userInput.initPartcipants(numberOfParticipantsStream);
     }
 
-    private UserInput mockUserInput(String[] languagesArray) {
-        List<String> languageOrder = Arrays.asList(languagesArray);
+    private UserInput mockUserInput(Language[] languagesArray) {
+        List<Language> languageOrder = Arrays.asList(languagesArray);
         return new UserInput()
             .setLanguageOrder(languageOrder);
     }

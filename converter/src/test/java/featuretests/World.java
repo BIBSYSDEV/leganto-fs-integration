@@ -1,13 +1,10 @@
 package featuretests;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import fs.user.ParticipantsFile;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import utils.JsonUtils;
 
 public class World {
@@ -45,11 +42,10 @@ public class World {
     }
 
     public void initCoursePartcipants(String filename) throws IOException {
-        String[] splitFilenname = filename.split(PREFIX_SUFFIX_SEPARATOR_REGEX);
         courseParticipants = new File(filename);
-//        if (courseParticipants.exists()) {
-//            courseParticipants.delete();
-//        }
+        if (courseParticipants.exists()) {
+            courseParticipants.delete();
+        }
         courseParticipants.deleteOnExit();
     }
 
