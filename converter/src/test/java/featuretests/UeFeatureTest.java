@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import fs.ue.UndervisiningEntry;
 import leganto.UeLegantoEntry;
 import utils.JsonUtils;
 
@@ -27,7 +28,10 @@ public class UeFeatureTest {
 
     @When("a new UE Leganto entry has been generated")
     public void a_new_UE_entry_is_generated() throws JsonProcessingException {
-        UeLegantoEntry entry = readValue(ueEntry, UeLegantoEntry.class)
+        UndervisiningEntry ue = readValue(ueEntry, UndervisiningEntry.class);
+
+        UeLegantoEntry ueLegantoEntry = new UeLegantoEntry(ue);
+
 
     }
 

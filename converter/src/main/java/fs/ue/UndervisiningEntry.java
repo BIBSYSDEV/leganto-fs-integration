@@ -1,4 +1,4 @@
-package fs.common.ue;
+package fs.ue;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
