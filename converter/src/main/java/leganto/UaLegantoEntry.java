@@ -6,6 +6,7 @@ import fs.organizations.OrganizationEntity;
 import fs.ua.SemesterCode;
 import fs.ua.UaCourseTitle;
 import fs.ua.UndervisningsAktivitet;
+import fs.user.Operation;
 import fs.user.UserInput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -51,7 +52,7 @@ public class UaLegantoEntry {
     }
 
     public String getTerm1() {
-        return  getSemesterCode().toString();
+        return getSemesterCode().toString();
     }
 
     public String getAcademicDepartment() {
@@ -63,12 +64,13 @@ public class UaLegantoEntry {
 
     public String getCourseTitle() {
 
-        String emneNavn = Language.getValueForLanguagePref(emne.getNavn(), userInput.getLanguages())
+        String emneNavn = Language
+            .getValueForLanguagePref(emne.getNavn(), userInput.getLanguageOrder())
             .orElse(emne.getNavn().stream()
                 .findAny().orElseThrow(() -> new IllegalArgumentException(INVALID_EMNE_RECORD))
                 .getValue());
 
-        String uaNavn = Language.getValueForLanguagePref(ua.getNanv(), userInput.getLanguages())
+        String uaNavn = Language.getValueForLanguagePref(ua.getNanv(), userInput.getLanguageOrder())
             .orElse(ua.getNanv().stream()
                 .findAny().orElseThrow(() -> new IllegalArgumentException(INVALID_EMNE_RECORD))
                 .getValue());
@@ -173,8 +175,8 @@ public class UaLegantoEntry {
         return EMPTY_STRING;
     }
 
-    public String getOperation() {
-        return EMPTY_STRING;
+    public Operation getOperation() {
+        return userInput.getOperation();
     }
 
     public String getSubmitByDate() {
@@ -195,5 +197,36 @@ public class UaLegantoEntry {
 
     public String getNumberOfParticipants() {
         return this.userInput.getParticipants(getCourseCode()).orElse(EMPTY_STRING);
+    }
+
+    public String getOldCourseCode() {
+        if (Operation.ROLLOVER.equals(userInput.getOperation())) {
+            return calculateOldCourseCode();
+        } else {
+            return EMPTY_STRING;
+        }
+
+    }
+
+    private String calculateOldCourseCode() {
+        Integer lastYear = ua.getSemester().getYear() - 1;
+        String courseCodePrefix = String.join(COURSE_CODE_PREFIX_DELIMITER, PREFIX,
+            ua.getEmne().getCode()
+        );
+        return String.join(COURSE_CODE_DELIMITER,
+            courseCodePrefix,
+            ua.getEmne().getVersion(),
+            lastYear.toString(),
+            getSemesterCode().toString()
+        );
+    }
+
+    public String getOldCourseSectionId() {
+        if (Operation.ROLLOVER.equals(userInput.getOperation())) {
+            return ua.getEmne().getVersion();
+        } else {
+            return EMPTY_STRING;
+        }
+
     }
 }

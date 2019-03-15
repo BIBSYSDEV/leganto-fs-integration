@@ -21,12 +21,15 @@ Feature:
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.kode" with value "emneKode"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.versjon" with value "emneVersjon"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.ar" with value "1980"
+    And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.termin" with value "HØST"
+
     And the response from /undervisningsaktiviteter/UA_ID has a field "aktivitet" with value "MEAKB00000"
     And the response from /undervisningsaktiviteter/UA_ID from FS has a field "navn" that is an array with the key-value pairs
       | lang | nb | value | BokmalUANavn  |
       | lang | nn | value | NynorskUANavn |
       | lang | en | value | EngelskUANavn |
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.terminnummer" with value 12
+
 
     And there is a request to /emne/emneId
     And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
@@ -44,9 +47,7 @@ Feature:
 
 
   Scenario: Update Leganto with new course information
-    And the user input has field with name "include_institutt_in_acad_department" with value true
-    And the user input has a field with name "UA_emneNavn_format" with value 1
-    And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.termin" with value "HØST"
+    And the user input has field with name "include_institute_in_acad_department" with value true
     And the response from /undervisningsaktiviteter/UA_ID from FS has no field "perioder"
 
     When new UA entry has been generated
@@ -117,6 +118,8 @@ Feature:
     And Operation is empty
     And SubmitByDate is empty
     And CampusParticipants is the string "GLØS,DRAG"
+    And OldCourse Code is empty
+    And OldCourseSectionId is empty
     And Reading List Name is empty
 
   Scenario: Start date for the Spring semester
@@ -125,19 +128,19 @@ Feature:
     Then StartDate is the string "1980-01-01"
     And EndDate is the string "1980-07-31"
 
-#
-#  Scenario: Update Leganto with new course information
-#    Given the user input field "operation" has the value "ROLLOVER"
-#    When new UA entry has been generated
-#    Then Old Course Code is the string "UA_emneKode-emneVersjon-1979-HØST"
-#    And Old Course Section ID is the string  "emneVersjon"
-#    And Operation is the string "ROLLOVER"
-#
-#  Scenario: Update Leganto with new course information
-#    Given the user input field "operation" has the value "DELETE"
-#    When the scheduling system requests an update
-#    Then Operation is the string "DELETE"
+
+  Scenario: UserInput filed operation has value ROLLOVER
+    Given the user input field "operation" has the value "ROLLOVER"
+    When new UA entry has been generated
+    Then Old Course Code is the string "UA_emneKode-emneVersjon-1979-HØST"
+    And Old Course Section ID is the string "emneVersjon"
+    And Operation is the string "ROLLOVER"
+
+  Scenario: UserInput filed operation has value DELETE
+    Given the user input field "operation" has the value "DELETE"
+    When new UA entry has been generated
+    Then Operation is the string "DELETE"
 
 
 
-  
+

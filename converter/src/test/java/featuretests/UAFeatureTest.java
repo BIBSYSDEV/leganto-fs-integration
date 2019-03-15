@@ -11,12 +11,14 @@ import static utils.JsonUtils.readValue;
 import static utils.JsonUtils.removeKeyFromNode;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
 import fs.ua.UndervisningsAktivitet;
+import fs.user.Operation;
 import fs.user.UserInput;
 import io.cucumber.datatable.DataTable;
 import java.io.IOException;
@@ -56,19 +58,27 @@ public class UAFeatureTest extends CucumberTestProcessor {
         JsonUtils.putKeyInNode(uaResponse, key, value);
     }
 
+    @Given("the response from \\/undervisningsaktiviteter\\/UA_ID has a field {string} with value {int}")
+    public void the_response_from_undervisningsaktiviteter_UA_ID_has_a_field_with_value(String key,
+        Integer value) {
+        putKeyInNode(uaResponse, key, value);
+    }
+
     @Given("there is a request to organisasjonsEnhetStudieUrl")
     public void there_is_a_request_to_organisasjonsEnhetStudieUrl() {
         organisasjon = newObjectNode();
     }
 
     @Given("the response to organisasjonsEnhetUrl has a field {string} with value {int}")
-    public void the_response_to_organisasjonsEnhetUrl_has_a_field_with_value(String key, Integer value) {
+    public void the_response_to_organisasjonsEnhetUrl_has_a_field_with_value(String key,
+        Integer value) {
         // Write code here that turns the phrase above into concrete actions
         putKeyInNode(organisasjon, key, value);
     }
 
-    @Given("the response from \\/undervisningsaktiviteter\\/UA_ID from FS has a field {string} that is an array with "
-        + "the key-value pairs")
+    @Given(
+        "the response from \\/undervisningsaktiviteter\\/UA_ID from FS has a field {string} that is an array with "
+            + "the key-value pairs")
     public void the_response_from_UAaktiviteter_UA_ID_from_FS_has_a_field_that_is_an_array_with_the_key_value_pairs(
         String key, DataTable keyValuePairs) {
         ObjectNode root = uaResponse;
@@ -76,10 +86,6 @@ public class UAFeatureTest extends CucumberTestProcessor {
         putElementArrayInNode(root, key, arrayValues);
     }
 
-    @Given("the response from \\/undervisningsaktiviteter\\/UA_ID has a field {string} with value {int}")
-    public void the_response_from_undervisningsaktiviteter_UA_ID_has_a_field_with_value(String key, Integer value) {
-        putKeyInNode(uaResponse, key, value);
-    }
 
     @Given("there is a request to {string}")
     public void there_is_a_request_to(String string) {
@@ -136,7 +142,8 @@ public class UAFeatureTest extends CucumberTestProcessor {
             .split(UaLegantoEntry.FIELD_DELIMITER, INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER)
             .length;
 
-        assertThat(actualNumberOfFields, is(equalTo(expectedFieldsNumber + EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL)));
+        assertThat(actualNumberOfFields,
+            is(equalTo(expectedFieldsNumber + EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL)));
     }
 
     @Then("CouseTitle is the string {string}")
@@ -223,7 +230,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
 
     @Then("Operation is empty")
     public void operationIsEmpty() {
-        assertThat(uaLegantoEntry.getOperation(), is(emptyString()));
+        assertThat(uaLegantoEntry.getOperation(), is(equalTo(Operation.OTHER)));
     }
 
     @Then("SubmitByDate is empty")
@@ -244,5 +251,30 @@ public class UAFeatureTest extends CucumberTestProcessor {
     @Then("NumberOfParticipants has the value {string}")
     public void numberofparticipants_has_the_value(String numberOfParticipants) {
         assertThat(uaLegantoEntry.getNumberOfParticipants(), is(equalTo(numberOfParticipants)));
+    }
+
+    @Then("Old Course Code is the string {string}")
+    public void old_Course_Code_is_the_string(String oldCourseCode) {
+        assertThat(uaLegantoEntry.getOldCourseCode(), is(equalTo(oldCourseCode)));
+    }
+
+    @Then("Old Course Section ID is the string {string}")
+    public void old_Course_Section_ID_is_the_string(String oldCourseSectionId) {
+        assertThat(uaLegantoEntry.getOldCourseSectionId(), is(equalTo(oldCourseSectionId)));
+    }
+
+    @Then("Operation is the string {string}")
+    public void operationIsTheString(String operation) {
+        assertThat(uaLegantoEntry.getOperation(), is(equalTo(Operation.fromString(operation))));
+    }
+
+    @Then("OldCourse Code is empty")
+    public void oldcourseCodeIsEmpty() {
+        assertThat(uaLegantoEntry.getOldCourseCode(), is(emptyString()));
+    }
+
+    @And("OldCourseSectionId is empty")
+    public void oldcoursesectionidIsEmpty() {
+        assertThat(uaLegantoEntry.getOldCourseSectionId(), is(emptyString()));
     }
 }

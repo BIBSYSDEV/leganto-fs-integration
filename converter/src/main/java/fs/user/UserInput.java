@@ -1,7 +1,6 @@
 package fs.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.Language;
 import java.io.BufferedInputStream;
@@ -13,36 +12,39 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserInput {
 
     public static final String PARTICIPANTS_FILE_FIELD = "participants_file";
 
-
     @JsonProperty("campus_participants")
     private List<String> campuses;
-
 
     @JsonProperty("participants_file")
     private String participantsFilename;
 
+    @JsonProperty(value = "operation", defaultValue = "OTHER")
+    private Operation operation;
+
+    @JsonProperty("include_institute_in_acad_department")
+    private String includeInstitut;
+
     @JsonIgnore
     private transient ParticipantsFile participantsFile;
-    @JsonIgnore
-    private transient List<Language> languageOrder;
-
-    public List<String> getLanguageOrder() {
-        return languageOrder.stream()
-            .map(Language::toString).collect(Collectors.toList());
-    }
 
     @JsonProperty("language_order")
-    public UserInput setLanguageOrder(List<String> languageOrder) {
-        this.languageOrder = languageOrder.stream()
-            .map(Language::fromString)
-            .collect(Collectors.toList());
+    private List<Language> languageOrder;
+
+    public UserInput() {
+        this.operation = Operation.OTHER;
+    }
+
+    public List<Language> getLanguageOrder() {
+        return languageOrder;
+    }
+
+    public UserInput setLanguageOrder(List<Language> languageOrder) {
+        this.languageOrder = languageOrder;
         return this;
     }
 
@@ -50,8 +52,7 @@ public class UserInput {
         File file = new File(participantsFilename);
         BufferedInputStream inputStream = new BufferedInputStream(
             Files.newInputStream(file.toPath()));
-        participantsFile = new ParticipantsFile(inputStream);
-        participantsFile.init();
+        initPartcipants(inputStream);
         return this;
     }
 
@@ -60,12 +61,6 @@ public class UserInput {
         participantsFile = new ParticipantsFile(bis);
         participantsFile.init();
         return this;
-    }
-
-
-    @JsonIgnore
-    public List<Language> getLanguages() {
-        return languageOrder;
     }
 
     public List<String> getCampuses() {
@@ -84,7 +79,6 @@ public class UserInput {
         return participantsFile.getPartcipants(courseCode);
     }
 
-
     public UserInput setParticipantsFilename(String participantsFile) {
         this.participantsFilename = participantsFile;
         return this;
@@ -92,5 +86,22 @@ public class UserInput {
 
     public String getParticipantsFilename() {
         return participantsFilename;
+    }
+
+    public Operation getOperation() {
+        return operation;
+    }
+
+    public UserInput setOperation(Operation operation) {
+        this.operation = operation;
+        return this;
+    }
+
+    public String getIncludeInstitut() {
+        return includeInstitut;
+    }
+
+    public void setIncludeInstitut(String includeInstitut) {
+        this.includeInstitut = includeInstitut;
     }
 }

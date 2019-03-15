@@ -2,7 +2,7 @@ package fs.user;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -38,7 +38,8 @@ public class ParticipantsFileTest {
 
     @Test
     public void getParcticipantsNumberShouldReturnAnEmptyOptionalForNonExistingKeys() {
-        assertThat(participantsFile.getPartcipants(NON_EXISTING_COURSE_CODE_KEY_IN_RESOURCE_FILE).isPresent(),
+        assertThat(participantsFile.getPartcipants(NON_EXISTING_COURSE_CODE_KEY_IN_RESOURCE_FILE)
+                .isPresent(),
             is(false));
 
     }
