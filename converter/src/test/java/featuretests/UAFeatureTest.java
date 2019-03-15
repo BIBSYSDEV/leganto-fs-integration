@@ -28,10 +28,6 @@ import utils.JsonUtils;
 
 public class UAFeatureTest extends CucumberTestProcessor {
 
-    private static final int INCLUDE_EMPTY_STRINGS = -1;
-    private static final int INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER = INCLUDE_EMPTY_STRINGS;
-    private static final int EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL = 1;
-
     private static final String NOT = "not";
     private static final String EMPTY_STRING = new String();
 
@@ -132,19 +128,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
         assertThat(courseCode, is(equalTo(expectedCourseCode)));
     }
 
-    @Then("the courses in FS are populated in Leganto with the following data:")
-    public void the_courses_in_FS_are_populated_in_Leganto_with_the_following_data(
-        DataTable dataTable) {
-        List<String> fieldNamesCount = dataTable.asList();
-        int expectedFieldsNumber = fieldNamesCount.size();
 
-        int actualNumberOfFields = uaLegantoEntry.toString()
-            .split(UaLegantoEntry.FIELD_DELIMITER, INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER)
-            .length;
-
-        assertThat(actualNumberOfFields,
-            is(equalTo(expectedFieldsNumber + EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL)));
-    }
 
     @Then("CouseTitle is the string {string}")
     public void cousetitle_is_the_string(String courseTitle) {

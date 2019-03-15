@@ -50,7 +50,7 @@ Feature:
     And the user input has field with name "include_institute_in_acad_department" with value true
     And the response from /undervisningsaktiviteter/UA_ID from FS has no field "perioder"
 
-    When new UA entry has been generated
+    When new UA Leganto entry has been generated
     Then the courses in FS are populated in Leganto with the following data:
       | CourseCode (mandatory)             |
       | CourseTitle (mandatory)            |

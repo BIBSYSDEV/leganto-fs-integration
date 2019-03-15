@@ -37,9 +37,11 @@ public class UndervisningsAktivitetTest {
     @Test
     public void fromJsonShouldParseAJsonObject() throws IOException {
         UndervisningsAktivitet ua = UndervisningsAktivitet.fromJson(uaJson);
-        assertThat(ua.getUndervisning().getUaSemester().getYear(), is(equalTo(INPUT_FILE_YEAR)));
-        assertThat(ua.getUndervisning().getUaSemester().getSemesterCode(), is(equalTo(INPUT_FILE_SEMESTER)));
-        assertThat(ua.getUndervisning().getUaSemester().getHref(), is(equalTo(INPUT_FILE_SEMESTER_HREF)));
+        assertThat(ua.getUndervisning().getuSemester().getYear(), is(equalTo(INPUT_FILE_YEAR)));
+        assertThat(ua.getUndervisning().getuSemester().getSemesterCode(),
+            is(equalTo(INPUT_FILE_SEMESTER)));
+        assertThat(ua.getUndervisning().getuSemester().getHref(),
+            is(equalTo(INPUT_FILE_SEMESTER_HREF)));
         assertThat(ua.getAktivitet(), is(equalTo(INPUT_FILE_AKTIVITET_VALUE)));
     }
 }

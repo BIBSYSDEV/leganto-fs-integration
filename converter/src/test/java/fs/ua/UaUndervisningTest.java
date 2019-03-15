@@ -37,7 +37,7 @@ public class UaUndervisningTest {
     @Test
     public void getUaSemesterShouldBeTheSameAsUndervinginsSemester() {
         assertThat(ua.getSemester(),
-            is(equalTo(ua.getUndervisning().getUaSemester())));
+            is(equalTo(ua.getUndervisning().getuSemester())));
     }
 
     @Test

@@ -11,15 +11,13 @@ import fs.user.UserInput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class UaLegantoEntry {
+public class UaLegantoEntry extends LegantoEntry {
 
-    public static final String FIELD_DELIMITER = "\t";
     public static final String COURSE_CODE_DELIMITER = "-";
     public static final String COURSE_CODE_PREFIX_DELIMITER = "_";
     public static final String PREFIX = "UA";
     private static final String DEFAULT_DELIMITER = "_";
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
-    private static final int NUMBER_OF_FIELDS = 34;
 
     private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
     private static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
@@ -80,7 +78,7 @@ public class UaLegantoEntry {
             emneNavn,
             ua.getUndervisning().getEmne().getCode(),
             getSemesterCode(),
-            ua.getUndervisning().getUaSemester().getYear());
+            ua.getUndervisning().getuSemester().getYear());
     }
 
     public String getCourseCode() {
@@ -89,7 +87,7 @@ public class UaLegantoEntry {
         return String.join(COURSE_CODE_DELIMITER,
             codePrefix,
             ua.getEmne().getVersion(),
-            ua.getUndervisning().getUaSemester().getYear().toString(),
+            ua.getUndervisning().getuSemester().getYear().toString(),
             getSemesterCode().toString()
         );
     }
@@ -98,15 +96,7 @@ public class UaLegantoEntry {
         return ua.getEmne().getVersion();
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < NUMBER_OF_FIELDS; i++) {
-            builder.append(FIELD_DELIMITER);
-        }
 
-        return builder.toString();
-    }
 
     public UaLegantoEntry setEmne(Emne emne) {
         this.emne = emne;

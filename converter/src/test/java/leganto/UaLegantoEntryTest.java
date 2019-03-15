@@ -9,11 +9,11 @@ import static org.junit.Assert.assertThat;
 
 import fs.common.Language;
 import fs.common.LanguageValue;
+import fs.common.UEmne;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
 import fs.ua.SemesterCode;
-import fs.ua.UaEmne;
-import fs.ua.UaSemester;
+import fs.ua.USemester;
 import fs.ua.UaUndervisning;
 import fs.ua.UndervisningsAktivitet;
 import fs.user.ParticipantsFile;
@@ -111,17 +111,17 @@ public class UaLegantoEntryTest {
     }
 
     private UaUndervisning mockUaUndervisning() {
-        final UaEmne uaEmne = new UaEmne().setCode(EMNE_CODE).setHref(EMNE_HREF)
+        final UEmne uEmne = new UEmne().setCode(EMNE_CODE).setHref(EMNE_HREF)
             .setInstitution(EMNE_INSITUTION)
             .setVersion(EMNE_VERSION);
-        final UaSemester uaSemester = new UaSemester()
+        final USemester uSemester = new USemester()
             .setHref(UA_SEMESTER_HREF)
             .setYear(UASEMESTER_YEAR)
             .setSemesterCode(SEMESTER_INPUT);
         return new UaUndervisning()
             .setHref(UNDERVISNING_HREF)
-            .setEmne(uaEmne)
-            .setUaSemester(uaSemester);
+            .setEmne(uEmne)
+            .setuSemester(uSemester);
     }
 
     private String numberOfPartcipantsString() {

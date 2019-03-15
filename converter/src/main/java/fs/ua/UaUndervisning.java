@@ -2,6 +2,7 @@ package fs.ua;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fs.common.UEmne;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UaUndervisning {
@@ -10,10 +11,10 @@ public class UaUndervisning {
     private String href;
 
     @JsonProperty("emne")
-    private UaEmne emne;
+    private UEmne emne;
 
     @JsonProperty("semester")
-    private UaSemester uaSemester;
+    private USemester uSemester;
 
     @JsonProperty("terminnummer")
     private Integer terminnumer;
@@ -27,21 +28,21 @@ public class UaUndervisning {
         return this;
     }
 
-    public UaEmne getEmne() {
+    public UEmne getEmne() {
         return emne;
     }
 
-    public UaUndervisning setEmne(UaEmne emne) {
+    public UaUndervisning setEmne(UEmne emne) {
         this.emne = emne;
         return this;
     }
 
-    public UaSemester getUaSemester() {
-        return uaSemester;
+    public USemester getuSemester() {
+        return uSemester;
     }
 
-    public UaUndervisning setUaSemester(UaSemester uaSemester) {
-        this.uaSemester = uaSemester;
+    public UaUndervisning setuSemester(USemester uSemester) {
+        this.uSemester = uSemester;
         return this;
     }
 
