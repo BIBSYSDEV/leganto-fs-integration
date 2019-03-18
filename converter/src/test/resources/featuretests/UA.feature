@@ -50,7 +50,7 @@ Feature:
     And the user input has field with name "include_institute_in_acad_department" with value true
     And the response from /undervisningsaktiviteter/UA_ID from FS has no field "perioder"
 
-    When new UA Leganto entry has been generated
+    When a new UA Leganto entry has been generated
     Then the courses in FS are populated in Leganto with the following data:
       | CourseCode (mandatory)             |
       | CourseTitle (mandatory)            |
@@ -124,21 +124,21 @@ Feature:
 
   Scenario: Start date for the Spring semester
     Given the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.termin" with value "VÅR"
-    When new UA entry has been generated
+    When a new UA Leganto entry has been generated
     Then StartDate is the string "1980-01-01"
     And EndDate is the string "1980-07-31"
 
 
   Scenario: UserInput filed operation has value ROLLOVER
     Given the user input field "operation" has the value "ROLLOVER"
-    When new UA entry has been generated
+    When a new UA Leganto entry has been generated
     Then Old Course Code is the string "UA_emneKode-emneVersjon-1979-HØST"
     And Old Course Section ID is the string "emneVersjon"
     And Operation is the string "ROLLOVER"
 
   Scenario: UserInput filed operation has value DELETE
     Given the user input field "operation" has the value "DELETE"
-    When new UA entry has been generated
+    When a new UA Leganto entry has been generated
     Then Operation is the string "DELETE"
 
 

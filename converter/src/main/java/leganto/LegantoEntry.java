@@ -1,12 +1,22 @@
 package leganto;
 
+import fs.common.LanguageValue;
 import fs.user.Operation;
+import fs.user.UserInput;
+import java.util.List;
 
 public abstract class LegantoEntry {
 
     public static final String FIELD_DELIMITER = "\t";
-    private static final int NUMBER_OF_FIELDS = 34;
     public static final String ILLEGAL_STATE_MESSAGE = "Not available";
+    private static final int NUMBER_OF_FIELDS = 34;
+    private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
+
+    protected final transient UserInput userInput;
+
+    public LegantoEntry(UserInput userInput) {
+        this.userInput = userInput;
+    }
 
     @Override
     public String toString() {
@@ -16,6 +26,12 @@ public abstract class LegantoEntry {
         }
 
         return builder.toString();
+    }
+
+    protected String getRandomValue(List<LanguageValue> valueList) {
+        return valueList.stream()
+            .findAny().orElseThrow(() -> new IllegalArgumentException(INVALID_EMNE_RECORD))
+            .getValue();
     }
 
     public String getCourseCode() {

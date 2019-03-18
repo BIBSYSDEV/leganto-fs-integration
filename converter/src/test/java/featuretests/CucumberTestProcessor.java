@@ -4,13 +4,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.cucumber.datatable.DataTable;
 import java.util.ArrayList;
 import java.util.List;
-import leganto.LegantoEntry;
 import utils.JsonUtils;
 
 public abstract class CucumberTestProcessor {
-
-    protected LegantoEntry legantoEntry;
-
 
 
     protected List<ObjectNode> createElementList(DataTable keyValuePairs) {

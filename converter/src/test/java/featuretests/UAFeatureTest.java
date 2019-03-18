@@ -11,7 +11,6 @@ import static utils.JsonUtils.readValue;
 import static utils.JsonUtils.removeKeyFromNode;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -30,10 +29,10 @@ public class UAFeatureTest extends CucumberTestProcessor {
 
     private static final String NOT = "not";
     private static final String EMPTY_STRING = new String();
-
+    private static final int INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER = -1;
+    private static final int EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL = 1;
     private final World world;
-
-
+    private UaLegantoEntry uaLegantoEntry;
     private transient ObjectNode uaResponse;
     private transient ObjectNode organisasjon;
 
@@ -81,7 +80,6 @@ public class UAFeatureTest extends CucumberTestProcessor {
         putElementArrayInNode(root, key, arrayValues);
     }
 
-
     @Given("there is a request to {string}")
     public void there_is_a_request_to(String string) {
         // Write code here that turns the phrase above into concrete actions
@@ -109,155 +107,167 @@ public class UAFeatureTest extends CucumberTestProcessor {
         putKeyInNode(world.getUserInput(), compositeKey, alteredValue);
     }
 
-    @When("new UA entry has been generated")
+    @When("a new UA Leganto entry has been generated")
     public void new_UA_entry_has_been_generated() throws IOException {
 
         UndervisningsAktivitet uaEntry = readValue(uaResponse, UndervisningsAktivitet.class);
         UserInput userInput = readValue(world.getUserInput(), UserInput.class).initPartcipants();
         OrganizationEntity organizationEntity = readValue(organisasjon, OrganizationEntity.class);
-        legantoEntry = new UaLegantoEntry(uaEntry, userInput)
+        uaLegantoEntry = new UaLegantoEntry(uaEntry, userInput)
             .setOrganizationEntity(organizationEntity)
             .setEmne(readValue(world.getEmneResponse(), Emne.class));
     }
 
+    @Then("the courses in FS are populated in Leganto with the following data:")
+    public void the_courses_in_FS_are_populated_in_Leganto_with_the_following_data(
+        DataTable dataTable) {
+        List<String> fieldNamesCount = dataTable.asList();
+        int expectedFieldsNumber = fieldNamesCount.size();
+
+        int actualNumberOfFields = uaLegantoEntry.toString()
+            .split(UaLegantoEntry.FIELD_DELIMITER, INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER)
+            .length;
+
+        assertThat(actualNumberOfFields,
+            is(equalTo(expectedFieldsNumber + EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL)));
+    }
+
     @Then("CourseCode is the string {string}")
     public void coursecode_is_the_string(String expectedCourseCode) {
-        String courseCode = legantoEntry.getCourseCode();
+        String courseCode = uaLegantoEntry.getCourseCode();
 
         assertThat(courseCode, is(equalTo(expectedCourseCode)));
     }
 
-
-
     @Then("CouseTitle is the string {string}")
     public void cousetitle_is_the_string(String courseTitle) {
-        assertThat(legantoEntry.getCourseTitle(), is(equalTo(courseTitle)));
+        assertThat(uaLegantoEntry.getCourseTitle(), is(equalTo(courseTitle)));
     }
 
     @Then("SectionId is the string {string}")
     public void sectionid_is_the_string(String expectedSectionId) {
-        assertThat(legantoEntry.getSectionId(), is(equalTo(expectedSectionId)));
+        assertThat(uaLegantoEntry.getSectionId(), is(equalTo(expectedSectionId)));
     }
 
     @Then("AcademicDepartment is the  string {string}")
     public void academicdepartment_is_the_string(String expectedAcedemicDepartment) {
         // Write code here that turns the phrase above into concrete actions
 
-        assertThat(legantoEntry.getAcademicDepartment(), is(equalTo(expectedAcedemicDepartment)));
+        assertThat(uaLegantoEntry.getAcademicDepartment(), is(equalTo(expectedAcedemicDepartment)));
     }
 
     @Then("ProcessingDepartment is set to the invariant value LEGANTO")
     public void processingdepartmentIsSetToTheInvariantValueLeganto() {
-        assertThat(legantoEntry.getProcessingDepartment(), is(equalTo("LEGANTO")));
+        assertThat(uaLegantoEntry.getProcessingDepartment(), is(equalTo("LEGANTO")));
     }
 
     @Then("Term1 is the string  {string}")
     public void termIsTheString(String semesterCode) {
-        assertThat(legantoEntry.getTerm1(), is(equalTo(semesterCode)));
+        assertThat(uaLegantoEntry.getTerm1(), is(equalTo(semesterCode)));
     }
 
     @Then("Term2 is empty")
     public void term2_is_empty() {
-        assertThat(legantoEntry.getTerm2(), is(equalTo(EMPTY_STRING)));
+        assertThat(uaLegantoEntry.getTerm2(), is(equalTo(EMPTY_STRING)));
     }
 
     @Then("Term3 is empty")
     public void term3_is_empty() {
-        assertThat(legantoEntry.getTerm3(), is(equalTo(EMPTY_STRING)));
+        assertThat(uaLegantoEntry.getTerm3(), is(equalTo(EMPTY_STRING)));
     }
 
     @Then("Term4 is empty")
     public void term4_is_empty() {
-        assertThat(legantoEntry.getTerm4(), is(equalTo(EMPTY_STRING)));
+        assertThat(uaLegantoEntry.getTerm4(), is(equalTo(EMPTY_STRING)));
     }
 
     @Then("StartDate is the string {string}")
     public void startdate_is_the_string(String startDate) {
-        assertThat(legantoEntry.getStartDate(), is(equalTo(startDate)));
+        assertThat(uaLegantoEntry.getStartDate(), is(equalTo(startDate)));
     }
 
     @Then("EndDate is the string {string}")
     public void enddate_is_the_string(String endDate) {
-        assertThat(legantoEntry.getEndDate(), is(equalTo(endDate)));
+        assertThat(uaLegantoEntry.getEndDate(), is(equalTo(endDate)));
     }
 
     @Then("WeeklyHours is empty")
     public void weeklyhours_is_empty() {
-        assertThat(legantoEntry.getWeeklyHours(), is(emptyString()));
+        assertThat(uaLegantoEntry.getWeeklyHours(), is(emptyString()));
     }
 
     @Then("Year has the value {int}")
     public void year_has_the_value(Integer year) {
-        assertThat(legantoEntry.getYear(), is(equalTo(year)));
+        assertThat(uaLegantoEntry.getYear(), is(equalTo(year)));
     }
 
     @Then("SearchableId1 is empty")
     public void searchableid1_is_empty() {
-        assertThat(legantoEntry.getSearchableId1(), is(emptyString()));
+        assertThat(uaLegantoEntry.getSearchableId1(), is(emptyString()));
     }
 
     @Then("SearchableId2 is empty")
     public void searchableid2_is_empty() {
-        assertThat(legantoEntry.getSearchableId2(), is(emptyString()));
+        assertThat(uaLegantoEntry.getSearchableId2(), is(emptyString()));
     }
 
     @Then("AllSearchableIds is the string {string}")
     public void allsearchableids_is_the_string(String searchableId) {
-        assertThat(legantoEntry.getAllSearchableIds(), is(equalTo(searchableId)));
+        assertThat(uaLegantoEntry.getAllSearchableIds(), is(equalTo(searchableId)));
     }
 
     @Then("Instructor{int} is empty")
     public void instructor_is_empty(Integer index) {
-        assertThat(legantoEntry.getInstructor(), is(emptyString()));
+        assertThat(uaLegantoEntry.getInstructor(), is(emptyString()));
     }
 
     @Then("Operation is empty")
     public void operationIsEmpty() {
-        assertThat(legantoEntry.getOperation(), is(equalTo(Operation.OTHER)));
+        assertThat(uaLegantoEntry.getOperation(), is(equalTo(Operation.OTHER)));
     }
 
     @Then("SubmitByDate is empty")
     public void submitByDateIsEmpty() {
-        assertThat(legantoEntry.getSubmitByDate(), is(emptyString()));
+        assertThat(uaLegantoEntry.getSubmitByDate(), is(emptyString()));
     }
 
     @Then("CampusParticipants is the string {string}")
     public void campusparticipantsIsTheString(String campuses) {
-        assertThat(legantoEntry.getCampusParticipants(), is(equalTo(campuses)));
+        assertThat(uaLegantoEntry.getCampusParticipants(), is(equalTo(campuses)));
     }
 
     @Then("Reading List Name is empty")
     public void readingListNameIsEmpty() {
-        assertThat(legantoEntry.getReadingListName(), is(emptyString()));
+        assertThat(uaLegantoEntry.getReadingListName(), is(emptyString()));
     }
 
     @Then("NumberOfParticipants has the value {string}")
     public void numberofparticipants_has_the_value(String numberOfParticipants) {
-        assertThat(legantoEntry.getNumberOfParticipants(), is(equalTo(numberOfParticipants)));
+        assertThat(uaLegantoEntry.getNumberOfParticipants(), is(equalTo(numberOfParticipants)));
     }
 
     @Then("Old Course Code is the string {string}")
     public void old_Course_Code_is_the_string(String oldCourseCode) {
-        assertThat(legantoEntry.getOldCourseCode(), is(equalTo(oldCourseCode)));
+        assertThat(uaLegantoEntry.getOldCourseCode(), is(equalTo(oldCourseCode)));
     }
 
     @Then("Old Course Section ID is the string {string}")
     public void old_Course_Section_ID_is_the_string(String oldCourseSectionId) {
-        assertThat(legantoEntry.getOldCourseSectionId(), is(equalTo(oldCourseSectionId)));
+        assertThat(uaLegantoEntry.getOldCourseSectionId(), is(equalTo(oldCourseSectionId)));
     }
 
     @Then("Operation is the string {string}")
     public void operationIsTheString(String operation) {
-        assertThat(legantoEntry.getOperation(), is(equalTo(Operation.fromString(operation))));
+        assertThat(uaLegantoEntry.getOperation(), is(equalTo(Operation.fromString(operation))));
     }
 
     @Then("OldCourse Code is empty")
     public void oldcourseCodeIsEmpty() {
-        assertThat(legantoEntry.getOldCourseCode(), is(emptyString()));
+        assertThat(uaLegantoEntry.getOldCourseCode(), is(emptyString()));
     }
 
-    @And("OldCourseSectionId is empty")
+    @Then("OldCourseSectionId is empty")
     public void oldcoursesectionidIsEmpty() {
-        assertThat(legantoEntry.getOldCourseSectionId(), is(emptyString()));
+        assertThat(uaLegantoEntry.getOldCourseSectionId(), is(emptyString()));
     }
 }

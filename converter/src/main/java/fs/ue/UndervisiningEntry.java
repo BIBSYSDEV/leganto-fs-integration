@@ -28,7 +28,7 @@ public class UndervisiningEntry {
         this.href = href;
     }
 
-    public UEmne getuEmne() {
+    public UEmne getEmne() {
         return uEmne;
     }
 

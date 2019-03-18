@@ -11,6 +11,7 @@ Feature:
     And the user input has a field with name "campus_participants" that is an array with string values
       | GLØS |
       | DRAG |
+
     And the user input has a field with name "language_order" that is an array with string values
       | nn |
       | nb |
@@ -24,15 +25,16 @@ Feature:
     And the response from /undervisning/UE_ID has a field with name "emne.href" and value "/emne/emneId"
     And the response from /undervisning/UE_ID has a field with name "emne.institusjon" and value "222"
     And the response from /undervisning/UE_ID has a field with name "emne.kode" and value "emneKode"
-    And the response from /undervisning/UE_ID has a field with name "emne.versjon" and value "emneVersion"
+    And the response from /undervisning/UE_ID has a field with name "emne.versjon" and value "emneVersjon"
     And the response from /undervisning/UE_ID has a field with name "semester.ar" and value "1980"
+    And the response from /undervisning/UE_ID has a field with name "semester.termin" and value "HØST"
 
-#    And there is a request to /emne/emneId
-#    And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
-#      | lang | nb | value | BokmalEmneNavn  |
-#      | lang | nn | value | NynorskEmneNavn |
-#      | lang | en | value | EnglishEmneNavn |
-#
+    And there is a request to /emne/emneId
+    And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
+      | lang | nb | value | BokmalEmneNavn  |
+      | lang | nn | value | NynorskEmneNavn |
+      | lang | en | value | EnglishEmneNavn |
+
 #    And the response from /emne/emneId from FS has a field "organisasjonsenheter" that is an array with the key-element pairs
 #      | href | organisasjonsEnhetStudieUrl | type | STUDIE         |
 #      | href | organizationEnhetAdminUrl   | type | ADMINISTRATIVT |
@@ -41,7 +43,7 @@ Feature:
 #
   Scenario: Update Leganto with new undervisning information
     When a new UE Leganto entry has been generated
-    Then the courses in FS are populated in Leganto with the following data:
+    Then the new UE Leganto entry has the following fields
       | CourseCode (mandatory)             |
       | CourseTitle (mandatory)            |
       | SectionId                          |
@@ -76,9 +78,9 @@ Feature:
       | SubmitByDate                       |
       | CampusParticipants                 |
       | ReadingListName                    |
-#    Then CourseCode is the string "emneKode-emneVersjon-1980-HØST"
-#    And CouseTitle is the string "BokmalText"
-#    And SectionId is the string "emneVersjon"
+    And the field CourseCode in the UE entry is the string "emneKode-emneVersjon-1980-HØST"
+    And the field CouseTitle in the UE entry is the string "NynorskEmneNavn"
+    And the field SectionId  in the UE entry is the string "emneVersjon"
 #    And AcademicDepartment is the  string "222_39_7"
 #    And ProcessingDepartment is set to the invariant value LEGANTO
 #    And Term1 is the string  "HØST"
