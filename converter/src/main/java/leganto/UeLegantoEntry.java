@@ -6,10 +6,17 @@ import fs.ua.USemester;
 import fs.ue.UndervisiningEntry;
 import fs.user.UserInput;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class UeLegantoEntry extends LegantoEntry {
 
     private static final String COURSE_CODE_DELIMITER = "-";
+    private static final String UE_ID_PREFIX = "UE";
+    private static final String UA_ID_PREFIX = "UA";
+    private static final String ID_SEPARATOR = ",";
+
     private final transient UndervisiningEntry ue;
 
     public UeLegantoEntry(UndervisiningEntry ue, UserInput userInput) {
@@ -53,6 +60,43 @@ public class UeLegantoEntry extends LegantoEntry {
     public String getEndDate() {
         LocalDate endDate = getUeSemester().getSemesterCode().semesterEndDate(getUeSemester().getYear());
         return dateToString(endDate);
+    }
+
+    @Override
+    public Integer getYear() {
+        return getUeSemester().getYear();
+    }
+
+    @Override
+    public String getAllSearchableIds() {
+
+        List<String> searchableId1 = new ArrayList<>();
+        searchableId1.add(UE_ID_PREFIX);
+        searchableId1.addAll(searchableIdSuffix());
+        String searchableId1String = String.join(DEFAULT_DELIMITER, searchableId1);
+
+        List<String> searchableId2 = new ArrayList<>();
+        searchableId2.add(UA_ID_PREFIX);
+        searchableId2.addAll(searchableIdSuffix());
+        String searchableId2String = String.join(DEFAULT_DELIMITER, searchableId2);
+
+        return String.join(ID_SEPARATOR, searchableId1String, searchableId2String);
+    }
+
+    private List<String> searchableIdSuffix() {
+        return Arrays.asList(
+            organizationEntity.getInstitution().toString(),
+            getUeEmne().getCode(),
+            getUeEmne().getVersion(),
+            getYear().toString(),
+            getUeSemester().getSemesterCode().toString(),
+            ue.getTerminNummer()
+        );
+    }
+
+    @Override
+    public String getNumberOfParticipants() {
+        return userInput.getParticipants(getCourseCode()).orElse(EMPTY_STRING);
     }
 
     private UEmne getUeEmne() {

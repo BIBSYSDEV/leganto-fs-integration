@@ -7,7 +7,6 @@ import static org.hamcrest.text.IsEmptyString.emptyString;
 import static utils.JsonUtils.putKeyInNode;
 import static utils.JsonUtils.readValue;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -17,6 +16,7 @@ import fs.organizations.OrganizationEntity;
 import fs.ue.UndervisiningEntry;
 import fs.user.UserInput;
 import io.cucumber.datatable.DataTable;
+import java.io.IOException;
 import leganto.UaLegantoEntry;
 import leganto.UeLegantoEntry;
 import utils.JsonUtils;
@@ -45,9 +45,10 @@ public class UeFeatureTest extends CucumberTestProcessor {
     }
 
     @When("a new UE Leganto entry has been generated")
-    public void new_UE_entry_is_generated() throws JsonProcessingException {
+    public void new_UE_entry_is_generated() throws IOException {
         UndervisiningEntry ue = readValue(ueEntry, UndervisiningEntry.class);
-        UserInput userInput = readValue(world.getUserInput(), UserInput.class);
+        UserInput userInput = readValue(world.getUserInput(), UserInput.class).initPartcipants();
+
         OrganizationEntity orgEntity = readValue(world.getOrganizationEntity(), OrganizationEntity.class);
         Emne emne = readValue(world.getEmneResponse(), Emne.class);
         ueLegantoEntry = (UeLegantoEntry) new UeLegantoEntry(ue, userInput)
@@ -113,4 +114,41 @@ public class UeFeatureTest extends CucumberTestProcessor {
     public void theFieldStartDateInTheUEEntryIsTheString(String startDate) {
         assertThat(ueLegantoEntry.getStartDate(), is(equalTo(startDate)));
     }
+
+    @Then("the field EndDate in the UE entry is the string {string}")
+    public void theFieldEndDateInTheUEEntryIsTheString(String endDate) {
+        assertThat(ueLegantoEntry.getEndDate(), is(equalTo(endDate)));
+    }
+
+    @Then("the field NumberOfParticipants in the UE entry is the integer {int}")
+    public void theFieldNumberOfParticipantsInTheUEEntryIsTheInteger(Integer numberOfParticipants) {
+        assertThat(ueLegantoEntry.getNumberOfParticipants(), is(equalTo(numberOfParticipants.toString())));
+    }
+
+    @Then("the field WeeklyHours in the UE entry is empty")
+    public void theFieldWeeklyHoursInTheUEEntryIsEmpty() {
+        assertThat(ueLegantoEntry.getWeeklyHours(), is(emptyString()));
+    }
+
+    @Then("the field Year in the UE entry has the value {int}")
+    public void theFieldYearInTheUEEntryHasTheValue(int year) {
+        assertThat(ueLegantoEntry.getYear(), is(equalTo(year)));
+    }
+
+    @Then("the field SearchableId1 in the UE entry is empty")
+    public void theFiledSearchableId1InTheUEEntryIsEmpty() {
+        assertThat(ueLegantoEntry.getSearchableId1(), is(emptyString()));
+    }
+
+    @Then("the field SearchableId2 in the UE entry is empty")
+    public void theFiledSearchableId2InTheUEEntryIsEmpty() {
+        assertThat(ueLegantoEntry.getSearchableId2(), is(emptyString()));
+    }
+
+    @Then("the field AllSearchableIds in the UE entry is the string {string}")
+    public void the_field_AllSearchableIds_in_the_UE_entry_is_the_string(String searchableIds) {
+        assertThat(ueLegantoEntry.getAllSearchableIds(), is(equalTo(searchableIds)));
+    }
+
+
 }

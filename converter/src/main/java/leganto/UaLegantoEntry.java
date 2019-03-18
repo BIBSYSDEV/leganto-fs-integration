@@ -91,15 +91,6 @@ public class UaLegantoEntry extends LegantoEntry {
         return this.ua.getSemester().getYear();
     }
 
-    @Override
-    public String getSearchableId1() {
-        return EMPTY_STRING;
-    }
-
-    @Override
-    public String getSearchableId2() {
-        return EMPTY_STRING;
-    }
 
     @Override
     public String getAllSearchableIds() {

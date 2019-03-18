@@ -92,19 +92,19 @@ public abstract class LegantoEntry {
     }
 
     public String getWeeklyHours() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+        return EMPTY_STRING;
     }
 
     public Integer getYear() {
         throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
     }
 
-    public String getSearchableId1() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+    public final String getSearchableId1() {
+        return EMPTY_STRING;
     }
 
-    public String getSearchableId2() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+    public final String getSearchableId2() {
+        return EMPTY_STRING;
     }
 
     public String getAllSearchableIds() {

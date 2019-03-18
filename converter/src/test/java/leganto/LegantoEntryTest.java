@@ -1,6 +1,7 @@
 package leganto;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.core.AnyOf.anyOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -89,32 +90,32 @@ public class LegantoEntryTest {
 
     @Test
     public void getTerm2() {
-        legantoEntry.getTerm2();
+        assertThat(legantoEntry.getTerm2(), is(emptyString()));
     }
 
     @Test
     public void getTerm3() {
-        legantoEntry.getTerm3();
+        assertThat(legantoEntry.getTerm3(), is(emptyString()));
     }
 
     @Test
     public void getTerm4() {
-        legantoEntry.getTerm4();
+        assertThat(legantoEntry.getTerm4(), is(emptyString()));
     }
 
     @Test(expected = IllegalStateException.class)
-    public void getStartDate() {
+    public void getStartDateShouldBeImplemented() {
         legantoEntry.getStartDate();
     }
 
     @Test(expected = IllegalStateException.class)
-    public void getEndDate() {
+    public void getEndDateShouldBeImplemented() {
         legantoEntry.getEndDate();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void getWeeklyHours() {
-        legantoEntry.getWeeklyHours();
+    @Test
+    public final void getWeeklyHoursShouldReturnEmptyString() {
+        assertThat(legantoEntry.getWeeklyHours(), is(emptyString()));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -122,14 +123,14 @@ public class LegantoEntryTest {
         legantoEntry.getYear();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void getSearchableId1() {
-        legantoEntry.getSearchableId1();
+    @Test
+    public void getSearchableId1ShouldReturnEmptyString() {
+        assertThat(legantoEntry.getSearchableId1(), is(emptyString()));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void getSearchableId2() {
-        legantoEntry.getSearchableId2();
+    @Test
+    public void getSearchableId2ShouldReturnEmptyString() {
+        assertThat(legantoEntry.getSearchableId2(), is(emptyString()));
     }
 
     @Test(expected = IllegalStateException.class)

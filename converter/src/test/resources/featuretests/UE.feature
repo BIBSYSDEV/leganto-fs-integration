@@ -19,7 +19,7 @@ Feature:
 
     And the participants file is a semicolon separated file
     And the participants file contains a row with the following values
-      | UA_emneKode-emneVersjon-1980-HØST | 123 |
+      | emneKode-emneVersjon-1980-HØST | 123 |
 
     And there is a request to /undervisning/UE_ID
     And the response from /undervisning/UE_ID has a field with name "emne.href" and value "/emne/emneId"
@@ -28,6 +28,7 @@ Feature:
     And the response from /undervisning/UE_ID has a field with name "emne.versjon" and value "emneVersjon"
     And the response from /undervisning/UE_ID has a field with name "semester.ar" and value "1980"
     And the response from /undervisning/UE_ID has a field with name "semester.termin" and value "HØST"
+    And the response from /undervisning/UE_ID has a field with name "terminnummer" and value "21"
 
     And there is a request to /emne/emneId
     And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
@@ -94,13 +95,13 @@ Feature:
     And the field Term3 in the UE entry is empty
     And the field Term4 in the UE entry is empty
     And the field StartDate in the UE entry is the string "1980-08-01"
-#    And EndDate is the string "1980-01-31"
-#    And NumberOfParticipants has the value 123
-#    And WeeklyHours is empty
-#    And Year has the value 1980
-#    And SearchableId1 is empty
-#    And SearchableId2 is empty
-#    And AllSearchableIds is the string "UA_222_emneKode_emneVersjon_1980_HØST_12_MEAKB00000"
+    And the field EndDate in the UE entry is the string "1980-01-31"
+    And the field NumberOfParticipants in the UE entry is the integer 123
+    And the field WeeklyHours in the UE entry is empty
+    And the field Year in the UE entry has the value 1980
+    And the field SearchableId1 in the UE entry is empty
+    And the field SearchableId2 in the UE entry is empty
+    And the field AllSearchableIds in the UE entry is the string "UE_222_emneKode_emneVersjon_1980_HØST_21,UA_222_emneKode_emneVersjon_1980_HØST_21"
 #    And Instructor1 is empty
 #    And Instructor2 is empty
 #    And Instructor3 is empty
