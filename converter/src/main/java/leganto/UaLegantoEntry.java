@@ -91,7 +91,6 @@ public class UaLegantoEntry extends LegantoEntry {
         return this.ua.getSemester().getYear();
     }
 
-
     @Override
     public String getAllSearchableIds() {
         return String.join(DEFAULT_DELIMITER,
@@ -104,11 +103,6 @@ public class UaLegantoEntry extends LegantoEntry {
             ua.getUndervisning().getTerminnumer().toString(),
             ua.getAktivitet()
         );
-    }
-
-    @Override
-    public String getInstructor() {
-        return EMPTY_STRING;
     }
 
     @Override

@@ -102,16 +102,18 @@ Feature:
     And the field SearchableId1 in the UE entry is empty
     And the field SearchableId2 in the UE entry is empty
     And the field AllSearchableIds in the UE entry is the string "UE_222_emneKode_emneVersjon_1980_HØST_21,UA_222_emneKode_emneVersjon_1980_HØST_21"
-#    And Instructor1 is empty
-#    And Instructor2 is empty
-#    And Instructor3 is empty
-#    And Instructor4 is empty
-#    And Instructor5 is empty
-#    And Instructor6 is empty
-#    And Instructor7 is empty
-#    And Instructor8 is empty
-#    And Instructor9 is empty
-#    And Instructor10 is empty
+    And the field Instructor1 in the UE entry is empty
+    And the field Instructor2 in the UE entry is empty
+    And the field Instructor3 in the UE entry is empty
+    And the field Instructor4 in the UE entry is empty
+    And the field Instructor5 in the UE entry is empty
+    And the field Instructor6 in the UE entry is empty
+    And the field Instructor7 in the UE entry is empty
+    And the field Instructor8 in the UE entry is empty
+    And the field Instructor9 in the UE entry is empty
+    And the field Instructor10 in the UE entry is empty
+
+
 ##    And AllInstructors is not empty
 #    And Operation is empty
 #    And SubmitByDate is empty

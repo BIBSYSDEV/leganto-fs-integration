@@ -150,5 +150,8 @@ public class UeFeatureTest extends CucumberTestProcessor {
         assertThat(ueLegantoEntry.getAllSearchableIds(), is(equalTo(searchableIds)));
     }
 
-
+    @Then("the field Instructor{int} in the UE entry is empty")
+    public void theFieldInstructorInTheUEEntryIsEmpty(int arg0) {
+        assertThat(ueLegantoEntry.getInstructor(), is(emptyString()));
+    }
 }

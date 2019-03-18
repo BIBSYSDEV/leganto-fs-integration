@@ -111,8 +111,8 @@ public abstract class LegantoEntry {
         throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
     }
 
-    public String getInstructor() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+    public final String getInstructor() {
+        return EMPTY_STRING;
     }
 
     public Operation getOperation() {

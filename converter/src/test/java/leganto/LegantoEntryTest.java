@@ -138,9 +138,9 @@ public class LegantoEntryTest {
         legantoEntry.getAllSearchableIds();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void getInstructor() {
-        legantoEntry.getInstructor();
+        assertThat(legantoEntry.getInstructor(), is(emptyString()));
     }
 
     @Test(expected = IllegalStateException.class)
