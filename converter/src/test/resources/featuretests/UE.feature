@@ -35,10 +35,16 @@ Feature:
       | lang | nn | value | NynorskEmneNavn |
       | lang | en | value | EnglishEmneNavn |
 
-#    And the response from /emne/emneId from FS has a field "organisasjonsenheter" that is an array with the key-element pairs
-#      | href | organisasjonsEnhetStudieUrl | type | STUDIE         |
-#      | href | organizationEnhetAdminUrl   | type | ADMINISTRATIVT |
-#
+    And the response from /emne/emneId from FS has a field "organisasjonsenheter" that is an array with the key-element pairs
+      | href | organisasjonsEnhetStudieUrl | type | STUDIE         |
+      | href | organizationEnhetAdminUrl   | type | ADMINISTRATIVT |
+
+    And there is a request to organisasjonsEnhetStudieUrl
+    And the response to organisasjonsEnhetUrl has a field "institusjon" with value 222
+    And the response to organisasjonsEnhetUrl has a field "fakultet" with value 39
+    And the response to organisasjonsEnhetUrl has a field "institutt" with value 7
+
+
 #
 #
   Scenario: Update Leganto with new undervisning information
@@ -81,7 +87,7 @@ Feature:
     And the field CourseCode in the UE entry is the string "emneKode-emneVersjon-1980-HØST"
     And the field CouseTitle in the UE entry is the string "NynorskEmneNavn"
     And the field SectionId  in the UE entry is the string "emneVersjon"
-#    And AcademicDepartment is the  string "222_39_7"
+    And the field AcademicDepartment in the UE entry is the  string "222_39_7"
 #    And ProcessingDepartment is set to the invariant value LEGANTO
 #    And Term1 is the string  "HØST"
 #    And Term2 is empty

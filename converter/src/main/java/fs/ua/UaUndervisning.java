@@ -14,7 +14,7 @@ public class UaUndervisning {
     private UEmne emne;
 
     @JsonProperty("semester")
-    private USemester uSemester;
+    private USemester uaSemester;
 
     @JsonProperty("terminnummer")
     private Integer terminnumer;
@@ -37,12 +37,12 @@ public class UaUndervisning {
         return this;
     }
 
-    public USemester getuSemester() {
-        return uSemester;
+    public USemester getUaSemester() {
+        return uaSemester;
     }
 
-    public UaUndervisning setuSemester(USemester uSemester) {
-        this.uSemester = uSemester;
+    public UaUndervisning setUaSemester(USemester uaSemester) {
+        this.uaSemester = uaSemester;
         return this;
     }
 

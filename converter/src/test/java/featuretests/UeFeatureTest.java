@@ -12,6 +12,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import fs.emne.Emne;
+import fs.organizations.OrganizationEntity;
 import fs.ue.UndervisiningEntry;
 import fs.user.UserInput;
 import io.cucumber.datatable.DataTable;
@@ -43,15 +44,18 @@ public class UeFeatureTest extends CucumberTestProcessor {
     }
 
     @When("a new UE Leganto entry has been generated")
-    public void a_new_UE_entry_is_generated() throws JsonProcessingException {
+    public void new_UE_entry_is_generated() throws JsonProcessingException {
         UndervisiningEntry ue = readValue(ueEntry, UndervisiningEntry.class);
         UserInput userInput = readValue(world.getUserInput(), UserInput.class);
+        OrganizationEntity orgEntity = readValue(world.getOrganizationEntity(), OrganizationEntity.class);
         Emne emne = readValue(world.getEmneResponse(), Emne.class);
-        ueLegantoEntry = new UeLegantoEntry(ue, userInput).setEmne(emne);
+        ueLegantoEntry = (UeLegantoEntry) new UeLegantoEntry(ue, userInput)
+            .setEmne(emne)
+            .setOrganizationEntity(orgEntity);
     }
 
     @Then("the new UE Leganto entry has the following fields")
-    public void the_new_UE_Leganto_entry_has_the_following_fields(DataTable dataTable) throws JsonProcessingException {
+    public void the_new_UE_Leganto_entry_has_the_following_fields(DataTable dataTable) {
 
         int actualNumberOfFields = ueLegantoEntry.toString()
             .split(UaLegantoEntry.FIELD_DELIMITER, INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER)
@@ -70,6 +74,12 @@ public class UeFeatureTest extends CucumberTestProcessor {
     }
 
     @Then("the field SectionId  in the UE entry is the string {string}")
-    public void theFieldSectionIdInTheUEEntryIsTheString(String arg0) {
+    public void theFieldSectionIdInTheUEEntryIsTheString(String sectionId) {
+        assertThat(ueLegantoEntry.getSectionId(), is(equalTo(sectionId)));
+    }
+
+    @Then("the field AcademicDepartment in the UE entry is the  string {string}")
+    public void the_field_AcademicDepartment_in_the_UE_entry_is_the_string(String academicDepartment) {
+        assertThat(ueLegantoEntry.getAcademicDepartment(), is(equalTo(academicDepartment)));
     }
 }

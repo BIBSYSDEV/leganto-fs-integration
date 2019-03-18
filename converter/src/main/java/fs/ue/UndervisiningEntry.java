@@ -12,7 +12,7 @@ public class UndervisiningEntry {
     private String href;
 
     @JsonProperty("emne")
-    private UEmne uEmne;
+    private UEmne emne;
 
     @JsonProperty("semester")
     private USemester semester;
@@ -29,11 +29,11 @@ public class UndervisiningEntry {
     }
 
     public UEmne getEmne() {
-        return uEmne;
+        return emne;
     }
 
-    public void setuEmne(UEmne uEmne) {
-        this.uEmne = uEmne;
+    public void setEmne(UEmne emne) {
+        this.emne = emne;
     }
 
     public USemester getSemester() {

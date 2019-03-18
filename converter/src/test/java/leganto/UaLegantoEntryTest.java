@@ -72,7 +72,7 @@ public class UaLegantoEntryTest {
         Language[] languagesArray = {Language.NB, Language.NN, Language.EN};
         UserInput userInput = mockUserInput(languagesArray);
 
-        entry = new UaLegantoEntry(ua, userInput)
+        entry = (UaLegantoEntry) new UaLegantoEntry(ua, userInput)
             .setEmne(emne)
             .setOrganizationEntity(organizationEntity);
 
@@ -121,7 +121,7 @@ public class UaLegantoEntryTest {
         return new UaUndervisning()
             .setHref(UNDERVISNING_HREF)
             .setEmne(uEmne)
-            .setuSemester(uSemester);
+            .setUaSemester(uSemester);
     }
 
     private String numberOfPartcipantsString() {

@@ -65,6 +65,6 @@ public class UndervisningsAktivitet {
 
     @JsonIgnore
     public USemester getSemester() {
-        return this.getUndervisning().getuSemester();
+        return this.getUndervisning().getUaSemester();
     }
 }

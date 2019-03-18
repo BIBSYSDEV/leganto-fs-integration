@@ -1,6 +1,8 @@
 package leganto;
 
 import fs.common.LanguageValue;
+import fs.emne.Emne;
+import fs.organizations.OrganizationEntity;
 import fs.user.Operation;
 import fs.user.UserInput;
 import java.util.List;
@@ -9,10 +11,13 @@ public abstract class LegantoEntry {
 
     public static final String FIELD_DELIMITER = "\t";
     public static final String ILLEGAL_STATE_MESSAGE = "Not available";
+    protected static final String DEFAULT_DELIMITER = "_";
     private static final int NUMBER_OF_FIELDS = 34;
     private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
 
     protected final transient UserInput userInput;
+    protected transient Emne emne;
+    protected transient OrganizationEntity organizationEntity;
 
     public LegantoEntry(UserInput userInput) {
         this.userInput = userInput;
@@ -38,8 +43,6 @@ public abstract class LegantoEntry {
         throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
     }
 
-    ;
-
     public String getCourseTitle() {
         throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
     }
@@ -48,8 +51,11 @@ public abstract class LegantoEntry {
         throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
     }
 
-    public String getAcademicDepartment() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+    public final String getAcademicDepartment() {
+        return String.join(DEFAULT_DELIMITER,
+            organizationEntity.getInstitution().toString(),
+            organizationEntity.getFaculty().toString(),
+            organizationEntity.getInstitute().toString());
     }
 
     public String getProcessingDepartment() {
@@ -130,5 +136,19 @@ public abstract class LegantoEntry {
 
     public String getOldCourseSectionId() {
         throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+    }
+
+    public final Emne getEmne() {
+        return emne;
+    }
+
+    public final LegantoEntry setEmne(Emne emne) {
+        this.emne = emne;
+        return this;
+    }
+
+    public final LegantoEntry setOrganizationEntity(OrganizationEntity organizationEntity) {
+        this.organizationEntity = organizationEntity;
+        return this;
     }
 }

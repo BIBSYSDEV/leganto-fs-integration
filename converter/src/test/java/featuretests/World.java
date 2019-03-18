@@ -13,16 +13,15 @@ public class World {
     public static final int SUFFIX = 1;
     private static final boolean APPEND_TRUE = true;
     private static final String PREFIX_SUFFIX_SEPARATOR_REGEX = "\\.";
-    private ObjectNode userInput;
 
+    private ObjectNode userInput;
     private ObjectNode emneResponse;
+    private ObjectNode orgnanizationEntity;
 
     private File courseParticipants;
 
-
     public World() {
         userInput = JsonUtils.newObjectNode();
-
     }
 
     public ObjectNode getUserInput() {
@@ -54,5 +53,13 @@ public class World {
         writer.write(line);
         writer.flush();
         writer.close();
+    }
+
+    public ObjectNode getOrganizationEntity() {
+        return this.orgnanizationEntity;
+    }
+
+    public void setOrganizationEntity(ObjectNode objectNode) {
+        this.orgnanizationEntity = objectNode;
     }
 }

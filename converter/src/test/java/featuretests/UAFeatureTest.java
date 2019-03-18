@@ -34,7 +34,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
     private final World world;
     private UaLegantoEntry uaLegantoEntry;
     private transient ObjectNode uaResponse;
-    private transient ObjectNode organisasjon;
+
 
     public UAFeatureTest(World world) {
         this.world = world;
@@ -60,14 +60,14 @@ public class UAFeatureTest extends CucumberTestProcessor {
 
     @Given("there is a request to organisasjonsEnhetStudieUrl")
     public void there_is_a_request_to_organisasjonsEnhetStudieUrl() {
-        organisasjon = newObjectNode();
+        world.setOrganizationEntity(newObjectNode());
     }
 
     @Given("the response to organisasjonsEnhetUrl has a field {string} with value {int}")
     public void the_response_to_organisasjonsEnhetUrl_has_a_field_with_value(String key,
         Integer value) {
         // Write code here that turns the phrase above into concrete actions
-        putKeyInNode(organisasjon, key, value);
+        putKeyInNode(world.getOrganizationEntity(), key, value);
     }
 
     @Given(
@@ -112,8 +112,8 @@ public class UAFeatureTest extends CucumberTestProcessor {
 
         UndervisningsAktivitet uaEntry = readValue(uaResponse, UndervisningsAktivitet.class);
         UserInput userInput = readValue(world.getUserInput(), UserInput.class).initPartcipants();
-        OrganizationEntity organizationEntity = readValue(organisasjon, OrganizationEntity.class);
-        uaLegantoEntry = new UaLegantoEntry(uaEntry, userInput)
+        OrganizationEntity organizationEntity = readValue(world.getOrganizationEntity(), OrganizationEntity.class);
+        uaLegantoEntry = (UaLegantoEntry) new UaLegantoEntry(uaEntry, userInput)
             .setOrganizationEntity(organizationEntity)
             .setEmne(readValue(world.getEmneResponse(), Emne.class));
     }

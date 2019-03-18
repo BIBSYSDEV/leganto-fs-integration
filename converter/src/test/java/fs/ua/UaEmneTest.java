@@ -13,33 +13,33 @@ public class UaEmneTest {
     private static final String INSTITUTION = "institution";
     private static final String HREF = "href";
     private static final String CODE = "code";
-    private final transient UEmne uEmne;
+    private final transient UEmne emne;
 
     public UaEmneTest() {
-        uEmne = new UEmne();
-        uEmne.setCode(CODE);
-        uEmne.setHref(HREF);
-        uEmne.setInstitution(INSTITUTION);
-        uEmne.setVersion(VERSION);
+        emne = new UEmne();
+        emne.setCode(CODE);
+        emne.setHref(HREF);
+        emne.setInstitution(INSTITUTION);
+        emne.setVersion(VERSION);
     }
 
     @Test
     public void getHrefShouldReturnTheCorrectVale() {
-        assertThat(uEmne.getHref(), is(equalTo(HREF)));
+        assertThat(emne.getHref(), is(equalTo(HREF)));
     }
 
     @Test
     public void getInstitutionReturnsTheCorrectrValue() {
-        assertThat(uEmne.getInstitution(), is(equalTo(INSTITUTION)));
+        assertThat(emne.getInstitution(), is(equalTo(INSTITUTION)));
     }
 
     @Test
     public void getCodenReturnsTheCorrectrValue() {
-        assertThat(uEmne.getCode(), is(equalTo(CODE)));
+        assertThat(emne.getCode(), is(equalTo(CODE)));
     }
 
     @Test
     public void getVersionReturnsTheCorrectrValue() {
-        assertThat(uEmne.getVersion(), is(equalTo(VERSION)));
+        assertThat(emne.getVersion(), is(equalTo(VERSION)));
     }
 }

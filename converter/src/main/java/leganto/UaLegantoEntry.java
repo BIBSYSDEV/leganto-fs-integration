@@ -1,8 +1,6 @@
 package leganto;
 
 import fs.common.Language;
-import fs.emne.Emne;
-import fs.organizations.OrganizationEntity;
 import fs.ua.SemesterCode;
 import fs.ua.UaCourseTitle;
 import fs.ua.UndervisningsAktivitet;
@@ -16,7 +14,6 @@ public class UaLegantoEntry extends LegantoEntry {
     public static final String COURSE_CODE_DELIMITER = "-";
     public static final String COURSE_CODE_PREFIX_DELIMITER = "_";
     public static final String PREFIX = "UA";
-    private static final String DEFAULT_DELIMITER = "_";
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
 
     private static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
@@ -24,9 +21,6 @@ public class UaLegantoEntry extends LegantoEntry {
     private static final String CAMPUS_PARTICIPANTS_DELIMITER = ",";
 
     private final transient UndervisningsAktivitet ua;
-
-    private transient OrganizationEntity organisationEntity;
-    private transient Emne emne;
 
     public UaLegantoEntry(UndervisningsAktivitet ua, UserInput userInput) {
         super(userInput);
@@ -52,13 +46,7 @@ public class UaLegantoEntry extends LegantoEntry {
         return getSemesterCode().toString();
     }
 
-    @Override
-    public String getAcademicDepartment() {
-        return String.join(DEFAULT_DELIMITER,
-            organisationEntity.getInstitution().toString(),
-            organisationEntity.getFaculty().toString(),
-            organisationEntity.getInstitute().toString());
-    }
+
 
     @Override
     public String getCourseTitle() {
@@ -75,7 +63,7 @@ public class UaLegantoEntry extends LegantoEntry {
             emneNavn,
             ua.getUndervisning().getEmne().getCode(),
             getSemesterCode(),
-            ua.getUndervisning().getuSemester().getYear());
+            ua.getUndervisning().getUaSemester().getYear());
     }
 
     @Override
@@ -85,7 +73,7 @@ public class UaLegantoEntry extends LegantoEntry {
         return String.join(COURSE_CODE_DELIMITER,
             codePrefix,
             ua.getEmne().getVersion(),
-            ua.getUndervisning().getuSemester().getYear().toString(),
+            ua.getUndervisning().getUaSemester().getYear().toString(),
             getSemesterCode().toString()
         );
     }
@@ -93,16 +81,6 @@ public class UaLegantoEntry extends LegantoEntry {
     @Override
     public String getSectionId() {
         return ua.getEmne().getVersion();
-    }
-
-    public UaLegantoEntry setEmne(Emne emne) {
-        this.emne = emne;
-        return this;
-    }
-
-    public UaLegantoEntry setOrganizationEntity(OrganizationEntity organizationEntity) {
-        this.organisationEntity = organizationEntity;
-        return this;
     }
 
     @Override
@@ -153,7 +131,7 @@ public class UaLegantoEntry extends LegantoEntry {
     public String getAllSearchableIds() {
         return String.join(DEFAULT_DELIMITER,
             PREFIX,
-            organisationEntity.getInstitution().toString(),
+            organizationEntity.getInstitution().toString(),
             ua.getEmne().getCode(),
             ua.getEmne().getVersion(),
             ua.getSemester().getYear().toString(),
