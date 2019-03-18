@@ -5,15 +5,20 @@ import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
 import fs.user.Operation;
 import fs.user.UserInput;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public abstract class LegantoEntry {
 
     public static final String FIELD_DELIMITER = "\t";
-    public static final String ILLEGAL_STATE_MESSAGE = "Not available";
     protected static final String DEFAULT_DELIMITER = "_";
+    protected static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
+    protected static final String EMPTY_STRING = "";
+    private static final String ILLEGAL_STATE_MESSAGE = "Not available";
     private static final int NUMBER_OF_FIELDS = 34;
     private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
 
     protected final transient UserInput userInput;
     protected transient Emne emne;
@@ -58,24 +63,24 @@ public abstract class LegantoEntry {
             organizationEntity.getInstitute().toString());
     }
 
-    public String getProcessingDepartment() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+    public final String getProcessingDepartment() {
+        return PROCESSING_DEPARTMENT_INVARIANT;
     }
 
     public String getTerm1() {
         throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
     }
 
-    public String getTerm2() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+    public final String getTerm2() {
+        return EMPTY_STRING;
     }
 
     public String getTerm3() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+        return EMPTY_STRING;
     }
 
     public String getTerm4() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+        return EMPTY_STRING;
     }
 
     public String getStartDate() {
@@ -150,5 +155,9 @@ public abstract class LegantoEntry {
     public final LegantoEntry setOrganizationEntity(OrganizationEntity organizationEntity) {
         this.organizationEntity = organizationEntity;
         return this;
+    }
+
+    protected String dateToString(LocalDate date) {
+        return dateFormatter.format(date);
     }
 }

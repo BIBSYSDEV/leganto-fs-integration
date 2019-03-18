@@ -5,6 +5,7 @@ import fs.common.UEmne;
 import fs.ua.USemester;
 import fs.ue.UndervisiningEntry;
 import fs.user.UserInput;
+import java.time.LocalDate;
 
 public class UeLegantoEntry extends LegantoEntry {
 
@@ -35,6 +36,23 @@ public class UeLegantoEntry extends LegantoEntry {
     @Override
     public String getSectionId() {
         return getUeEmne().getVersion();
+    }
+
+    @Override
+    public String getTerm1() {
+        return getUeSemester().getSemesterCode().toString();
+    }
+
+    @Override
+    public String getStartDate() {
+        LocalDate startDate = getUeSemester().getSemesterCode().semesterStartDate(getUeSemester().getYear());
+        return dateToString(startDate);
+    }
+
+    @Override
+    public String getEndDate() {
+        LocalDate endDate = getUeSemester().getSemesterCode().semesterEndDate(getUeSemester().getYear());
+        return dateToString(endDate);
     }
 
     private UEmne getUeEmne() {

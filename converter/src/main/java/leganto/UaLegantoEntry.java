@@ -7,17 +7,13 @@ import fs.ua.UndervisningsAktivitet;
 import fs.user.Operation;
 import fs.user.UserInput;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class UaLegantoEntry extends LegantoEntry {
 
     public static final String COURSE_CODE_DELIMITER = "-";
     public static final String COURSE_CODE_PREFIX_DELIMITER = "_";
     public static final String PREFIX = "UA";
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
 
-    private static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
-    private static final String EMPTY_STRING = "";
     private static final String CAMPUS_PARTICIPANTS_DELIMITER = ",";
 
     private final transient UndervisningsAktivitet ua;
@@ -31,22 +27,20 @@ public class UaLegantoEntry extends LegantoEntry {
     public String getEndDate() {
         Integer year = ua.getSemester().getYear();
         LocalDate endDate = getSemesterCode().semesterEndDate(year);
-        return dateFormatter.format(endDate);
+        return dateToString(endDate);
     }
 
     @Override
     public String getStartDate() {
         Integer year = ua.getSemester().getYear();
         LocalDate startDate = getSemesterCode().semesterStartDate(year);
-        return dateFormatter.format(startDate);
+        return dateToString(startDate);
     }
 
     @Override
     public String getTerm1() {
         return getSemesterCode().toString();
     }
-
-
 
     @Override
     public String getCourseTitle() {
@@ -81,26 +75,6 @@ public class UaLegantoEntry extends LegantoEntry {
     @Override
     public String getSectionId() {
         return ua.getEmne().getVersion();
-    }
-
-    @Override
-    public String getProcessingDepartment() {
-        return PROCESSING_DEPARTMENT_INVARIANT;
-    }
-
-    @Override
-    public String getTerm2() {
-        return EMPTY_STRING;
-    }
-
-    @Override
-    public String getTerm3() {
-        return EMPTY_STRING;
-    }
-
-    @Override
-    public String getTerm4() {
-        return EMPTY_STRING;
     }
 
     private SemesterCode getSemesterCode() {

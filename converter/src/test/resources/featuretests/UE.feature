@@ -88,12 +88,12 @@ Feature:
     And the field CouseTitle in the UE entry is the string "NynorskEmneNavn"
     And the field SectionId  in the UE entry is the string "emneVersjon"
     And the field AcademicDepartment in the UE entry is the  string "222_39_7"
-#    And ProcessingDepartment is set to the invariant value LEGANTO
-#    And Term1 is the string  "HØST"
-#    And Term2 is empty
-#    And Term3 is empty
-#    And Term4 is empty
-#    And StartDate is the string "1980-08-01"
+    And the field ProcessingDepartment in the UE entry is the invariant string LEGANTO
+    And the field Term1 in the UE entry is the string "HØST"
+    And the field Term2 in the UE entry is empty
+    And the field Term3 in the UE entry is empty
+    And the field Term4 in the UE entry is empty
+    And the field StartDate in the UE entry is the string "1980-08-01"
 #    And EndDate is the string "1980-01-31"
 #    And NumberOfParticipants has the value 123
 #    And WeeklyHours is empty

@@ -3,6 +3,7 @@ package featuretests;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.text.IsEmptyString.emptyString;
 import static utils.JsonUtils.putKeyInNode;
 import static utils.JsonUtils.readValue;
 
@@ -81,5 +82,35 @@ public class UeFeatureTest extends CucumberTestProcessor {
     @Then("the field AcademicDepartment in the UE entry is the  string {string}")
     public void the_field_AcademicDepartment_in_the_UE_entry_is_the_string(String academicDepartment) {
         assertThat(ueLegantoEntry.getAcademicDepartment(), is(equalTo(academicDepartment)));
+    }
+
+    @Then("the field ProcessingDepartment in the UE entry is the invariant string LEGANTO")
+    public void theFieldProcessingDepartmentInTheUEEntryIsTheInvariantStringLeganto() {
+        assertThat(ueLegantoEntry.getProcessingDepartment(), is(equalTo("LEGANTO")));
+    }
+
+    @Then("the field Term1 in the UE entry is the string {string}")
+    public void theFieldTerm1inTheUEEntryIsTheString(String term1) {
+        assertThat(ueLegantoEntry.getTerm1(), is(equalTo(term1)));
+    }
+
+    @Then("the field Term2 in the UE entry is empty")
+    public void the_field_Term2_in_the_UE_entry_is_empty() {
+        assertThat(ueLegantoEntry.getTerm2(), is(emptyString()));
+    }
+
+    @Then("the field Term3 in the UE entry is empty")
+    public void the_field_Term3_in_the_UE_entry_is_empty() {
+        assertThat(ueLegantoEntry.getTerm3(), is(emptyString()));
+    }
+
+    @Then("the field Term4 in the UE entry is empty")
+    public void the_field_Term4_in_the_UE_entry_is_empty() {
+        assertThat(ueLegantoEntry.getTerm4(), is(emptyString()));
+    }
+
+    @Then("the field StartDate in the UE entry is the string {string}")
+    public void theFieldStartDateInTheUEEntryIsTheString(String startDate) {
+        assertThat(ueLegantoEntry.getStartDate(), is(equalTo(startDate)));
     }
 }

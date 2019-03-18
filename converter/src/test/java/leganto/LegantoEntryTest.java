@@ -77,9 +77,9 @@ public class LegantoEntryTest {
         assertThat(legantoEntry.getAcademicDepartment(), containsString(INSTITUTE.toString()));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void getProcessingDepartment() {
-        legantoEntry.getProcessingDepartment();
+        assertThat(legantoEntry.getProcessingDepartment(), is(equalTo(LegantoEntry.PROCESSING_DEPARTMENT_INVARIANT)));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -87,17 +87,17 @@ public class LegantoEntryTest {
         legantoEntry.getTerm1();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void getTerm2() {
         legantoEntry.getTerm2();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void getTerm3() {
         legantoEntry.getTerm3();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void getTerm4() {
         legantoEntry.getTerm4();
     }
