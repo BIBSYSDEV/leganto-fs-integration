@@ -9,7 +9,7 @@ import io.cucumber.datatable.DataTable;
 import java.util.List;
 import leganto.UaLegantoEntry;
 
-public class CommonFeatures extends CucumberTestProcessor {
+public   class CommonFeatures extends CucumberTestProcessor {
 
     private static final int INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER = -1;
     private static final int EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL = 1;
