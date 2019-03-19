@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UaSemester {
+public class USemester {
 
     @JsonProperty("href")
     private String href;
@@ -19,7 +19,7 @@ public class UaSemester {
     }
 
     @JsonProperty("termin")
-    public UaSemester setSemesterCode(String code) {
+    public USemester setSemesterCode(String code) {
         this.semesterCode = SemesterCode.fromString(code);
         return this;
     }
@@ -28,7 +28,7 @@ public class UaSemester {
         return href;
     }
 
-    public UaSemester setHref(String href) {
+    public USemester setHref(String href) {
         this.href = href;
         return this;
     }
@@ -37,7 +37,7 @@ public class UaSemester {
         return year;
     }
 
-    public UaSemester setYear(int year) {
+    public USemester setYear(int year) {
         this.year = year;
         return this;
     }

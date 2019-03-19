@@ -18,6 +18,7 @@
 
   <rule ref="category/java/bestpractices.xml">
     <exclude name="SystemPrintln"/>
+    <exclude name="AbstractClassWithoutAbstractMethod"/>
 	<exclude name="GuardLogStatement"/>
     <!-- In TableManager we map ResourceNotFoundException to TableNotFoundException -->
     <exclude name="PreserveStackTrace"/>
@@ -51,11 +52,6 @@
     </properties>
 
   </rule>
-
-
-
-
-
 
   <rule ref="category/java/performance.xml"/>
 

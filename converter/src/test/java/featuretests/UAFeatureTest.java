@@ -11,7 +11,6 @@ import static utils.JsonUtils.readValue;
 import static utils.JsonUtils.removeKeyFromNode;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -28,19 +27,14 @@ import utils.JsonUtils;
 
 public class UAFeatureTest extends CucumberTestProcessor {
 
-    private static final int INCLUDE_EMPTY_STRINGS = -1;
-    private static final int INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER = INCLUDE_EMPTY_STRINGS;
-    private static final int EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL = 1;
-
     private static final String NOT = "not";
     private static final String EMPTY_STRING = new String();
-
+    private static final int INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER = -1;
+    private static final int EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL = 1;
     private final World world;
-
-    private UaLegantoEntry uaLegantoEntry = null;
-
+    private UaLegantoEntry uaLegantoEntry;
     private transient ObjectNode uaResponse;
-    private transient ObjectNode organisasjon;
+
 
     public UAFeatureTest(World world) {
         this.world = world;
@@ -66,14 +60,14 @@ public class UAFeatureTest extends CucumberTestProcessor {
 
     @Given("there is a request to organisasjonsEnhetStudieUrl")
     public void there_is_a_request_to_organisasjonsEnhetStudieUrl() {
-        organisasjon = newObjectNode();
+        world.setOrganizationEntity(newObjectNode());
     }
 
     @Given("the response to organisasjonsEnhetUrl has a field {string} with value {int}")
     public void the_response_to_organisasjonsEnhetUrl_has_a_field_with_value(String key,
         Integer value) {
         // Write code here that turns the phrase above into concrete actions
-        putKeyInNode(organisasjon, key, value);
+        putKeyInNode(world.getOrganizationEntity(), key, value);
     }
 
     @Given(
@@ -85,7 +79,6 @@ public class UAFeatureTest extends CucumberTestProcessor {
         List<ObjectNode> arrayValues = createElementList(keyValuePairs);
         putElementArrayInNode(root, key, arrayValues);
     }
-
 
     @Given("there is a request to {string}")
     public void there_is_a_request_to(String string) {
@@ -114,22 +107,15 @@ public class UAFeatureTest extends CucumberTestProcessor {
         putKeyInNode(world.getUserInput(), compositeKey, alteredValue);
     }
 
-    @When("new UA entry has been generated")
+    @When("a new UA Leganto entry has been generated")
     public void new_UA_entry_has_been_generated() throws IOException {
 
         UndervisningsAktivitet uaEntry = readValue(uaResponse, UndervisningsAktivitet.class);
         UserInput userInput = readValue(world.getUserInput(), UserInput.class).initPartcipants();
-        OrganizationEntity organizationEntity = readValue(organisasjon, OrganizationEntity.class);
-        uaLegantoEntry = new UaLegantoEntry(uaEntry, userInput)
+        OrganizationEntity organizationEntity = readValue(world.getOrganizationEntity(), OrganizationEntity.class);
+        uaLegantoEntry = (UaLegantoEntry) new UaLegantoEntry(uaEntry, userInput)
             .setOrganizationEntity(organizationEntity)
             .setEmne(readValue(world.getEmneResponse(), Emne.class));
-    }
-
-    @Then("CourseCode is the string {string}")
-    public void coursecode_is_the_string(String expectedCourseCode) {
-        String courseCode = uaLegantoEntry.getCourseCode();
-
-        assertThat(courseCode, is(equalTo(expectedCourseCode)));
     }
 
     @Then("the courses in FS are populated in Leganto with the following data:")
@@ -144,6 +130,13 @@ public class UAFeatureTest extends CucumberTestProcessor {
 
         assertThat(actualNumberOfFields,
             is(equalTo(expectedFieldsNumber + EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL)));
+    }
+
+    @Then("CourseCode is the string {string}")
+    public void coursecode_is_the_string(String expectedCourseCode) {
+        String courseCode = uaLegantoEntry.getCourseCode();
+
+        assertThat(courseCode, is(equalTo(expectedCourseCode)));
     }
 
     @Then("CouseTitle is the string {string}")
@@ -228,11 +221,6 @@ public class UAFeatureTest extends CucumberTestProcessor {
         assertThat(uaLegantoEntry.getInstructor(), is(emptyString()));
     }
 
-    @Then("Operation is empty")
-    public void operationIsEmpty() {
-        assertThat(uaLegantoEntry.getOperation(), is(equalTo(Operation.OTHER)));
-    }
-
     @Then("SubmitByDate is empty")
     public void submitByDateIsEmpty() {
         assertThat(uaLegantoEntry.getSubmitByDate(), is(emptyString()));
@@ -273,7 +261,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
         assertThat(uaLegantoEntry.getOldCourseCode(), is(emptyString()));
     }
 
-    @And("OldCourseSectionId is empty")
+    @Then("OldCourseSectionId is empty")
     public void oldcoursesectionidIsEmpty() {
         assertThat(uaLegantoEntry.getOldCourseSectionId(), is(emptyString()));
     }

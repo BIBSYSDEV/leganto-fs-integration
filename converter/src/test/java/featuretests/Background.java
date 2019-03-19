@@ -59,8 +59,7 @@ public class Background extends CucumberTestProcessor {
         world.setEmneResponse(JsonUtils.newObjectNode());
     }
 
-    @Given(
-        "the response from \\/emne\\/emneId from FS has a field {string} that is an array with the key-element "
+    @Given("the response from \\/emne\\/emneId from FS has a field {string} that is an array with the key-element "
             + "pairs")
     public void the_response_from_emne_emneId_from_FS_has_a_field_that_is_an_array_with_the_key_element_pairs(
         String key, DataTable keyValuePairs) {

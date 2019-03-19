@@ -1,8 +1,8 @@
-package fs.ua;
+package fs.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UaEmne {
+public class UEmne {
 
     @JsonProperty("href")
     private String href;
@@ -21,7 +21,7 @@ public class UaEmne {
         return href;
     }
 
-    public UaEmne setHref(String href) {
+    public UEmne setHref(String href) {
         this.href = href;
         return this;
     }
@@ -30,7 +30,7 @@ public class UaEmne {
         return institution;
     }
 
-    public UaEmne setInstitution(String institution) {
+    public UEmne setInstitution(String institution) {
         this.institution = institution;
         return this;
     }
@@ -39,7 +39,7 @@ public class UaEmne {
         return code;
     }
 
-    public UaEmne setCode(String code) {
+    public UEmne setCode(String code) {
         this.code = code;
         return this;
     }
@@ -48,7 +48,7 @@ public class UaEmne {
         return version;
     }
 
-    public UaEmne setVersion(String version) {
+    public UEmne setVersion(String version) {
         this.version = version;
         return this;
     }

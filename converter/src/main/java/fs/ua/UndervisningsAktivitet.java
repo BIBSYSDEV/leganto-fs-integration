@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.LanguageValue;
+import fs.common.UEmne;
 import java.io.IOException;
 import java.util.List;
 
@@ -58,12 +59,12 @@ public class UndervisningsAktivitet {
     }
 
     @JsonIgnore
-    public UaEmne getEmne() {
+    public UEmne getEmne() {
         return this.undervisning.getEmne();
     }
 
     @JsonIgnore
-    public UaSemester getSemester() {
+    public USemester getSemester() {
         return this.getUndervisning().getUaSemester();
     }
 }
