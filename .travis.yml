@@ -1,0 +1,16 @@
+language: java
+git:
+  depth: false
+  quiet: true
+
+matrix:
+  include:
+    - name: "Java Cucumber test"
+      java: 1.8
+    - name: "Java 11 test"
+      java: 1.11
+
+install: true
+
+script:
+  - ./gradlew clean build
