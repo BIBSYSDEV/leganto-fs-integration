@@ -14,6 +14,8 @@ public abstract class LegantoEntry {
     public static final String FIELD_DELIMITER = "\t";
     protected static final String DEFAULT_DELIMITER = "_";
     protected static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
+    protected static final String CAMPUS_PARTICIPANTS_DELIMITER = ",";
+
     protected static final String EMPTY_STRING = "";
     private static final String ILLEGAL_STATE_MESSAGE = "Not available";
     private static final int NUMBER_OF_FIELDS = 34;
@@ -115,20 +117,25 @@ public abstract class LegantoEntry {
         return EMPTY_STRING;
     }
 
-    public Operation getOperation() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+    public final Operation getOperation() {
+        return userInput.getOperation();
     }
 
-    public String getSubmitByDate() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+    public final String getSubmitByDate() {
+        return EMPTY_STRING;
+
     }
 
-    public String getCampusParticipants() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+    public final String getCampusParticipants() {
+        if (userInput.getCampuses().isEmpty()) {
+            return EMPTY_STRING;
+        } else {
+            return String.join(CAMPUS_PARTICIPANTS_DELIMITER, userInput.getCampuses());
+        }
     }
 
-    public String getReadingListName() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+    public final String getReadingListName() {
+        return EMPTY_STRING;
     }
 
     public String getNumberOfParticipants() {

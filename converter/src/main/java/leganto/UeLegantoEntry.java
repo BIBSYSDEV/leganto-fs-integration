@@ -4,6 +4,7 @@ import fs.common.Language;
 import fs.common.UEmne;
 import fs.ua.USemester;
 import fs.ue.UndervisiningEntry;
+import fs.user.Operation;
 import fs.user.UserInput;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class UeLegantoEntry extends LegantoEntry {
     private static final String UE_ID_PREFIX = "UE";
     private static final String UA_ID_PREFIX = "UA";
     private static final String ID_SEPARATOR = ",";
+    private static final int PREVIOUS_YEAR = 1;
 
     private final transient UndervisiningEntry ue;
 
@@ -26,10 +28,14 @@ public class UeLegantoEntry extends LegantoEntry {
 
     @Override
     public String getCourseCode() {
+        return generateCourseCode(ue.getSemester().getYear());
+    }
+
+    private String generateCourseCode(Integer year) {
         return String.join(COURSE_CODE_DELIMITER,
             getUeEmne().getCode(),
             getUeEmne().getVersion(),
-            getUeSemester().getYear().toString(),
+            year.toString(),
             getUeSemester().getSemesterCode().toString());
     }
 
@@ -97,6 +103,24 @@ public class UeLegantoEntry extends LegantoEntry {
     @Override
     public String getNumberOfParticipants() {
         return userInput.getParticipants(getCourseCode()).orElse(EMPTY_STRING);
+    }
+
+    @Override
+    public String getOldCourseCode() {
+        if (Operation.ROLLOVER.equals(userInput.getOperation())) {
+            return generateCourseCode(getUeSemester().getYear() - PREVIOUS_YEAR);
+        } else {
+            return EMPTY_STRING;
+        }
+    }
+
+    @Override
+    public String getOldCourseSectionId() {
+        if (Operation.ROLLOVER.equals(userInput.getOperation())) {
+            return ue.getEmne().getVersion();
+        } else {
+            return EMPTY_STRING;
+        }
     }
 
     private UEmne getUeEmne() {

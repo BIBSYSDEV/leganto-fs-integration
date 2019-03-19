@@ -112,25 +112,25 @@ Feature:
     And the field Instructor8 in the UE entry is empty
     And the field Instructor9 in the UE entry is empty
     And the field Instructor10 in the UE entry is empty
-
-
 ##    And AllInstructors is not empty
-#    And Operation is empty
-#    And SubmitByDate is empty
-#    And CampusParticipants is the string "GLØS,DRAG"
-#    And Reading List Name is empty
-##
-##
-##  Scenario: Update Leganto with new course information
-##   Given the user input field "operation" has the value "rollover"
-##    When the scheduling system requests an update
-##    Then all the fields are populated correctly
-##    And Old Course Code is the snake-case concatentation of the literal "UA" and of the values emne.kode, emne.versjon, semester.ar-1, semester.termin from FS-API: /undervisngsaktiviteter/{id}
-##    And Old Course Section ID has the value of Section ID
-##
-##  Scenario: Update Leganto with new course information
-##    Given the user input field "operation" has not the value "rollover"
-##    When the scheduling system requests an update
-##    Then all the fields are populated correctly
-##    And Old Course Code is empty
-##    And Old Course Section empty
+    And the field OldCourseCode in the UE entry is empty
+    And the field OldCourseSectionId in the UE entry is empty
+    And the field Operation in the UE entry is the the string "OTHER"
+    And the field SubmitByDate in the UE entry is empty
+    And the field CampusParticipants in the UE entry is the string "GLØS,DRAG"
+    And the field ReadingListName in the is empty
+
+
+  Scenario: Start date for the Spring semester for UE entries
+    And the response from /undervisning/UE_ID has a field with name "semester.termin" and value "VÅR"
+    When a new UE Leganto entry has been generated
+    Then the field StartDate in the UE entry is the string "1980-01-01"
+    And the field EndDate in the UE entry is the string "1980-07-31"
+
+
+  Scenario: UserInput filed operation has value ROLLOVER for UE entries
+    Given the user input field "operation" has the value "ROLLOVER"
+    When a new UE Leganto entry has been generated
+    Then the field OldCourseCode in the UE entry is the string "emneKode-emneVersjon-1979-HØST"
+    And the field OldCourseSectionId is the string "emneVersjon"
+    And the field Operation in the UE entry  is the string "ROLLOVER"

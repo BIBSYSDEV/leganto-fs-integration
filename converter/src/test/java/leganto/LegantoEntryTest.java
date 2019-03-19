@@ -11,8 +11,10 @@ import fs.common.Language;
 import fs.common.LanguageValue;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
+import fs.user.Operation;
 import fs.user.UserInput;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,11 +26,21 @@ public class LegantoEntryTest {
     private static final Integer INSTITUTION = 123;
     private static final Integer FACULTY = 45;
     private static final Integer INSTITUTE = 67;
+    private static final String CAMPUS1 = "GLOS";
+    private static final String CAMPUS2 = "DRAG";
     private transient LegantoEntry legantoEntry;
+    private transient UserInput userInput;
 
     @Before
     public void initialize() {
-        legantoEntry = new LegantoEntry(new UserInput()) {
+        List<String> campuses = new ArrayList<>();
+        campuses.add(CAMPUS1);
+        campuses.add(CAMPUS2);
+        userInput = new UserInput()
+            .setOperation(Operation.OTHER)
+            .setCampuses(campuses);
+
+        legantoEntry = new LegantoEntry(userInput) {
         };
         OrganizationEntity organizationEntity = new OrganizationEntity()
             .setInstitution(INSTITUTION)
@@ -53,7 +65,7 @@ public class LegantoEntryTest {
     @Test(expected = IllegalArgumentException.class)
     public void getRandomValuesShouldChooseAThrowAnExceptionForAnEmpytList() {
         List<LanguageValue> values = new ArrayList<>();
-        String randomValue = legantoEntry.getRandomValue(values);
+        legantoEntry.getRandomValue(values);
     }
 
     @Test(expected = IllegalStateException.class)
@@ -143,24 +155,33 @@ public class LegantoEntryTest {
         assertThat(legantoEntry.getInstructor(), is(emptyString()));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void getOperation() {
-        legantoEntry.getOperation();
+        assertThat(legantoEntry.getOperation(), is(equalTo(Operation.OTHER)));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void getSubmitByDate() {
-        legantoEntry.getSubmitByDate();
+        assertThat(legantoEntry.getSubmitByDate(), is(emptyString()));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void getCampusParticipants() {
-        legantoEntry.getCampusParticipants();
+    @Test
+    public void getCampusParticipantsShouldReturnACommaSeparatedListIfCampusParticipantsIsNotEmpty() {
+        String expectedString = String.join(LegantoEntry.CAMPUS_PARTICIPANTS_DELIMITER, CAMPUS1, CAMPUS2);
+        assertThat(legantoEntry.getCampusParticipants(), is(equalTo(expectedString)));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
+    public void getCampusParticipantsShouldReturnAnEmptyStringIfCampusParticipantsIsEmpty() {
+        userInput.setCampuses(Collections.emptyList());
+        LegantoEntry legantoEntry = new LegantoEntry(userInput) {
+        };
+        assertThat(legantoEntry.getCampusParticipants(), is(emptyString()));
+    }
+
+    @Test
     public void getReadingListName() {
-        legantoEntry.getReadingListName();
+        assertThat(legantoEntry.getReadingListName(), is(emptyString()));
     }
 
     @Test(expected = IllegalStateException.class)

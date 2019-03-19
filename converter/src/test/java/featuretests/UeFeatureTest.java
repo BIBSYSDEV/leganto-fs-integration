@@ -154,4 +154,52 @@ public class UeFeatureTest extends CucumberTestProcessor {
     public void theFieldInstructorInTheUEEntryIsEmpty(int arg0) {
         assertThat(ueLegantoEntry.getInstructor(), is(emptyString()));
     }
+
+    @Then("the field Operation in the UE entry is the the string {string}")
+    public void the_filed_Operation_in_the_UE_entry_is_the_the_string(String operation) {
+        assertThat(ueLegantoEntry.getOperation().toString(), is(equalTo(operation)));
+    }
+
+    @Then("the field SubmitByDate in the UE entry is empty")
+    public void the_field_SubmitByDate_in_the_UE_entry_is_empty() {
+        assertThat(ueLegantoEntry.getSubmitByDate(), is(emptyString()));
+    }
+
+    @Then("the field CampusParticipants in the UE entry is the string {string}")
+    public void the_field_CampusParticipants_is_the_string(String campusParticipants) {
+        assertThat(ueLegantoEntry.getCampusParticipants(), is(equalTo(campusParticipants)));
+    }
+
+    @Then("the field ReadingListName in the is empty")
+    public void the_field_ReadingListName_in_the_is_empty() {
+        assertThat(ueLegantoEntry.getReadingListName(), is(emptyString()));
+    }
+
+    @Then("the field OldCourseCode in the UE entry is empty")
+    public void the_field_OldCourseCode_in_the_UE_entry_is_empty() {
+        assertThat(ueLegantoEntry.getOldCourseCode(), is(emptyString()));
+    }
+
+    @Then("the field OldCourseSectionId in the UE entry is empty")
+    public void the_field_OldCourseSectionId_in_the_UE_entry_is_empty() {
+        assertThat(ueLegantoEntry.getOldCourseSectionId(), is(emptyString()));
+    }
+
+    @Then("the field OldCourseCode in the UE entry is the string {string}")
+    public void the_field_OldCourseCode_in_the_UE_entry_is_the_string(String expectedOldCourseCode) {
+        assertThat(ueLegantoEntry.getOldCourseCode(), is(equalTo(expectedOldCourseCode)));
+    }
+
+    @Then("the field OldCourseSectionId is the string {string}")
+    public void the_field_OldCourseSectionId_is_the_string(String expectedOldCourseSectionId) {
+        assertThat(ueLegantoEntry.getOldCourseSectionId(), is(equalTo(expectedOldCourseSectionId)));
+    }
+
+    @Then("the field Operation in the UE entry  is the string {string}")
+    public void the_field_Operation_in_the_UE_entry_is_the_string(String expectedOperation) {
+        assertThat(ueLegantoEntry.getOperation().toString(), is(equalTo(expectedOperation)));
+    }
+
+
+
 }

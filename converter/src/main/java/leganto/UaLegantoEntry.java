@@ -14,8 +14,6 @@ public class UaLegantoEntry extends LegantoEntry {
     public static final String COURSE_CODE_PREFIX_DELIMITER = "_";
     public static final String PREFIX = "UA";
 
-    private static final String CAMPUS_PARTICIPANTS_DELIMITER = ",";
-
     private final transient UndervisningsAktivitet ua;
 
     public UaLegantoEntry(UndervisningsAktivitet ua, UserInput userInput) {
@@ -103,30 +101,6 @@ public class UaLegantoEntry extends LegantoEntry {
             ua.getUndervisning().getTerminnumer().toString(),
             ua.getAktivitet()
         );
-    }
-
-    @Override
-    public Operation getOperation() {
-        return userInput.getOperation();
-    }
-
-    @Override
-    public String getSubmitByDate() {
-        return EMPTY_STRING;
-    }
-
-    @Override
-    public String getCampusParticipants() {
-        if (userInput.getCampuses().isEmpty()) {
-            return EMPTY_STRING;
-        } else {
-            return String.join(CAMPUS_PARTICIPANTS_DELIMITER, userInput.getCampuses());
-        }
-    }
-
-    @Override
-    public String getReadingListName() {
-        return EMPTY_STRING;
     }
 
     @Override

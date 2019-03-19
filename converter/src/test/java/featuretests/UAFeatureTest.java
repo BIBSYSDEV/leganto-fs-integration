@@ -221,11 +221,6 @@ public class UAFeatureTest extends CucumberTestProcessor {
         assertThat(uaLegantoEntry.getInstructor(), is(emptyString()));
     }
 
-    @Then("Operation is empty")
-    public void operationIsEmpty() {
-        assertThat(uaLegantoEntry.getOperation(), is(equalTo(Operation.OTHER)));
-    }
-
     @Then("SubmitByDate is empty")
     public void submitByDateIsEmpty() {
         assertThat(uaLegantoEntry.getSubmitByDate(), is(emptyString()));

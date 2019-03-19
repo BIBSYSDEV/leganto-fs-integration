@@ -115,7 +115,7 @@ Feature:
     And Instructor9 is empty
     And Instructor10 is empty
 #    And AllInstructors is not empty
-    And Operation is empty
+    And Operation is the string "OTHER"
     And SubmitByDate is empty
     And CampusParticipants is the string "GLØS,DRAG"
     And OldCourse Code is empty
