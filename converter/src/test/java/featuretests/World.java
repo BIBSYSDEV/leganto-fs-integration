@@ -18,7 +18,8 @@ public class World {
     private ObjectNode emneResponse;
     private ObjectNode orgnanizationEntity;
 
-    private File courseParticipants;
+    private File campusParticipantsFile;
+    private File numberOfParticipantsFile;
 
     public World() {
         userInput = JsonUtils.newObjectNode();
@@ -40,19 +41,27 @@ public class World {
         this.emneResponse = emneResponse;
     }
 
-    public void initCoursePartcipants(String filename) throws IOException {
-        courseParticipants = new File(filename);
-        if (courseParticipants.exists()) {
-            courseParticipants.delete();
+    public void initCampusParticipants(String filename) {
+        campusParticipantsFile = new File(filename);
+        if (campusParticipantsFile.exists()) {
+            campusParticipantsFile.delete();
         }
-        courseParticipants.deleteOnExit();
+        campusParticipantsFile.deleteOnExit();
     }
 
     public void addToCourseParticipants(String line) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(courseParticipants, APPEND_TRUE));
+        addToFile(campusParticipantsFile, line);
+    }
+
+    private void addToFile(File file, String line) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file, APPEND_TRUE));
         writer.write(line);
         writer.flush();
         writer.close();
+    }
+
+    public void addToNumberOfParticipantsFile(String line) throws IOException {
+        addToFile(numberOfParticipantsFile, line);
     }
 
     public ObjectNode getOrganizationEntity() {
@@ -61,5 +70,13 @@ public class World {
 
     public void setOrganizationEntity(ObjectNode objectNode) {
         this.orgnanizationEntity = objectNode;
+    }
+
+    public void initNumberOfParticipantsFile(String filename) {
+        numberOfParticipantsFile = new File(filename);
+        if (numberOfParticipantsFile.exists()) {
+            numberOfParticipantsFile.delete();
+        }
+        numberOfParticipantsFile.deleteOnExit();
     }
 }

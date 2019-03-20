@@ -12,11 +12,11 @@ import utils.IoUtils;
 
 public class ParticipantsFileTest {
 
-    private static final String SAMPLE_PARTICIPANTS_FILE = "participantsNumber.csv";
+    private static final String SAMPLE_PARTICIPANTS_FILE = "campusParticipants.csv";
     private static final String USERINPUT_RESOURCE_FOLDDER = "userinput";
     private static final String COURSE_CODE_KEY_IN_RESOURCE_FILE = "courseCode";
     private static final String NON_EXISTING_COURSE_CODE_KEY_IN_RESOURCE_FILE = "lskjdf";
-    private static final String VALUE_IN_FILE = "123";
+    private static final String VALUE_IN_FILE = "GLOS|10,DRAG|20";
     private ParticipantsFile participantsFile;
 
 

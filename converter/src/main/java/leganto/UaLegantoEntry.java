@@ -105,7 +105,7 @@ public class UaLegantoEntry extends LegantoEntry {
 
     @Override
     public String getNumberOfParticipants() {
-        return this.userInput.getParticipants(getCourseCode()).orElse(EMPTY_STRING);
+        return this.userInput.getNumberOfParticipants(getCourseCode()).orElse(EMPTY_STRING);
     }
 
     @Override

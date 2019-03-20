@@ -14,7 +14,6 @@ import fs.organizations.OrganizationEntity;
 import fs.user.Operation;
 import fs.user.UserInput;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +37,7 @@ public class LegantoEntryTest {
         campuses.add(CAMPUS2);
         userInput = new UserInput()
             .setOperation(Operation.OTHER)
-            .setCampuses(campuses);
+            .setIncludeCampusParticipants(true);
 
         legantoEntry = new LegantoEntry(userInput) {
         };
@@ -165,19 +164,7 @@ public class LegantoEntryTest {
         assertThat(legantoEntry.getSubmitByDate(), is(emptyString()));
     }
 
-    @Test
-    public void getCampusParticipantsShouldReturnACommaSeparatedListIfCampusParticipantsIsNotEmpty() {
-        String expectedString = String.join(LegantoEntry.CAMPUS_PARTICIPANTS_DELIMITER, CAMPUS1, CAMPUS2);
-        assertThat(legantoEntry.getCampusParticipants(), is(equalTo(expectedString)));
-    }
 
-    @Test
-    public void getCampusParticipantsShouldReturnAnEmptyStringIfCampusParticipantsIsEmpty() {
-        userInput.setCampuses(Collections.emptyList());
-        LegantoEntry legantoEntry = new LegantoEntry(userInput) {
-        };
-        assertThat(legantoEntry.getCampusParticipants(), is(emptyString()));
-    }
 
     @Test
     public void getReadingListName() {

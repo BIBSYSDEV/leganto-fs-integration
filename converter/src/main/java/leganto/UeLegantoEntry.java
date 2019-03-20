@@ -102,7 +102,7 @@ public class UeLegantoEntry extends LegantoEntry {
 
     @Override
     public String getNumberOfParticipants() {
-        return userInput.getParticipants(getCourseCode()).orElse(EMPTY_STRING);
+        return userInput.getNumberOfParticipants(getCourseCode()).orElse(EMPTY_STRING);
     }
 
     @Override

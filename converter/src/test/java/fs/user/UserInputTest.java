@@ -4,7 +4,6 @@ import static fs.common.Language.EN;
 import static fs.common.Language.NB;
 import static fs.common.Language.NN;
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
@@ -25,43 +24,70 @@ import utils.JsonUtils;
 
 public class UserInputTest {
 
-    private static final String PARTICIPANTS_FILE_FIELD = "participants_file";
+    private static final String CAMPUS_PARTICIPANTS_FILE_FIELD = "campus_participants_file";
+    private static final String NUMBER_OF_PARTICIPANTS_FILE_FIELD = "number_of_participants_file";
     private static final String OPERATION_FIELD = "operation";
     private static final String USER_INPUT_TEST_RESOURCES = "userinput";
-    private static final String PARTICIPANTS_RESOURCE_FILE = "participantsNumber.csv";
+    private static final String CAMPUS_PARTICIPANTS_RESOURCE_FILE = "campusParticipants.csv";
+    private static final String NUMBER_OF_PARTICIPANTS_RESOURCE_FILE = "numberOfParticipants.csv";
+    private static final String INCLUDE_NUMBER_OF_PARTICIPANTS_FIELD = "include_number_of_participants";
+
     private static final String ROLLOVER_OPERATION = "rollover";
     private static final String ARBITRARY_OPERATION = "arbitrary";
     private static final String DELETE_OPERATION = "delete";
-    private static final String CAMPUS_PARTICIPANTS_FIELD = "campus_participants";
-    private static final String CAMPUS_PARTICIPANT_1 = "campus1";
-    private static final String CAMPUS_PARTICIPANT_2 = "campus2";
+    private static final String INCLUDE_CAMPUS_PARTICIPANTS_FIELD = "include_campus_participants";
+    private static final boolean INCLUDE_CAMPUS_PARTICIPANTS_VALUE = true;
+
     private static final String LANGUAGE_ORDER_FIELD = "language_order";
     private static final String RESORUCE_FILE_COURSE_CODE = "courseCode";
-    private static final Integer RESOURCE_FILE_PARTICIPANTS_NUMBER = 123;
+    private static final String NON_EXISTING_COURSE_CODE = RESORUCE_FILE_COURSE_CODE + "error";
+    private static final String CAMPUS_PARTICIPANTS_RESOURCE_VALUE = "GLOS|10,DRAG|20";
     private static final int PREFIX = 0;
     private static final int SUFFIX = 1;
-    private static String PARTICIPANTS_GENERATED_FILE;
+
+    private static final boolean INCLUDE_NUMBER_OF_PARTICIPANTS_VALUE = true;
+    private static final String NUMBER_OF_PARTICIPANTS_RESOURCE_VALUE = "123";
+    private static String NUMBER_OF_PARTICIPANTS_GENERATED_FILE;
+    private static String CAMPUS_PARTICIPANTS_GENERATED_FILE;
 
     @BeforeClass
-    public static void temporaryFileForParticipants() throws IOException {
+    public static void temporaryCampusParticipantsFile() throws IOException {
         String participants = IoUtils
-            .resourceAsString(Paths.get(USER_INPUT_TEST_RESOURCES, PARTICIPANTS_RESOURCE_FILE));
+            .resourceAsString(Paths.get(USER_INPUT_TEST_RESOURCES, CAMPUS_PARTICIPANTS_RESOURCE_FILE));
 
-        String[] splitFilename = PARTICIPANTS_RESOURCE_FILE.split("\\.");
-        File participantsTempFile = Files
-            .createTempFile(splitFilename[PREFIX], splitFilename[SUFFIX]).toFile();
-        participantsTempFile.deleteOnExit();
+        File participantsTempFile = createTemporaryFile(CAMPUS_PARTICIPANTS_RESOURCE_FILE);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(participantsTempFile))) {
             writer.write(participants);
         }
-        PARTICIPANTS_GENERATED_FILE = participantsTempFile.getAbsolutePath();
+        CAMPUS_PARTICIPANTS_GENERATED_FILE = participantsTempFile.getAbsolutePath();
+    }
+
+    @BeforeClass
+    public static void temporaryNumberOfParticipantsFile() throws IOException {
+        String partipants = IoUtils
+            .resourceAsString(Paths.get(USER_INPUT_TEST_RESOURCES, NUMBER_OF_PARTICIPANTS_RESOURCE_FILE));
+        File participantsTempFile = createTemporaryFile(NUMBER_OF_PARTICIPANTS_RESOURCE_FILE);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(participantsTempFile))) {
+            writer.write(partipants);
+        }
+
+        NUMBER_OF_PARTICIPANTS_GENERATED_FILE = participantsTempFile.getAbsolutePath();
+    }
+
+    private static File createTemporaryFile(String filename) throws IOException {
+        String[] splitFilename = filename.split("\\.");
+        File participantsTempFile = Files
+            .createTempFile(splitFilename[PREFIX], splitFilename[SUFFIX]).toFile();
+        participantsTempFile.deleteOnExit();
+        return participantsTempFile;
     }
 
     @Test
     public void getOperationShouldReturnOtherAsDefaultValueWhenOperationFieldIsMissing()
         throws JsonProcessingException {
         ObjectNode userInputJson = JsonUtils.newObjectNode();
-        userInputJson.put(PARTICIPANTS_FILE_FIELD, "participants.csv");
+        userInputJson.put(CAMPUS_PARTICIPANTS_FILE_FIELD, "participants.csv");
         UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class);
         assertThat(userInput.getOperation(), is(equalTo(Operation.OTHER)));
     }
@@ -70,7 +96,7 @@ public class UserInputTest {
     public void getOperationShouldReturnOtherWhenOperationValueIsNotRolloverOrDelete()
         throws JsonProcessingException {
         ObjectNode userInputJson = JsonUtils.newObjectNode();
-        userInputJson.put(PARTICIPANTS_FILE_FIELD, PARTICIPANTS_GENERATED_FILE);
+        userInputJson.put(CAMPUS_PARTICIPANTS_FILE_FIELD, CAMPUS_PARTICIPANTS_GENERATED_FILE);
         userInputJson.put(OPERATION_FIELD, ARBITRARY_OPERATION);
         UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class);
         assertThat(userInput.getOperation(), is(equalTo(Operation.OTHER)));
@@ -80,7 +106,7 @@ public class UserInputTest {
     public void getOperationShouldReturnRolloverWhenOperationValueIsRollover()
         throws JsonProcessingException {
         ObjectNode userInputJson = JsonUtils.newObjectNode();
-        userInputJson.put(PARTICIPANTS_FILE_FIELD, PARTICIPANTS_GENERATED_FILE);
+        userInputJson.put(CAMPUS_PARTICIPANTS_FILE_FIELD, CAMPUS_PARTICIPANTS_GENERATED_FILE);
         userInputJson.put(OPERATION_FIELD, ROLLOVER_OPERATION);
         UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class);
         assertThat(userInput.getOperation(), is(equalTo(Operation.ROLLOVER)));
@@ -90,21 +116,76 @@ public class UserInputTest {
     public void getOperationShouldReturnDeleteWhenOperationValueIsDelete()
         throws JsonProcessingException {
         ObjectNode userInputJson = JsonUtils.newObjectNode();
-        userInputJson.put(PARTICIPANTS_FILE_FIELD, PARTICIPANTS_GENERATED_FILE);
+        userInputJson.put(CAMPUS_PARTICIPANTS_FILE_FIELD, CAMPUS_PARTICIPANTS_GENERATED_FILE);
         userInputJson.put(OPERATION_FIELD, DELETE_OPERATION);
         UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class);
         assertThat(userInput.getOperation(), is(equalTo(Operation.DELETE)));
     }
 
     @Test
-    public void jsonFieldsShouldBeParsedCorrectly() throws IOException {
-        ObjectNode userInputJson = JsonUtils.newObjectNode();
-        userInputJson.put(PARTICIPANTS_FILE_FIELD, PARTICIPANTS_GENERATED_FILE);
+    public void getNumberOfParticipantsShouldReturnTheRespectiveEntryfromTheUserFileIf() throws IOException {
+        ObjectNode userInputJson = inputWithBothFiles();
+        UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class).initFiles();
+        assertThat(userInput.getNumberOfParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(), is(equalTo(true)));
+        assertThat(userInput.getNumberOfParticipants(RESORUCE_FILE_COURSE_CODE).get(), is(equalTo(
+            NUMBER_OF_PARTICIPANTS_RESOURCE_VALUE)));
+    }
 
-        ArrayNode campusParticipants = JsonUtils.newArrayNode();
-        campusParticipants.add(CAMPUS_PARTICIPANT_1);
-        campusParticipants.add(CAMPUS_PARTICIPANT_2);
-        userInputJson.set(CAMPUS_PARTICIPANTS_FIELD, campusParticipants);
+    @Test
+    public void getNumberOfParticipantsShouldReturnEmptyifTheCourseCodeDoesNotExist() throws IOException {
+        ObjectNode userInputJson = inputWithBothFiles();
+        UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class).initFiles();
+        assertThat(userInput.getNumberOfParticipants(NON_EXISTING_COURSE_CODE).isPresent(), is(equalTo(false)));
+    }
+
+    @Test
+    public void getNumberOfParticipantsShouldReturnEmptyIfTheDecisionFieldIsSetToFalse() throws IOException {
+        ObjectNode userInputJson = inputWithBothFiles();
+        userInputJson.put(INCLUDE_NUMBER_OF_PARTICIPANTS_FIELD, false);
+        UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class).initFiles();
+        assertThat(userInput.getNumberOfParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(), is(equalTo(false)));
+    }
+
+    @Test
+    public void getCampusParticipantsShouldReturnTheRespectiveEntryfromTheUserFileIf() throws IOException {
+        ObjectNode userInputJson = inputWithBothFiles();
+        UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class).initFiles();
+        assertThat(userInput.getCampusParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(), is(equalTo(true)));
+        assertThat(userInput.getCampusParticipants(RESORUCE_FILE_COURSE_CODE).get(), is(equalTo(
+            CAMPUS_PARTICIPANTS_RESOURCE_VALUE)));
+    }
+
+    @Test
+    public void getCampusParticipantsShouldReturnEmptyifTheCourseCodeDoesNotExist() throws IOException {
+        ObjectNode userInputJson = inputWithBothFiles();
+        UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class).initFiles();
+        assertThat(userInput.getCampusParticipants(NON_EXISTING_COURSE_CODE).isPresent(), is(equalTo(false)));
+    }
+
+    @Test
+    public void getcampusOfParticipantsShouldReturnEmptyIfTheDecisionFieldIsSetToFalse() throws IOException {
+        ObjectNode userInputJson = inputWithBothFiles();
+        userInputJson.put(INCLUDE_CAMPUS_PARTICIPANTS_FIELD, false);
+        UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class).initFiles();
+        assertThat(userInput.getCampusParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(), is(equalTo(false)));
+    }
+
+    @Test
+    public void jsonFieldsShouldBeParsedCorrectly() throws IOException {
+
+        ObjectNode userInputJson = inputWithBothFiles();
+        UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class).initFiles();
+        assertThat(userInput.getOperation(), is(equalTo(Operation.OTHER)));
+        assertThat(userInput.getIncludeCampusParticipants(), is(equalTo(true)));
+        assertThat(userInput.getLanguageOrder(), contains(NN, EN, NB));
+    }
+
+    private ObjectNode inputWithBothFiles() {
+        ObjectNode userInputJson = JsonUtils.newObjectNode();
+        userInputJson.put(INCLUDE_CAMPUS_PARTICIPANTS_FIELD, INCLUDE_CAMPUS_PARTICIPANTS_VALUE);
+        userInputJson.put(CAMPUS_PARTICIPANTS_FILE_FIELD, CAMPUS_PARTICIPANTS_GENERATED_FILE);
+        userInputJson.put(INCLUDE_NUMBER_OF_PARTICIPANTS_FIELD, INCLUDE_NUMBER_OF_PARTICIPANTS_VALUE);
+        userInputJson.put(NUMBER_OF_PARTICIPANTS_FILE_FIELD, NUMBER_OF_PARTICIPANTS_GENERATED_FILE);
 
         ArrayNode laguageOrder = JsonUtils.newArrayNode();
         laguageOrder.add(NN.toString());
@@ -112,18 +193,6 @@ public class UserInputTest {
         laguageOrder.add(NB.toString());
 
         userInputJson.set(LANGUAGE_ORDER_FIELD, laguageOrder);
-        UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class).initPartcipants();
-        assertThat(userInput.getOperation(), is(equalTo(Operation.OTHER)));
-        assertThat(userInput.getCampuses(),
-            containsInAnyOrder(CAMPUS_PARTICIPANT_1, CAMPUS_PARTICIPANT_2));
-        assertThat(userInput.getLanguageOrder(), contains(NN, EN, NB));
-        assertThat(userInput.getParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(), is(equalTo(
-            true)));
-        assertThat(userInput.getParticipantsFilename(), is(equalTo(PARTICIPANTS_GENERATED_FILE)));
-
-        assertThat(userInput.getParticipants(RESORUCE_FILE_COURSE_CODE).get(), is(equalTo(
-            RESOURCE_FILE_PARTICIPANTS_NUMBER.toString())));
-
+        return userInputJson;
     }
-
 }
