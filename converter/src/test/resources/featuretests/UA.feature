@@ -6,17 +6,26 @@ Feature:
   Background:
     Given  there is a user input
     And the user input has no field with name "operation"
-    And the user input has a field with name "participants_file" with value "participants.csv"
-    And the user input has a field with name "campus_participants" that is an array with string values
-      | GLØS |
-      | DRAG |
+    And the user input has a field with name "campus_participants_file" with value "campus_participants_file.csv"
+    And the user input has a field with name "include_campus_participants" with boolean value "true"
+    And the user input has a field with name "include_number_of_participants" with boolean value "true"
+    And the user input has a field with name "number_of_participants_file" with value "number_of_participants.csv"
+
     And the user input has a field with name "language_order" that is an array with string values
       | nn |
       | nb |
       | en |
-    And the participants file is a semicolon separated file
-    And the participants file contains a row with the following values
-      | UA_emneKode-emneVersjon-1980-HØST | 123 |
+
+    And the campus participants file is a semicolon separated file
+    And the campus participants file contains a row with the following value
+      | UA_emneKode-emneVersjon-1980-HØST;GLOS\|10,DRAG\|20 |
+
+
+    And the number_of_participants file is a semicolon separated file
+    And the number_of_participants file contains a row with the following value
+      | UA_emneKode-emneVersjon-1980-HØST;123 |
+
+
     And there is a request to /undervisningsaktiviteter/UA_ID
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.kode" with value "emneKode"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.versjon" with value "emneVersjon"
@@ -117,7 +126,7 @@ Feature:
 #    And AllInstructors is not empty
     And Operation is the string "OTHER"
     And SubmitByDate is empty
-    And CampusParticipants is the string "GLØS,DRAG"
+    And CampusParticipants is the string "GLOS|10,DRAG|20"
     And OldCourse Code is empty
     And OldCourseSectionId is empty
     And Reading List Name is empty

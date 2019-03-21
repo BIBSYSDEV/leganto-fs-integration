@@ -7,19 +7,27 @@ Feature:
   Background:
     Given there is a user input
     And the user input has no field with name "operation"
-    And the user input has a field with name "participants_file" with value "participants.csv"
-    And the user input has a field with name "campus_participants" that is an array with string values
-      | GLØS |
-      | DRAG |
+    And the user input has a field with name "include_campus_participants" with boolean value "true"
+    And the user input has a field with name "campus_participants_file" with value "campusParticipants.csv"
+
+    And the user input has a field with name "include_number_of_participants" with boolean value "true"
+    And the user input has a field with name "number_of_participants_file" with value "numberOfParticipants.csv"
+
 
     And the user input has a field with name "language_order" that is an array with string values
       | nn |
       | nb |
       | en |
 
-    And the participants file is a semicolon separated file
-    And the participants file contains a row with the following values
-      | emneKode-emneVersjon-1980-HØST | 123 |
+    And the campus participants file is a semicolon separated file
+    And the campus participants file contains a row with the following value
+      | emneKode-emneVersjon-1980-HØST;GLOS\|10,DRAG\|20 |
+
+    And the number_of_participants file is a semicolon separated file
+    And the number_of_participants file contains a row with the following value
+      | emneKode-emneVersjon-1980-HØST;123 |
+
+
 
     And there is a request to /undervisning/UE_ID
     And the response from /undervisning/UE_ID has a field with name "emne.href" and value "/emne/emneId"
@@ -117,7 +125,7 @@ Feature:
     And the field OldCourseSectionId in the UE entry is empty
     And the field Operation in the UE entry is the the string "OTHER"
     And the field SubmitByDate in the UE entry is empty
-    And the field CampusParticipants in the UE entry is the string "GLØS,DRAG"
+    And the field CampusParticipants in the UE entry is the string "GLOS|10,DRAG|20"
     And the field ReadingListName in the is empty
 
 

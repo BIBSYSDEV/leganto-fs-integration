@@ -123,15 +123,6 @@ public abstract class LegantoEntry {
 
     public final String getSubmitByDate() {
         return EMPTY_STRING;
-
-    }
-
-    public final String getCampusParticipants() {
-        if (userInput.getCampuses().isEmpty()) {
-            return EMPTY_STRING;
-        } else {
-            return String.join(CAMPUS_PARTICIPANTS_DELIMITER, userInput.getCampuses());
-        }
     }
 
     public final String getReadingListName() {
@@ -167,4 +158,10 @@ public abstract class LegantoEntry {
     protected String dateToString(LocalDate date) {
         return dateFormatter.format(date);
     }
+
+    public final String getCampusParticipants() {
+        return userInput.getCampusParticipants(getCourseCode()).orElse(EMPTY_STRING);
+    }
+
+    ;
 }

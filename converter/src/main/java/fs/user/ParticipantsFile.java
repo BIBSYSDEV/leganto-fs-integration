@@ -32,7 +32,7 @@ public class ParticipantsFile {
         return this;
     }
 
-    private List<String> streamAsList() throws FileNotFoundException {
+    private List<String> streamAsList() {
         return IoUtils.streamAsList(participantsDataStream);
     }
 

@@ -111,7 +111,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
     public void new_UA_entry_has_been_generated() throws IOException {
 
         UndervisningsAktivitet uaEntry = readValue(uaResponse, UndervisningsAktivitet.class);
-        UserInput userInput = readValue(world.getUserInput(), UserInput.class).initPartcipants();
+        UserInput userInput = readValue(world.getUserInput(), UserInput.class).initFiles();
         OrganizationEntity organizationEntity = readValue(world.getOrganizationEntity(), OrganizationEntity.class);
         uaLegantoEntry = (UaLegantoEntry) new UaLegantoEntry(uaEntry, userInput)
             .setOrganizationEntity(organizationEntity)

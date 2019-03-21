@@ -49,6 +49,7 @@ public class UaLegantoEntryTest {
     private static final int FACULTY_NUMBER = 35;
     private static final int INSTITUTE_NUMBER = 7;
     private static final Integer ARBITRARY_NUMBER_OF_PARTICIPANTS = 100;
+    private static final String CAMPUS_PARTICIPANTS_STRING = "GLOS|10|DRAG|20";
 
     private final transient Emne emne;
     private final transient UndervisningsAktivitet ua;
@@ -76,9 +77,17 @@ public class UaLegantoEntryTest {
             .setEmne(emne)
             .setOrganizationEntity(organizationEntity);
 
+        String campusParticipants = campusParticipantsString();
+
         String numberOfPartcipants = numberOfPartcipantsString();
+        InputStream campusParticipantsStream = stringToInputStream(numberOfPartcipants);
         InputStream numberOfParticipantsStream = stringToInputStream(numberOfPartcipants);
-        userInput.initPartcipants(numberOfParticipantsStream);
+
+        userInput.initFiles(campusParticipantsStream, numberOfParticipantsStream);
+    }
+
+    private String campusParticipantsString() {
+        return String.join(ParticipantsFile.CSV_DELIMITER, entry.getCourseCode(), CAMPUS_PARTICIPANTS_STRING);
     }
 
     private UserInput mockUserInput(Language[] languagesArray) {
@@ -197,5 +206,4 @@ public class UaLegantoEntryTest {
     public void getStartDateShouldCANonEmptyStartDate() {
         assertThat(entry.getStartDate(), is(not(equalTo(null))));
     }
-
 }

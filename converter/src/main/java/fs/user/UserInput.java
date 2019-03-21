@@ -15,13 +15,20 @@ import java.util.Optional;
 
 public class UserInput {
 
-    public static final String PARTICIPANTS_FILE_FIELD = "participants_file";
+    public static final String CAMPUS_PARTICIPANTS_FILE_FIELD = "campus_participants_file";
+    public static final String NUMBER_OF_PARTICIPANTS_FILE = "number_of_participants_file";
 
-    @JsonProperty("campus_participants")
-    private List<String> campuses;
+    @JsonProperty("include_campus_participants")
+    private boolean includeCampusParticipants;
 
-    @JsonProperty("participants_file")
-    private String participantsFilename;
+    @JsonProperty(CAMPUS_PARTICIPANTS_FILE_FIELD)
+    private String campusParticipantsFilename;
+
+    @JsonProperty("include_number_of_participants")
+    private boolean includeNumberOfParticipants;
+
+    @JsonProperty(NUMBER_OF_PARTICIPANTS_FILE)
+    private String numberOfParticipantsFilename;
 
     @JsonProperty(value = "operation", defaultValue = "OTHER")
     private Operation operation;
@@ -29,11 +36,14 @@ public class UserInput {
     @JsonProperty("include_institute_in_acad_department")
     private String includeInstitut;
 
-    @JsonIgnore
-    private transient ParticipantsFile participantsFile;
-
     @JsonProperty("language_order")
     private List<Language> languageOrder;
+
+    @JsonIgnore
+    private transient ParticipantsFile campusParticipantsFile;
+
+    @JsonIgnore
+    private transient ParticipantsFile numberOfPartipantsFile;
 
     public UserInput() {
         this.operation = Operation.OTHER;
@@ -48,44 +58,64 @@ public class UserInput {
         return this;
     }
 
-    public UserInput initPartcipants() throws IOException {
-        File file = new File(participantsFilename);
-        BufferedInputStream inputStream = new BufferedInputStream(
-            Files.newInputStream(file.toPath()));
-        initPartcipants(inputStream);
+    public UserInput initFiles() throws IOException {
+        File campusParticipantsFile = new File(campusParticipantsFilename);
+        BufferedInputStream campusParticipantsInputStream = new BufferedInputStream(
+            Files.newInputStream(campusParticipantsFile.toPath()));
+
+        File numberOfParticipantsFile = new File(numberOfParticipantsFilename);
+        BufferedInputStream numberOfParticipantsInputStream = new BufferedInputStream(
+            Files.newInputStream(numberOfParticipantsFile.toPath()));
+
+        initFiles(campusParticipantsInputStream, numberOfParticipantsInputStream);
+
         return this;
     }
 
-    public UserInput initPartcipants(InputStream inputStream) throws FileNotFoundException {
-        BufferedInputStream bis = new BufferedInputStream(inputStream);
-        participantsFile = new ParticipantsFile(bis);
-        participantsFile.init();
-        return this;
-    }
+    public UserInput initFiles(InputStream campusParticipnatsInputStream, InputStream numberOfParticipantsInputSteam)
+        throws FileNotFoundException {
+        BufferedInputStream campusParticipantsStream = new BufferedInputStream(campusParticipnatsInputStream);
+        campusParticipantsFile = new ParticipantsFile(campusParticipantsStream).init();
 
-    public List<String> getCampuses() {
-        return campuses;
-    }
+        BufferedInputStream numberOfParticipantsStream = new BufferedInputStream(numberOfParticipantsInputSteam);
+        numberOfPartipantsFile = new ParticipantsFile(numberOfParticipantsStream).init();
 
-    public UserInput setCampuses(List<String> campuses) {
-        this.campuses = campuses;
         return this;
     }
 
     @JsonIgnore
-    public Optional<String> getParticipants(String courseCode) {
-        Objects.requireNonNull(participantsFile,
-            "participants file not read. Call initParticipants first");
-        return participantsFile.getPartcipants(courseCode);
+    public Optional<String> getCampusParticipants(String courseCode) {
+        if (includeCampusParticipants) {
+            Objects.requireNonNull(campusParticipantsFile,
+                "campus participants file not read. Call initParticipants first");
+
+            return campusParticipantsFile.getPartcipants(courseCode);
+        } else {
+            return Optional.empty();
+        }
     }
 
-    public UserInput setParticipantsFilename(String participantsFile) {
-        this.participantsFilename = participantsFile;
+    @JsonIgnore
+    public Optional<String> getNumberOfParticipants(String courseCode) {
+        if (includeNumberOfParticipants) {
+            return numberOfPartipantsFile.getPartcipants(courseCode);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public String getCampusParticipantsFilename() {
+        return campusParticipantsFilename;
+    }
+
+    public UserInput setCampusParticipantsFilename(String participantsFile) {
+        this.campusParticipantsFilename = participantsFile;
         return this;
     }
 
-    public String getParticipantsFilename() {
-        return participantsFilename;
+    @SuppressWarnings("PMD")
+    public boolean getIncludeCampusParticipants() {
+        return includeCampusParticipants;
     }
 
     public Operation getOperation() {
@@ -103,5 +133,27 @@ public class UserInput {
 
     public void setIncludeInstitut(String includeInstitut) {
         this.includeInstitut = includeInstitut;
+    }
+
+    public UserInput setIncludeCampusParticipants(boolean includeCampusParticipants) {
+        this.includeCampusParticipants = includeCampusParticipants;
+        return this;
+    }
+
+    @SuppressWarnings("PMD")
+    public boolean getIncludeNumberOfParticipants() {
+        return includeNumberOfParticipants;
+    }
+
+    public void setIncludeNumberOfParticipants(boolean includeNumberOfParticipants) {
+        this.includeNumberOfParticipants = includeNumberOfParticipants;
+    }
+
+    public String getNumberOfParticipantsFilename() {
+        return numberOfParticipantsFilename;
+    }
+
+    public void setNumberOfParticipantsFilename(String numberOfParticipantsFilename) {
+        this.numberOfParticipantsFilename = numberOfParticipantsFilename;
     }
 }
