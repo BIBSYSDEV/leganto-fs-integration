@@ -139,7 +139,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
         assertThat(courseCode, is(equalTo(expectedCourseCode)));
     }
 
-    @Then("CouseTitle is the string {string}")
+    @Then("CourseTitle is the string {string}")
     public void cousetitle_is_the_string(String courseTitle) {
         assertThat(uaLegantoEntry.getCourseTitle(), is(equalTo(courseTitle)));
     }
