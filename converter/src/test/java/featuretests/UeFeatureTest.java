@@ -70,8 +70,8 @@ public class UeFeatureTest extends CucumberTestProcessor {
         assertThat(ueLegantoEntry.getCourseCode(), is(equalTo(courseCode)));
     }
 
-    @Then("the field CouseTitle in the UE entry is the string {string}")
-    public void theFieldCouseTitleInTheUeEntryIsTheString(String courseTitle) {
+    @Then("the field CourseTitle in the UE entry is the string {string}")
+    public void theFieldCourseTitleInTheUeEntryIsTheString(String courseTitle) {
         assertThat(ueLegantoEntry.getCourseTitle(), is(equalTo(courseTitle)));
     }
 
