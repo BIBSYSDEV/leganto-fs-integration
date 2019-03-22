@@ -2,6 +2,7 @@ package leganto;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.AnyOf.anyOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -15,6 +16,7 @@ import fs.user.Operation;
 import fs.user.UserInput;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,10 +38,14 @@ public class LegantoEntryTest {
         campuses.add(CAMPUS1);
         campuses.add(CAMPUS2);
         userInput = new UserInput()
-            .setOperation(Operation.OTHER)
-            .setIncludeCampusParticipants(true);
+            .setOperation(Operation.NORMAL)
+            .setIncludeInstitute(true);
 
         legantoEntry = new LegantoEntry(userInput) {
+            @Override
+            public Optional<String> toOptionalString() {
+                return Optional.empty();
+            }
         };
         OrganizationEntity organizationEntity = new OrganizationEntity()
             .setInstitution(INSTITUTION)
@@ -83,10 +89,19 @@ public class LegantoEntryTest {
     }
 
     @Test
-    public void getAcademicDepartment() {
+    public void getAcademicDepartmentShouldInlucdeIncludeIfTheFlagIsSet() {
+        userInput.setIncludeInstitute(true);
         assertThat(legantoEntry.getAcademicDepartment(), containsString(INSTITUTION.toString()));
         assertThat(legantoEntry.getAcademicDepartment(), containsString(FACULTY.toString()));
         assertThat(legantoEntry.getAcademicDepartment(), containsString(INSTITUTE.toString()));
+    }
+
+    @Test
+    public void getAcademicDepartmentShouldNotInlucdeIncludeIfTheFlagIsNotSet() {
+        userInput.setIncludeInstitute(false);
+        assertThat(legantoEntry.getAcademicDepartment(), containsString(INSTITUTION.toString()));
+        assertThat(legantoEntry.getAcademicDepartment(), containsString(FACULTY.toString()));
+        assertThat(legantoEntry.getAcademicDepartment(), not(containsString(INSTITUTE.toString())));
     }
 
     @Test
@@ -156,15 +171,13 @@ public class LegantoEntryTest {
 
     @Test
     public void getOperation() {
-        assertThat(legantoEntry.getOperation(), is(equalTo(Operation.OTHER)));
+        assertThat(legantoEntry.getOperation(), is(equalTo(Operation.NORMAL.toString())));
     }
 
     @Test
     public void getSubmitByDate() {
         assertThat(legantoEntry.getSubmitByDate(), is(emptyString()));
     }
-
-
 
     @Test
     public void getReadingListName() {

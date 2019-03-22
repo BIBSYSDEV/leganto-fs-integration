@@ -17,7 +17,6 @@ import cucumber.api.java.en.When;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
 import fs.ua.UndervisningsAktivitet;
-import fs.user.Operation;
 import fs.user.UserInput;
 import io.cucumber.datatable.DataTable;
 import java.io.IOException;
@@ -253,7 +252,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
 
     @Then("Operation is the string {string}")
     public void operationIsTheString(String operation) {
-        assertThat(uaLegantoEntry.getOperation(), is(equalTo(Operation.fromString(operation))));
+        assertThat(uaLegantoEntry.getOperation(), is(equalTo(operation)));
     }
 
     @Then("OldCourse Code is empty")
@@ -264,5 +263,10 @@ public class UAFeatureTest extends CucumberTestProcessor {
     @Then("OldCourseSectionId is empty")
     public void oldcoursesectionidIsEmpty() {
         assertThat(uaLegantoEntry.getOldCourseSectionId(), is(emptyString()));
+    }
+
+    @Then("Operation is empty")
+    public void operationIsEmpty() {
+        assertThat(uaLegantoEntry.getOperation(),is(emptyString()));
     }
 }

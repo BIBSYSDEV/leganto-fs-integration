@@ -100,4 +100,11 @@ public class Background extends CucumberTestProcessor {
         Preconditions.checkArgument(!dataTable.isEmpty(), EMPTY_DATA_FROM_CUCUMBER_DEFINTION_FILE);
         world.addToNumberOfParticipantsFile(dataTable.asList().get(0));
     }
+
+
+    @Given("the user input field {string} has the boolean value {string}")
+    public void the_user_input_field_has_the_boolean_value(String key, String booleanValue) {
+        world.getUserInput().put(key,Boolean.valueOf(booleanValue));
+    }
+
 }

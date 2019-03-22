@@ -1,8 +1,10 @@
 package fs.common;
 
+import static java.util.Objects.nonNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UEmne {
+public class UEmne extends Validable {
 
     @JsonProperty("href")
     private String href;
@@ -16,6 +18,9 @@ public class UEmne {
     @JsonProperty("versjon")
     private String version;
 
+    public boolean isValid() {
+        return nonNull(href) && nonNull(institution) && nonNull(code) && nonNull(version);
+    }
 
     public String getHref() {
         return href;

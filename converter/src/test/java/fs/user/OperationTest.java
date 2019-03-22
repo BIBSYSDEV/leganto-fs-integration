@@ -31,13 +31,13 @@ public class OperationTest {
 
     @Test
     public void fromStringShouldReturnOtherForNullStringParseOperationDelete() {
-        assertThat(Operation.fromString(null), is(equalTo(Operation.OTHER)));
+        assertThat(Operation.fromString(null), is(equalTo(Operation.NORMAL)));
 
     }
 
     @Test
     public void fromStringShouldReturnOtherForArbitraryStringParseOperationDelete() {
-        assertThat(Operation.fromString(ARBITRARY_STRING), is(equalTo(Operation.OTHER)));
+        assertThat(Operation.fromString(ARBITRARY_STRING), is(equalTo(Operation.NORMAL)));
 
     }
 }

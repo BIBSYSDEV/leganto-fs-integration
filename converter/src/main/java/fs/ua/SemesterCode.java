@@ -9,6 +9,8 @@ public enum SemesterCode {
 
     public static final String AUTUMN_NORWEGIAN = "HØST";
     public static final String SPRING_NORWEGIAN = "VÅR";
+    public static final String AUTUMN_ENGISH = "AUTUMN";
+    public static final String SPRING_ENGISH = "SPRING";
     private static final String ERROR_MESSAGE_PREFIX = "Invalid sememster code:";
     private static final int FIRST_DAY_OF_MONTH = 1;
     private static final int LAST_DAY_OF_MONTH = 31;
@@ -33,6 +35,14 @@ public enum SemesterCode {
             return AUTUMN_NORWEGIAN;
         } else {
             return SPRING_NORWEGIAN;
+        }
+    }
+
+    public String toEnglishString() {
+        if (SemesterCode.AUTUMN.equals(this)) {
+            return AUTUMN_ENGISH;
+        } else {
+            return SPRING_ENGISH;
         }
     }
 

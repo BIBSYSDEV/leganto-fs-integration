@@ -25,7 +25,7 @@ public class UserInput {
     private String campusParticipantsFilename;
 
     @JsonProperty("include_number_of_participants")
-    private boolean includeNumberOfParticipants;
+    private Boolean includeNumberOfParticipants;
 
     @JsonProperty(NUMBER_OF_PARTICIPANTS_FILE)
     private String numberOfParticipantsFilename;
@@ -33,11 +33,17 @@ public class UserInput {
     @JsonProperty(value = "operation", defaultValue = "OTHER")
     private Operation operation;
 
-    @JsonProperty("include_institute_in_acad_department")
-    private String includeInstitut;
+    @JsonProperty(value = "include_institute_in_acad_department", required = true)
+    private Boolean includeInstitute;
 
     @JsonProperty("language_order")
     private List<Language> languageOrder;
+
+    @JsonProperty("course_title_format")
+    private Integer courseTitleFormat;
+
+    @JsonProperty("include_ua")
+    private Boolean includeUA;
 
     @JsonIgnore
     private transient ParticipantsFile campusParticipantsFile;
@@ -46,7 +52,7 @@ public class UserInput {
     private transient ParticipantsFile numberOfPartipantsFile;
 
     public UserInput() {
-        this.operation = Operation.OTHER;
+        this.operation = Operation.NORMAL;
     }
 
     public List<Language> getLanguageOrder() {
@@ -118,6 +124,11 @@ public class UserInput {
         return includeCampusParticipants;
     }
 
+    public UserInput setIncludeCampusParticipants(boolean includeCampusParticipants) {
+        this.includeCampusParticipants = includeCampusParticipants;
+        return this;
+    }
+
     public Operation getOperation() {
         return operation;
     }
@@ -127,16 +138,13 @@ public class UserInput {
         return this;
     }
 
-    public String getIncludeInstitut() {
-        return includeInstitut;
+    @SuppressWarnings("PMD")
+    public boolean getIncludeInstitute() {
+        return includeInstitute;
     }
 
-    public void setIncludeInstitut(String includeInstitut) {
-        this.includeInstitut = includeInstitut;
-    }
-
-    public UserInput setIncludeCampusParticipants(boolean includeCampusParticipants) {
-        this.includeCampusParticipants = includeCampusParticipants;
+    public UserInput setIncludeInstitute(boolean includeInstitute) {
+        this.includeInstitute = includeInstitute;
         return this;
     }
 
@@ -145,15 +153,36 @@ public class UserInput {
         return includeNumberOfParticipants;
     }
 
-    public void setIncludeNumberOfParticipants(boolean includeNumberOfParticipants) {
+    public UserInput setIncludeNumberOfParticipants(boolean includeNumberOfParticipants) {
         this.includeNumberOfParticipants = includeNumberOfParticipants;
+        return this;
     }
 
     public String getNumberOfParticipantsFilename() {
         return numberOfParticipantsFilename;
     }
 
-    public void setNumberOfParticipantsFilename(String numberOfParticipantsFilename) {
+    public UserInput setNumberOfParticipantsFilename(String numberOfParticipantsFilename) {
         this.numberOfParticipantsFilename = numberOfParticipantsFilename;
+        return this;
+    }
+
+    public Integer getCourseTitleFormat() {
+        return courseTitleFormat;
+    }
+
+    public UserInput setCourseTitleFormat(Integer courseTitleFormat) {
+        this.courseTitleFormat = courseTitleFormat;
+        return this;
+    }
+
+    @SuppressWarnings("PMD")
+    public boolean getIncludeUA() {
+        return includeUA;
+    }
+
+    public UserInput setIncludeUA(boolean includeUA) {
+        this.includeUA = includeUA;
+        return this;
     }
 }

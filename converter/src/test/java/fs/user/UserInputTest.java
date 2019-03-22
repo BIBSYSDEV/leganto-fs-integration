@@ -89,7 +89,7 @@ public class UserInputTest {
         ObjectNode userInputJson = JsonUtils.newObjectNode();
         userInputJson.put(CAMPUS_PARTICIPANTS_FILE_FIELD, "participants.csv");
         UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class);
-        assertThat(userInput.getOperation(), is(equalTo(Operation.OTHER)));
+        assertThat(userInput.getOperation(), is(equalTo(Operation.NORMAL)));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class UserInputTest {
         userInputJson.put(CAMPUS_PARTICIPANTS_FILE_FIELD, CAMPUS_PARTICIPANTS_GENERATED_FILE);
         userInputJson.put(OPERATION_FIELD, ARBITRARY_OPERATION);
         UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class);
-        assertThat(userInput.getOperation(), is(equalTo(Operation.OTHER)));
+        assertThat(userInput.getOperation(), is(equalTo(Operation.NORMAL)));
     }
 
     @Test
@@ -175,7 +175,7 @@ public class UserInputTest {
 
         ObjectNode userInputJson = inputWithBothFiles();
         UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class).initFiles();
-        assertThat(userInput.getOperation(), is(equalTo(Operation.OTHER)));
+        assertThat(userInput.getOperation(), is(equalTo(Operation.NORMAL)));
         assertThat(userInput.getIncludeCampusParticipants(), is(equalTo(true)));
         assertThat(userInput.getLanguageOrder(), contains(NN, EN, NB));
     }

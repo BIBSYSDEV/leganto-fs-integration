@@ -14,6 +14,7 @@ import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
 import fs.ua.SemesterCode;
 import fs.ua.USemester;
+import fs.ua.UaCourseTitleFormat;
 import fs.ua.UaUndervisning;
 import fs.ua.UndervisningsAktivitet;
 import fs.user.ParticipantsFile;
@@ -28,7 +29,6 @@ import org.junit.Test;
 
 public class UaLegantoEntryTest {
 
-    private static final String HREF = "href";
     private static final String EMNE_HREF = "emneHref";
     private static final String EMNE_CODE = "emneCode";
     private static final String EMNE_INSITUTION = "emneInsitution";
@@ -77,8 +77,6 @@ public class UaLegantoEntryTest {
             .setEmne(emne)
             .setOrganizationEntity(organizationEntity);
 
-        String campusParticipants = campusParticipantsString();
-
         String numberOfPartcipants = numberOfPartcipantsString();
         InputStream campusParticipantsStream = stringToInputStream(numberOfPartcipants);
         InputStream numberOfParticipantsStream = stringToInputStream(numberOfPartcipants);
@@ -86,14 +84,13 @@ public class UaLegantoEntryTest {
         userInput.initFiles(campusParticipantsStream, numberOfParticipantsStream);
     }
 
-    private String campusParticipantsString() {
-        return String.join(ParticipantsFile.CSV_DELIMITER, entry.getCourseCode(), CAMPUS_PARTICIPANTS_STRING);
-    }
-
     private UserInput mockUserInput(Language[] languagesArray) {
         List<Language> languageOrder = Arrays.asList(languagesArray);
         return new UserInput()
-            .setLanguageOrder(languageOrder);
+            .setLanguageOrder(languageOrder)
+            .setIncludeInstitute(true)
+            .setCourseTitleFormat(UaCourseTitleFormat.DEFAULT_FORMAT);
+
     }
 
     private OrganizationEntity mockOrganizationEntity() {

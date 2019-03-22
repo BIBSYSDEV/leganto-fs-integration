@@ -6,10 +6,14 @@ import fs.common.LanguageValue;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Emne {
+public class Emne  {
 
     @JsonProperty("navn")
     private List<LanguageValue> navn;
+
+
+
+
 
     public List<LanguageValue> getNavn() {
         return navn;

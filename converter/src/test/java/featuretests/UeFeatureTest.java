@@ -197,9 +197,13 @@ public class UeFeatureTest extends CucumberTestProcessor {
 
     @Then("the field Operation in the UE entry  is the string {string}")
     public void the_field_Operation_in_the_UE_entry_is_the_string(String expectedOperation) {
-        assertThat(ueLegantoEntry.getOperation().toString(), is(equalTo(expectedOperation)));
+        assertThat(ueLegantoEntry.getOperation(), is(equalTo(expectedOperation)));
     }
 
+    @Then("the field Operation in the UE entry is empty")
+    public void the_field_Operation_in_the_UE_entry_is_empty() {
+        assertThat(ueLegantoEntry.getOperation(), is(emptyString()));
+    }
 
 
 }
