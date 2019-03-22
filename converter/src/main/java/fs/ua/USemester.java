@@ -2,9 +2,10 @@ package fs.ua;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fs.common.Validable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class USemester {
+public class USemester extends Validable {
 
     @JsonProperty("href")
     private String href;

@@ -3,10 +3,11 @@ package fs.ue;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.UEmne;
+import fs.common.Validable;
 import fs.ua.USemester;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UndervisiningEntry {
+public class UndervisiningEntry extends Validable {
 
     @JsonProperty("href")
     private String href;

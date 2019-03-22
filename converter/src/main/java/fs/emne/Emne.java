@@ -3,17 +3,20 @@ package fs.emne;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.LanguageValue;
+import fs.common.Validable;
+import java.io.IOException;
 import java.util.List;
+import utils.JsonUtils;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Emne  {
+public class Emne extends Validable {
 
     @JsonProperty("navn")
     private List<LanguageValue> navn;
 
-
-
-
+    public static Emne fromJson(String emneJson) throws IOException {
+        return JsonUtils.mapper.readValue(emneJson, Emne.class);
+    }
 
     public List<LanguageValue> getNavn() {
         return navn;

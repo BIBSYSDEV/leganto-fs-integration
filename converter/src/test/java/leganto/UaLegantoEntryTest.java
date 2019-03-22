@@ -20,7 +20,7 @@ import fs.ua.UndervisningsAktivitet;
 import fs.user.ParticipantsFile;
 import fs.user.UserInput;
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,84 +50,38 @@ public class UaLegantoEntryTest {
     private static final int INSTITUTE_NUMBER = 7;
     private static final Integer ARBITRARY_NUMBER_OF_PARTICIPANTS = 100;
     private static final String CAMPUS_PARTICIPANTS_STRING = "GLOS|10|DRAG|20";
+    public static final int TERMINNUMER = 12;
 
-    private final transient Emne emne;
+    private transient Emne emne;
     private final transient UndervisningsAktivitet ua;
     private UaLegantoEntry entry;
 
     private Language preferredLanguage = Language.NB;
 
-    public UaLegantoEntryTest() throws FileNotFoundException {
+    public UaLegantoEntryTest() throws IOException {
 
+        ua = mockUndervisningsAktivitet();
+        UserInput userInput = mockUserInput();
+        entry = new UaLegantoEntry(ua, userInput);
+//            .setEmne(emne)
+//            .setOrganizationEntity(organizationEntity);
+//        emne = mockEmne();
+//        OrganizationEntity organizationEntity = mockOrganizationEntity();
+//        String numberOfPartcipants = numberOfPartcipantsString();
+//        InputStream campusParticipantsStream = stringToInputStream(numberOfPartcipants);
+//        InputStream numberOfParticipantsStream = stringToInputStream(numberOfPartcipants);
+//
+//        userInput.initFiles(campusParticipantsStream, numberOfParticipantsStream);
+    }
+
+    public UndervisningsAktivitet mockUndervisningsAktivitet() {
         final UaUndervisning undervisning = mockUaUndervisning();
-
         List<LanguageValue> uaEmneNavn = mockEmneNanv();
 
-        ua = new UndervisningsAktivitet()
+        return new UndervisningsAktivitet()
             .setUndervisning(undervisning)
-            .setNanv(uaEmneNavn);
-
-        emne = mockEmne();
-        OrganizationEntity organizationEntity = mockOrganizationEntity();
-
-        Language[] languagesArray = {Language.NB, Language.NN, Language.EN};
-        UserInput userInput = mockUserInput(languagesArray);
-
-        entry = (UaLegantoEntry) new UaLegantoEntry(ua, userInput)
-            .setEmne(emne)
-            .setOrganizationEntity(organizationEntity);
-
-        String numberOfPartcipants = numberOfPartcipantsString();
-        InputStream campusParticipantsStream = stringToInputStream(numberOfPartcipants);
-        InputStream numberOfParticipantsStream = stringToInputStream(numberOfPartcipants);
-
-        userInput.initFiles(campusParticipantsStream, numberOfParticipantsStream);
-    }
-
-    private UserInput mockUserInput(Language[] languagesArray) {
-        List<Language> languageOrder = Arrays.asList(languagesArray);
-        return new UserInput()
-            .setLanguageOrder(languageOrder)
-            .setIncludeInstitute(true)
-            .setCourseTitleFormat(UaCourseTitleFormat.DEFAULT_FORMAT);
-
-    }
-
-    private OrganizationEntity mockOrganizationEntity() {
-        return new OrganizationEntity()
-            .setInstitution(INSTITUTION_NUMBER)
-            .setFaculty(FACULTY_NUMBER)
-            .setInstitute(INSTITUTE_NUMBER);
-    }
-
-    private Emne mockEmne() {
-        List<LanguageValue> emneNames = new ArrayList<>();
-        emneNames.add(new LanguageValue(Language.NB.toString(), NORWEGIAN_EMNE_NAME));
-        emneNames.add(new LanguageValue(Language.NN.toString(), NYNORK_EMNE_NAME));
-        emneNames.add(new LanguageValue(Language.EN.toString(), ENGLISH_EMNE_NAME));
-        return new Emne().setNavn(emneNames);
-    }
-
-    private List<LanguageValue> mockEmneNanv() {
-        List<LanguageValue> uaEmneNavn = new ArrayList<>();
-        uaEmneNavn.add(new LanguageValue(Language.NB.toString(), NORWEGIAN_UAEMNE_NAME));
-        uaEmneNavn.add(new LanguageValue(Language.NN.toString(), NYNORK_UAEMNE_NAME));
-        uaEmneNavn.add(new LanguageValue(Language.EN.toString(), ENGLISH_UAEMNE_NAME));
-        return uaEmneNavn;
-    }
-
-    private UaUndervisning mockUaUndervisning() {
-        final UEmne uEmne = new UEmne().setCode(EMNE_CODE).setHref(EMNE_HREF)
-            .setInstitution(EMNE_INSITUTION)
-            .setVersion(EMNE_VERSION);
-        final USemester uSemester = new USemester()
-            .setHref(UA_SEMESTER_HREF)
-            .setYear(UASEMESTER_YEAR)
-            .setSemesterCode(SEMESTER_INPUT);
-        return new UaUndervisning()
-            .setHref(UNDERVISNING_HREF)
-            .setEmne(uEmne)
-            .setUaSemester(uSemester);
+            .setAktivitet("UundervisningsAktivitet")
+            .setNavn(uaEmneNavn);
     }
 
     private String numberOfPartcipantsString() {
@@ -168,7 +122,7 @@ public class UaLegantoEntryTest {
             .stream()
             .filter(langValue -> langValue.getLang().equalsIgnoreCase(preferredLanguage.toString()))
             .findAny().map(LanguageValue::getValue).get();
-        String expectedUACourseName = ua.getNanv()
+        String expectedUACourseName = ua.getNavn()
             .stream()
             .filter(langValue -> langValue.getLang().equalsIgnoreCase(preferredLanguage.toString()))
             .findAny().map(LanguageValue::getValue).get();
@@ -203,4 +157,54 @@ public class UaLegantoEntryTest {
     public void getStartDateShouldCANonEmptyStartDate() {
         assertThat(entry.getStartDate(), is(not(equalTo(null))));
     }
+
+    private UserInput mockUserInput() {
+        Language[] languagesArray = {Language.NB, Language.NN, Language.EN};
+        List<Language> languageOrder = Arrays.asList(languagesArray);
+        return new UserInput()
+            .setLanguageOrder(languageOrder)
+            .setIncludeInstitute(true)
+            .setCourseTitleFormat(UaCourseTitleFormat.DEFAULT_FORMAT);
+    }
+
+    private OrganizationEntity mockOrganizationEntity() {
+        return new OrganizationEntity()
+            .setInstitution(INSTITUTION_NUMBER)
+            .setFaculty(FACULTY_NUMBER)
+            .setInstitute(INSTITUTE_NUMBER);
+    }
+
+    private Emne mockEmne() {
+        List<LanguageValue> emneNames = new ArrayList<>();
+        emneNames.add(new LanguageValue(Language.NB.toString(), NORWEGIAN_EMNE_NAME));
+        emneNames.add(new LanguageValue(Language.NN.toString(), NYNORK_EMNE_NAME));
+        emneNames.add(new LanguageValue(Language.EN.toString(), ENGLISH_EMNE_NAME));
+        return new Emne().setNavn(emneNames);
+    }
+
+    private List<LanguageValue> mockEmneNanv() {
+        List<LanguageValue> uaEmneNavn = new ArrayList<>();
+        uaEmneNavn.add(new LanguageValue(Language.NB.toString(), NORWEGIAN_UAEMNE_NAME));
+        uaEmneNavn.add(new LanguageValue(Language.NN.toString(), NYNORK_UAEMNE_NAME));
+        uaEmneNavn.add(new LanguageValue(Language.EN.toString(), ENGLISH_UAEMNE_NAME));
+        return uaEmneNavn;
+    }
+
+    private UaUndervisning mockUaUndervisning() {
+        final UEmne uEmne = new UEmne().setCode(EMNE_CODE).setHref(EMNE_HREF)
+            .setInstitution(EMNE_INSITUTION)
+            .setVersion(EMNE_VERSION);
+        final USemester uSemester = new USemester()
+            .setHref(UA_SEMESTER_HREF)
+            .setYear(UASEMESTER_YEAR)
+            .setSemesterCode(SEMESTER_INPUT);
+        return new UaUndervisning()
+            .setHref(UNDERVISNING_HREF)
+            .setEmne(uEmne)
+            .setUaSemester(uSemester)
+            .setTerminnumer(TERMINNUMER);
+    }
+
+
+
 }

@@ -3,6 +3,7 @@ package fs.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.Language;
+import fs.common.Validable;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class UserInput {
+public class UserInput extends Validable {
 
     public static final String CAMPUS_PARTICIPANTS_FILE_FIELD = "campus_participants_file";
     public static final String NUMBER_OF_PARTICIPANTS_FILE = "number_of_participants_file";

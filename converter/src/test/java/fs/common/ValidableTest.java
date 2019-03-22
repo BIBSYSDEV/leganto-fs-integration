@@ -82,6 +82,25 @@ public class ValidableTest extends Validable {
         assertThat(isGetter(get2), is(equalTo(false)));
     }
 
+    @Test
+    public void isValidShouldReturnTrueForAnnontatedGettersWithNullValues() {
+        ValidableClassWithAnnotation value = new ValidableClassWithAnnotation();
+
+        assertThat(value.isValid(), is(equalTo(true)));
+    }
+
+    private class ValidableClassWithAnnotation extends Validable {
+
+        public String getEmpytString() {
+            return "";
+        }
+
+        @IgnoreValidable
+        public String getIgnored() {
+            return null;
+        }
+    }
+
     private class SimpleValidableTestClass extends Validable {
 
         private String sampleString;
@@ -104,7 +123,7 @@ public class ValidableTest extends Validable {
             this.sampleInt = sampleInt;
         }
 
-        public Validable getsomething() {
+        public String getsomething() {
             return null;
         }
     }

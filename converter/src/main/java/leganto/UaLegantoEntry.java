@@ -1,5 +1,6 @@
 package leganto;
 
+import com.google.common.base.Preconditions;
 import fs.common.Language;
 import fs.ua.SemesterCode;
 import fs.ua.UaCourseTitleFormat;
@@ -9,7 +10,7 @@ import fs.user.UserInput;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 public class UaLegantoEntry extends LegantoEntry {
 
@@ -21,6 +22,9 @@ public class UaLegantoEntry extends LegantoEntry {
 
     public UaLegantoEntry(UndervisningsAktivitet ua, UserInput userInput) {
         super(userInput);
+        Objects.requireNonNull(ua);
+        Preconditions.checkArgument(ua.isValid());
+        Preconditions.checkArgument(userInput.isValid());
         this.ua = ua;
     }
 
@@ -53,8 +57,8 @@ public class UaLegantoEntry extends LegantoEntry {
             .getValueForLanguagePref(emne.getNavn(), userInput.getLanguageOrder())
             .orElse(getRandomValue(emne.getNavn()));
 
-        String uaNavn = Language.getValueForLanguagePref(ua.getNanv(), userInput.getLanguageOrder())
-            .orElse(getRandomValue(ua.getNanv()));
+        String uaNavn = Language.getValueForLanguagePref(ua.getNavn(), userInput.getLanguageOrder())
+            .orElse(getRandomValue(ua.getNavn()));
 
         UaCourseTitleFormat titleFormat = UaCourseTitleFormat.fromInteger(userInput.getCourseTitleFormat());
         return titleFormat.formatUaCourseTitle(
