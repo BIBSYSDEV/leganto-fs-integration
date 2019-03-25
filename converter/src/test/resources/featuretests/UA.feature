@@ -160,5 +160,3 @@ Feature:
     Given the user input has a field with name "course_title_format" with value 2
     When a new UA Leganto entry has been generated
     Then CourseTitle is the string "emneKode - NynorskEmneNavn - NynorskUANavn (HØST 1980)"
-
-
