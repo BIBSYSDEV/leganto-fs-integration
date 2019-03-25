@@ -10,6 +10,7 @@ import fs.common.UEmne;
 import fs.common.Validable;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UndervisningsAktivitet extends Validable {
@@ -68,5 +69,25 @@ public class UndervisningsAktivitet extends Validable {
     @JsonIgnore
     public USemester getSemester() {
         return this.getUndervisning().getUaSemester();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UndervisningsAktivitet)) {
+            return false;
+        }
+        UndervisningsAktivitet that = (UndervisningsAktivitet) o;
+        boolean x = Objects.equals(getUndervisning(), that.getUndervisning());
+        return Objects.equals(getUndervisning(), that.getUndervisning()) &&
+            Objects.equals(getNavn(), that.getNavn()) &&
+            Objects.equals(getAktivitet(), that.getAktivitet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUndervisning(), getNavn(), getAktivitet());
     }
 }

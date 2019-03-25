@@ -47,7 +47,7 @@ public class UeFeatureTest extends CucumberTestProcessor {
     @When("a new UE Leganto entry has been generated")
     public void new_UE_entry_is_generated() throws IOException {
         UndervisiningEntry ue = readValue(ueEntry, UndervisiningEntry.class);
-        UserInput userInput = readValue(world.getUserInput(), UserInput.class).initFiles();
+        UserInput userInput = readValue(world.getUserInput(), UserInput.class);
 
         OrganizationEntity orgEntity = readValue(world.getOrganizationEntity(), OrganizationEntity.class);
         Emne emne = readValue(world.getEmneResponse(), Emne.class);

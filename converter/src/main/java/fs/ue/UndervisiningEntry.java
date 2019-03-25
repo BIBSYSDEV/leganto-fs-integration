@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.UEmne;
 import fs.common.Validable;
 import fs.ua.USemester;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UndervisiningEntry extends Validable {
@@ -55,5 +56,25 @@ public class UndervisiningEntry extends Validable {
     public UndervisiningEntry setTerminNummer(String terminNummer) {
         this.terminNummer = terminNummer;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UndervisiningEntry)) {
+            return false;
+        }
+        UndervisiningEntry that = (UndervisiningEntry) o;
+        return getHref().equals(that.getHref()) &&
+            getEmne().equals(that.getEmne()) &&
+            getSemester().equals(that.getSemester()) &&
+            getTerminNummer().equals(that.getTerminNummer());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getHref(), getEmne(), getSemester(), getTerminNummer());
     }
 }

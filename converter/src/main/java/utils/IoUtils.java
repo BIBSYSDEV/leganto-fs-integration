@@ -1,6 +1,7 @@
 package utils;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
@@ -8,6 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class IoUtils {
+
+    private static final int END_OF_STREAM = -1;
 
     private IoUtils(){}
 
@@ -30,5 +33,15 @@ public final class IoUtils {
     public static List<String> streamAsList(InputStream inputStream) {
         return new BufferedReader(new InputStreamReader(inputStream))
             .lines().collect(Collectors.toList());
+    }
+
+
+    public static InputStream emptyStream(){
+        return new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return END_OF_STREAM;
+            }
+        };
     }
 }

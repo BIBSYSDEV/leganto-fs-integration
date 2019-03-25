@@ -1,5 +1,7 @@
 package fs.ua;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -19,6 +21,8 @@ public enum SemesterCode {
     private static final Month FIRST_MONTH_OF_SPRING_SEMESTER = Month.JANUARY;
     private static final Month LAST_MONTH_OF_SPRING_SEMESTER = Month.JULY;
 
+
+    @JsonCreator
     public static SemesterCode fromString(String semesterCode) {
         if (semesterCode.equalsIgnoreCase(AUTUMN_NORWEGIAN)) {
             return AUTUMN;
@@ -29,6 +33,7 @@ public enum SemesterCode {
         }
     }
 
+    @JsonValue
     @Override
     public String toString() {
         if (SemesterCode.AUTUMN.equals(this)) {

@@ -15,6 +15,8 @@ import fs.organizations.OrganizationEntity;
 import fs.user.Operation;
 import fs.user.UserInput;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.Before;
@@ -29,6 +31,7 @@ public class LegantoEntryTest {
     private static final Integer INSTITUTE = 67;
     private static final String CAMPUS1 = "GLOS";
     private static final String CAMPUS2 = "DRAG";
+    private static final String EMPTY_STRING = "";
     private transient LegantoEntry legantoEntry;
     private transient UserInput userInput;
 
@@ -39,13 +42,22 @@ public class LegantoEntryTest {
         campuses.add(CAMPUS2);
         userInput = new UserInput()
             .setOperation(Operation.NORMAL)
-            .setIncludeInstitute(true);
+            .setIncludeInstitute(true)
+            .setLanguageOrder(Collections.emptyList())
+            .setIncludeNumberOfParticipants(false)
+            .setIncludeCampusParticipants(false)
+            .setCampusParticipantsFilename(EMPTY_STRING)
+            .setNumberOfParticipantsFilename(EMPTY_STRING)
+            .setCourseTitleFormat(1)
+            .setIncludeUA(false);
+
 
         legantoEntry = new LegantoEntry(userInput) {
             @Override
             public Optional<String> toOptionalString() {
                 return Optional.empty();
             }
+
         };
         OrganizationEntity organizationEntity = new OrganizationEntity()
             .setInstitution(INSTITUTION)

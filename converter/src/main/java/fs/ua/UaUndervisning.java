@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.IgnoreValidable;
 import fs.common.UEmne;
 import fs.common.Validable;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UaUndervisning extends Validable {
@@ -56,5 +57,25 @@ public class UaUndervisning extends Validable {
     public UaUndervisning setTerminnumer(Integer terminnumer) {
         this.terminnumer = terminnumer;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UaUndervisning)) {
+            return false;
+        }
+        UaUndervisning that = (UaUndervisning) o;
+        return getHref().equals(that.getHref()) &&
+            getEmne().equals(that.getEmne()) &&
+            getUaSemester().equals(that.getUaSemester()) &&
+            getTerminnumer().equals(that.getTerminnumer());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getHref(), getEmne(), getUaSemester(), getTerminnumer());
     }
 }

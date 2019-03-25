@@ -1,5 +1,6 @@
 package fs.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.AbstractMap.SimpleEntry;
@@ -33,6 +34,7 @@ public abstract class Validable {
         return methodName.matches(GETTER_PREFIX_REGEX);
     }
 
+    @JsonIgnore
     public boolean isValid() {
         List<Method> methods = Arrays.asList(this.getClass().getDeclaredMethods());
         Boolean validity = methods.stream()
@@ -59,12 +61,12 @@ public abstract class Validable {
         if (value instanceof Validable) {
             result = ((Validable) value).isValid();
             if (!result) {
-                logger.warn(INVALID_RESULT_MESSAGE, methodName, this.getClass().getName());
+                logger.error(INVALID_RESULT_MESSAGE, methodName, this.getClass().getName());
             }
         } else {
             result = Objects.nonNull(value);
             if (!result) {
-                logger.warn(NUL_VALUE_MESSAGE, methodName, this.getClass().getName());
+                logger.error(NUL_VALUE_MESSAGE, methodName, this.getClass().getName());
             }
         }
         if (Objects.nonNull(value) && value.getClass().isPrimitive()) {

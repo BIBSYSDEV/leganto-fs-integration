@@ -28,6 +28,15 @@ public class UndervisningsAktivitetTest {
     }
 
     @Test
+    public void undervsigingsAktiviterShouldBeAbleToParseItsOwnJson() throws IOException {
+        UndervisningsAktivitet ua = JsonUtils.mapper.readValue(uaJson, UndervisningsAktivitet.class);
+        String newJson=JsonUtils.write(ua);
+        UndervisningsAktivitet newUA= JsonUtils.readValue(newJson,UndervisningsAktivitet.class);
+        assertThat(newUA,is(equalTo(ua)));
+
+    }
+
+    @Test
     public void setUndervisningShouldSetTheUnderVisningField() {
         UaUndervisning uau = new UaUndervisning();
         UndervisningsAktivitet ua = new UndervisningsAktivitet().setUndervising(uau);

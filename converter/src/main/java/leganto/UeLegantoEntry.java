@@ -141,6 +141,8 @@ public class UeLegantoEntry extends LegantoEntry {
         }
     }
 
+
+
     private UEmne getUeEmne() {
         return ue.getEmne();
     }

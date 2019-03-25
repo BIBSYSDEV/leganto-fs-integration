@@ -2,16 +2,26 @@ package featuretests;
 
 import static utils.JsonUtils.putElementArrayInNode;
 import static utils.JsonUtils.putKeyInNode;
+import static utils.JsonUtils.readValue;
 import static utils.JsonUtils.removeKeyFromNode;
+import static utils.JsonUtils.write;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import fs.emne.Emne;
+import fs.organizations.OrganizationEntity;
+import fs.ua.UaCourseTitleFormat;
+import fs.user.Operation;
 import fs.user.UserInput;
 import io.cucumber.datatable.DataTable;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import utils.JsonUtils;
 
@@ -20,16 +30,17 @@ public class Background extends CucumberTestProcessor {
     private static final int SINGLE_ELEMENT_IN_SINGLE_COLUMN_TABLE = 0;
     private static final String EMPTY_DATA_FROM_CUCUMBER_DEFINTION_FILE =
         "Datatable should not be empty. Add some data in the test";
+    public static final boolean DEFAULT_INCLUDE_NUMBER_OF_PARTICIPANTS = false;
+    public static final boolean DEFAULT_INCLUDE_UA = false;
+    private static final String EMPTY_STRING = "";
+    public static final boolean DEFAULT_INCLUDE_CAMPUS_PARTICIPANTS = false;
+    public static final boolean DEFAULT_INCLUDE_INSTITUTE = false;
     private final World world;
 
     public Background(World world) {
         this.world = world;
     }
 
-    @Given("there is a user input")
-    public void there_is_a_user_input() {
-        world.setUserInput(JsonUtils.newObjectNode());
-    }
 
     @Given("the user input has no field with name {string}")
     public void the_user_input_has_no_field_with_name(String key) {
@@ -107,4 +118,47 @@ public class Background extends CucumberTestProcessor {
         world.getUserInput().put(key,Boolean.valueOf(booleanValue));
     }
 
+    @Given("there is a valid user input")
+    public void thereIsAValidUserInput() throws IOException {
+        UserInput userInput=new UserInput()
+            .setIncludeUA(DEFAULT_INCLUDE_UA)
+            .setNumberOfParticipantsFilename(EMPTY_STRING)
+            .setCampusParticipantsFilename(EMPTY_STRING)
+            .setIncludeCampusParticipants(DEFAULT_INCLUDE_CAMPUS_PARTICIPANTS)
+            .setIncludeNumberOfParticipants(DEFAULT_INCLUDE_NUMBER_OF_PARTICIPANTS)
+            .setIncludeInstitute(DEFAULT_INCLUDE_INSTITUTE)
+            .setOperation(Operation.NORMAL)
+            .setLanguageOrder(Collections.emptyList())
+            .setCourseTitleFormat(UaCourseTitleFormat.DEFAULT_FORMAT);
+
+        String userInputJson=write(userInput);
+        ObjectNode userInputObjectNode = readValue(userInputJson, ObjectNode.class);
+        world.setUserInput(userInputObjectNode);
+
+
+    }
+
+
+    @Given("there is a valid organization response")
+    public void thereIsAValidOrgEntry() throws IOException {
+        OrganizationEntity organizationEntity=new OrganizationEntity()
+            .setInstitute(0)
+            .setFaculty(0)
+            .setInstitution(0);
+        world.setOrganizationEntity(readValue(write(organizationEntity),ObjectNode.class));
+    }
+
+
+    @Given("there is a valid emne response")
+    public void thersIsAValidEmneResponse() throws IOException {
+        Emne emne=new Emne()
+            .setNavn(Collections.emptyList());
+
+        world.setEmneResponse(readValue(write(emne),ObjectNode.class));
+
+    }
+
+    @Given("null")
+    public void thereIsAValidResponseFromUndervisningsaktiviteterUA_ID() {
+    }
 }

@@ -76,7 +76,6 @@ public class UaLegantoEntryTest {
             .setNavn(uaEmneNavn);
     }
 
-
     @Test
     public void toStringShouldNotReturnEmptyString() {
         assertThat(entry.toString(), is(not(emptyString())));

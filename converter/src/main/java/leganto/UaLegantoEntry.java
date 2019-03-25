@@ -24,7 +24,6 @@ public class UaLegantoEntry extends LegantoEntry {
         super(userInput);
         Objects.requireNonNull(ua);
         Preconditions.checkArgument(ua.isValid());
-        Preconditions.checkArgument(userInput.isValid());
         this.ua = ua;
     }
 
@@ -156,4 +155,6 @@ public class UaLegantoEntry extends LegantoEntry {
             return EMPTY_STRING;
         }
     }
+
+
 }

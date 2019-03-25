@@ -1,6 +1,7 @@
 package fs.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 
 public class UEmne extends Validable {
 
@@ -52,5 +53,25 @@ public class UEmne extends Validable {
     public UEmne setVersion(String version) {
         this.version = version;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UEmne)) {
+            return false;
+        }
+        UEmne uEmne = (UEmne) o;
+        return Objects.equals(getHref(), uEmne.getHref()) &&
+            Objects.equals(getInstitution(), uEmne.getInstitution()) &&
+            Objects.equals(getCode(), uEmne.getCode()) &&
+            Objects.equals(getVersion(), uEmne.getVersion());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getHref(), getInstitution(), getCode(), getVersion());
     }
 }

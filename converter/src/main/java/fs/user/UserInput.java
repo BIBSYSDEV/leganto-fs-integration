@@ -1,12 +1,13 @@
 package fs.user;
 
+import static utils.IoUtils.emptyStream;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.Language;
 import fs.common.Validable;
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -67,21 +68,27 @@ public class UserInput extends Validable {
     }
 
     public UserInput initFiles() throws IOException {
-        File campusParticipantsFile = new File(campusParticipantsFilename);
-        BufferedInputStream campusParticipantsInputStream = new BufferedInputStream(
-            Files.newInputStream(campusParticipantsFile.toPath()));
+        InputStream campusParticipantsInputStream = emptyStream();
+        InputStream numberOfParticipantsInputStream = emptyStream();
 
-        File numberOfParticipantsFile = new File(numberOfParticipantsFilename);
-        BufferedInputStream numberOfParticipantsInputStream = new BufferedInputStream(
-            Files.newInputStream(numberOfParticipantsFile.toPath()));
+
+        if (includeCampusParticipants) {
+            File campusParticipantsFile = new File(campusParticipantsFilename);
+            campusParticipantsInputStream = new BufferedInputStream(
+                Files.newInputStream(campusParticipantsFile.toPath()));
+        }
+
+        if (includeNumberOfParticipants) {
+            File numberOfParticipantsFile = new File(numberOfParticipantsFilename);
+            numberOfParticipantsInputStream = new BufferedInputStream(
+                Files.newInputStream(numberOfParticipantsFile.toPath()));
+        }
 
         initFiles(campusParticipantsInputStream, numberOfParticipantsInputStream);
-
         return this;
     }
 
-    public UserInput initFiles(InputStream campusParticipnatsInputStream, InputStream numberOfParticipantsInputSteam)
-        throws FileNotFoundException {
+    private UserInput initFiles(InputStream campusParticipnatsInputStream, InputStream numberOfParticipantsInputSteam) {
         BufferedInputStream campusParticipantsStream = new BufferedInputStream(campusParticipnatsInputStream);
         campusParticipantsFile = new ParticipantsFile(campusParticipantsStream).init();
 
@@ -93,6 +100,7 @@ public class UserInput extends Validable {
 
     @JsonIgnore
     public Optional<String> getCampusParticipants(String courseCode) {
+
         if (includeCampusParticipants) {
             Objects.requireNonNull(campusParticipantsFile,
                 "campus participants file not read. Call initParticipants first");
@@ -105,6 +113,7 @@ public class UserInput extends Validable {
 
     @JsonIgnore
     public Optional<String> getNumberOfParticipants(String courseCode) {
+
         if (includeNumberOfParticipants && Objects.nonNull(numberOfPartipantsFile)) {
             return numberOfPartipantsFile.getPartcipants(courseCode);
         } else {
