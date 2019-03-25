@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -129,6 +130,10 @@ public final class JsonUtils {
     public static <T> T readValue(ObjectNode root, Class<T> clazz) throws JsonProcessingException {
         return mapper.treeToValue(root, clazz);
 
+    }
+
+    public static <T> T readValue(String json, Class<T> clazz) throws IOException {
+        return mapper.readValue(json, clazz);
 
     }
 }

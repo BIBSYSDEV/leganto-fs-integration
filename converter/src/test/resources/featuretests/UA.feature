@@ -4,12 +4,13 @@ Feature:
   FS: Felles Studentsystem
 
   Background:
-    Given  there is a user input
+    Given there is a valid user input
+#    And the user input has a field with name "include_campus_participants" with boolean value "true"
+#    And  the user input has a field with name "campus_participants_file" with value "campus_participants_file.csv"
+#    And the user input has a field with name "include_number_of_participants" with boolean value "true"
+#    And the user input has a field with name "number_of_participants_file" with value "number_of_participants.csv"
+
     And the user input has a field with name "operation" with value "NORMAL"
-    And the user input has a field with name "campus_participants_file" with value "campus_participants_file.csv"
-    And the user input has a field with name "include_campus_participants" with boolean value "true"
-    And the user input has a field with name "number_of_participants_file" with value "number_of_participants.csv"
-    And the user input has a field with name "include_number_of_participants" with boolean value "true"
     And the user input has a field with name "course_title_format" with value 1
     And the user input has a field with name "language_order" that is an array with string values
       | nn |
@@ -17,18 +18,10 @@ Feature:
       | en |
 
     And the user input has a field with name "include_ua" with boolean value "true"
-
-    And the campus participants file is a semicolon separated file
-    And the campus participants file contains a row with the following value
-      | UA_emneKode-emneVersjon-1980-HØST;GLOS\|10,DRAG\|20 |
+    And the user input has a field with name "include_institute_in_acad_department" with boolean value "true"
 
 
-    And the number_of_participants file is a semicolon separated file
-    And the number_of_participants file contains a row with the following value
-      | UA_emneKode-emneVersjon-1980-HØST;123 |
-
-
-    And there is a request to /undervisningsaktiviteter/UA_ID
+    And there is a valid response from /undervisningsaktiviteter/UA_ID
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.href" with value "emne/emneId"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.kode" with value "emneKode"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.versjon" with value "emneVersjon"
@@ -109,7 +102,6 @@ Feature:
     And Term4 is empty
     And StartDate is the string "1980-08-01"
     And EndDate is the string "1981-01-31"
-    And NumberOfParticipants has the value "123"
     And WeeklyHours is empty
     And Year has the value 1980
     And SearchableId1 is empty
@@ -128,7 +120,6 @@ Feature:
 #    And AllInstructors is not empty
     And Operation is empty
     And SubmitByDate is empty
-    And CampusParticipants is the string "GLOS|10,DRAG|20"
     And OldCourse Code is empty
     And OldCourseSectionId is empty
     And Reading List Name is empty
@@ -160,14 +151,12 @@ Feature:
 
 
   Scenario: User does include institute in AcademicDepartment
-    Given the user input field "include_institute_in_acad_department" has value false
+    Given the user input field "include_institute_in_acad_department" has the boolean value "false"
     When a new UA Leganto entry has been generated
     Then AcademicDepartment is the  string "222_39"
 
 
-   Scenario: CourseTitle first alternative format
-     Given the user input field "course_title_format" has value 2
-     When a new UA Leganto entry has been generated
-     Then CourseTitle is the string "emneKode - NynorskEmneNavn - NynorskUANavn (HØST 1980)"
-
-
+  Scenario: CourseTitle first alternative format
+    Given the user input has a field with name "course_title_format" with value 2
+    When a new UA Leganto entry has been generated
+    Then CourseTitle is the string "emneKode - NynorskEmneNavn - NynorskUANavn (HØST 1980)"

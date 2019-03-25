@@ -2,7 +2,9 @@ package leganto;
 
 import fs.common.Language;
 import fs.common.UEmne;
+import fs.ua.SemesterCode;
 import fs.ua.USemester;
+import fs.ue.UeCourseTitleFormat;
 import fs.ue.UndervisiningEntry;
 import fs.user.Operation;
 import fs.user.UserInput;
@@ -16,7 +18,6 @@ public class UeLegantoEntry extends LegantoEntry {
     private static final String COURSE_CODE_DELIMITER = "-";
     private static final String UE_ID_PREFIX = "UE";
     private static final String UA_ID_PREFIX = "UA";
-    private static final String ID_SEPARATOR = ",";
     private static final int PREVIOUS_YEAR = 1;
 
     private final transient UndervisiningEntry ue;
@@ -32,18 +33,27 @@ public class UeLegantoEntry extends LegantoEntry {
     }
 
     private String generateCourseCode(Integer year) {
-        return String.join(COURSE_CODE_DELIMITER,
+
+        String suffix = String.join(COURSE_CODE_DELIMITER,
             getUeEmne().getCode(),
             getUeEmne().getVersion(),
             year.toString(),
             getUeSemester().getSemesterCode().toString());
+
+        return String.join(DEFAULT_DELIMITER, UE_ID_PREFIX, suffix);
     }
 
     @Override
     public String getCourseTitle() {
-        return Language
-            .getValueForLanguagePref(emne.getNavn(), userInput.getLanguageOrder())
+        String emneNavn = Language.getValueForLanguagePref(emne.getNavn(), userInput.getLanguageOrder())
             .orElse(getRandomValue(emne.getNavn()));
+
+        return UeCourseTitleFormat
+            .fromInteger(userInput.getCourseTitleFormat())
+            .formatUaCourseTitle(emneNavn,
+                ue.getEmne().getCode(),
+                ue.getSemester().getSemesterCode(),
+                ue.getSemester().getYear());
     }
 
     @Override
@@ -53,7 +63,7 @@ public class UeLegantoEntry extends LegantoEntry {
 
     @Override
     public String getTerm1() {
-        return getUeSemester().getSemesterCode().toString();
+        return getUeSemester().getSemesterCode().toEnglishString();
     }
 
     @Override
@@ -64,7 +74,13 @@ public class UeLegantoEntry extends LegantoEntry {
 
     @Override
     public String getEndDate() {
-        LocalDate endDate = getUeSemester().getSemesterCode().semesterEndDate(getUeSemester().getYear());
+
+        int year = getUeSemester().getYear();
+        if (SemesterCode.AUTUMN.equals(getUeSemester().getSemesterCode())) {
+            year = getUeSemester().getYear() + 1;
+        }
+
+        LocalDate endDate = getUeSemester().getSemesterCode().semesterEndDate(year);
         return dateToString(endDate);
     }
 
@@ -86,7 +102,9 @@ public class UeLegantoEntry extends LegantoEntry {
         searchableId2.addAll(searchableIdSuffix());
         String searchableId2String = String.join(DEFAULT_DELIMITER, searchableId2);
 
-        return String.join(ID_SEPARATOR, searchableId1String, searchableId2String);
+        String searchableId3String = ue.getEmne().getCode();
+
+        return String.join(SEARCHABLE_IDS_DELIMITER, searchableId1String, searchableId2String, searchableId3String);
     }
 
     private List<String> searchableIdSuffix() {
@@ -122,6 +140,8 @@ public class UeLegantoEntry extends LegantoEntry {
             return EMPTY_STRING;
         }
     }
+
+
 
     private UEmne getUeEmne() {
         return ue.getEmne();

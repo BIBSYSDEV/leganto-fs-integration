@@ -2,9 +2,12 @@ package fs.organizations;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fs.common.Validable;
+import java.io.IOException;
+import utils.JsonUtils;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OrganizationEntity {
+public class OrganizationEntity extends Validable {
 
     @JsonProperty("institusjon")
     private Integer institution;
@@ -14,6 +17,10 @@ public class OrganizationEntity {
 
     @JsonProperty("institutt")
     private Integer institute;
+
+    public static OrganizationEntity fromJson(String orgJson) throws IOException {
+        return JsonUtils.mapper.readValue(orgJson, OrganizationEntity.class);
+    }
 
     public Integer getInstitution() {
         return institution;

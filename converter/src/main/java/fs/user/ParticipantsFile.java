@@ -1,6 +1,5 @@
 package fs.user;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
@@ -23,7 +22,7 @@ public class ParticipantsFile {
         this.participantsDataStream = participantsDataStream;
     }
 
-    public ParticipantsFile init() throws FileNotFoundException {
+    public ParticipantsFile init() {
         List<String> lines = streamAsList();
         Map<String, String> map = lines.stream()
             .map(this::splitLine)

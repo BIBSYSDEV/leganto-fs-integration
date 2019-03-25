@@ -2,11 +2,12 @@ package fs.user;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import leganto.LegantoEntry;
 
 public enum Operation {
-    ROLLOVER, DELETE, OTHER;
+    ROLLOVER, DELETE, NORMAL;
 
-    public static final String DEFAULT_VALUE = OTHER.name();
+    public static final String DEFAULT_VALUE = NORMAL.name();
 
     @JsonCreator
     public static Operation fromString(String input) {
@@ -15,13 +16,22 @@ public enum Operation {
         } else if (DELETE.name().equalsIgnoreCase(input)) {
             return DELETE;
         } else {
-            return OTHER;
+            return NORMAL;
         }
     }
 
     @JsonValue
     public String toValue() {
         return this.name();
+    }
+
+    @Override
+    public String toString() {
+        if (this.equals(NORMAL)) {
+            return LegantoEntry.EMPTY_STRING;
+        } else {
+            return toValue();
+        }
     }
 
 }
