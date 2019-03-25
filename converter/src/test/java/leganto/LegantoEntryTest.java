@@ -57,8 +57,8 @@ public class LegantoEntryTest {
     @Test
     public void getRandomValuesShouldChooseAValueFromANonEmptyList() {
         List<LanguageValue> values = new ArrayList<>();
-        values.add(new LanguageValue(Language.NB.toString(), ARBITRARY_NORWEGIAN_TEXT));
-        values.add(new LanguageValue(Language.EN.toString(), ARBITRARY_ENGLISH_TEXT));
+        values.add(new LanguageValue(Language.NB, ARBITRARY_NORWEGIAN_TEXT));
+        values.add(new LanguageValue(Language.EN, ARBITRARY_ENGLISH_TEXT));
         String randomValue = legantoEntry.getRandomValue(values);
         assertThat(randomValue, anyOf(
             is(equalTo(ARBITRARY_ENGLISH_TEXT)),

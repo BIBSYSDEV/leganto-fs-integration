@@ -20,7 +20,7 @@ public class UserInput extends Validable {
     public static final String NUMBER_OF_PARTICIPANTS_FILE = "number_of_participants_file";
 
     @JsonProperty("include_campus_participants")
-    private boolean includeCampusParticipants;
+    private Boolean includeCampusParticipants;
 
     @JsonProperty(CAMPUS_PARTICIPANTS_FILE_FIELD)
     private String campusParticipantsFilename;
@@ -31,7 +31,7 @@ public class UserInput extends Validable {
     @JsonProperty(NUMBER_OF_PARTICIPANTS_FILE)
     private String numberOfParticipantsFilename;
 
-    @JsonProperty(value = "operation", defaultValue = "OTHER")
+    @JsonProperty(value = "operation", defaultValue = "NORMAL")
     private Operation operation;
 
     @JsonProperty(value = "include_institute_in_acad_department", required = true)
@@ -53,6 +53,7 @@ public class UserInput extends Validable {
     private transient ParticipantsFile numberOfPartipantsFile;
 
     public UserInput() {
+        super();
         this.operation = Operation.NORMAL;
     }
 
@@ -104,7 +105,7 @@ public class UserInput extends Validable {
 
     @JsonIgnore
     public Optional<String> getNumberOfParticipants(String courseCode) {
-        if (includeNumberOfParticipants) {
+        if (includeNumberOfParticipants && Objects.nonNull(numberOfPartipantsFile)) {
             return numberOfPartipantsFile.getPartcipants(courseCode);
         } else {
             return Optional.empty();
@@ -121,11 +122,11 @@ public class UserInput extends Validable {
     }
 
     @SuppressWarnings("PMD")
-    public boolean getIncludeCampusParticipants() {
+    public Boolean getIncludeCampusParticipants() {
         return includeCampusParticipants;
     }
 
-    public UserInput setIncludeCampusParticipants(boolean includeCampusParticipants) {
+    public UserInput setIncludeCampusParticipants(Boolean includeCampusParticipants) {
         this.includeCampusParticipants = includeCampusParticipants;
         return this;
     }
@@ -140,21 +141,21 @@ public class UserInput extends Validable {
     }
 
     @SuppressWarnings("PMD")
-    public boolean getIncludeInstitute() {
+    public Boolean getIncludeInstitute() {
         return includeInstitute;
     }
 
-    public UserInput setIncludeInstitute(boolean includeInstitute) {
+    public UserInput setIncludeInstitute(Boolean includeInstitute) {
         this.includeInstitute = includeInstitute;
         return this;
     }
 
     @SuppressWarnings("PMD")
-    public boolean getIncludeNumberOfParticipants() {
+    public Boolean getIncludeNumberOfParticipants() {
         return includeNumberOfParticipants;
     }
 
-    public UserInput setIncludeNumberOfParticipants(boolean includeNumberOfParticipants) {
+    public UserInput setIncludeNumberOfParticipants(Boolean includeNumberOfParticipants) {
         this.includeNumberOfParticipants = includeNumberOfParticipants;
         return this;
     }
@@ -178,11 +179,11 @@ public class UserInput extends Validable {
     }
 
     @SuppressWarnings("PMD")
-    public boolean getIncludeUA() {
+    public Boolean getIncludeUA() {
         return includeUA;
     }
 
-    public UserInput setIncludeUA(boolean includeUA) {
+    public UserInput setIncludeUA(Boolean includeUA) {
         this.includeUA = includeUA;
         return this;
     }

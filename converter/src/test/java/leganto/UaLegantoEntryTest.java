@@ -17,30 +17,33 @@ import fs.ua.USemester;
 import fs.ua.UaCourseTitleFormat;
 import fs.ua.UaUndervisning;
 import fs.ua.UndervisningsAktivitet;
-import fs.user.ParticipantsFile;
+import fs.user.Operation;
 import fs.user.UserInput;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class UaLegantoEntryTest {
 
+    public static final boolean INCLUDE_NUMBER_OF_PARTICIPANTS = false;
+    private static final int TERMINNUMER = 12;
+    private static final String CAMPUS_PARTICIPANTS_FILENAME = "campus_participants.csv";
+    private static final boolean INCLUDE_INSTITUTE = true;
+    private static final boolean INCLUDE_CAMPUS_PARTICIPANTS = false;
     private static final String EMNE_HREF = "emneHref";
     private static final String EMNE_CODE = "emneCode";
     private static final String EMNE_INSITUTION = "emneInsitution";
     private static final String EMNE_VERSION = "emneVersion";
     private static final String UNDERVISNING_HREF = "undervingnHref";
     private static final String UA_SEMESTER_HREF = "uaSemesterHref";
-
     private static final Integer UASEMESTER_YEAR = 1980;
     private static final String NORWEGIAN_EMNE_NAME = "NorwegianEmneName";
     private static final String NYNORK_EMNE_NAME = "NynorkEmneName";
     private static final String ENGLISH_EMNE_NAME = "EnglishEmneName";
-
     private static final String NORWEGIAN_UAEMNE_NAME = "NorwegianUAEmneName";
     private static final String NYNORK_UAEMNE_NAME = "NynorkUAEmneName";
     private static final String ENGLISH_UAEMNE_NAME = "EnglishAEmneName";
@@ -49,29 +52,18 @@ public class UaLegantoEntryTest {
     private static final int FACULTY_NUMBER = 35;
     private static final int INSTITUTE_NUMBER = 7;
     private static final Integer ARBITRARY_NUMBER_OF_PARTICIPANTS = 100;
-    private static final String CAMPUS_PARTICIPANTS_STRING = "GLOS|10|DRAG|20";
-    public static final int TERMINNUMER = 12;
+    private static final String NUMBER_OF_PARTICIPANTS_FILENAME = "number_of_participants.csv";
+    private final transient UndervisningsAktivitet ua = mockUndervisningsAktivitet();
 
-    private transient Emne emne;
-    private final transient UndervisningsAktivitet ua;
+    @Rule
+    public ExpectedException expectedEx = ExpectedException.none();
+    private Language preferredLanguage = Language.NB;
+    private UserInput userInput = mockUserInput();
     private UaLegantoEntry entry;
 
-    private Language preferredLanguage = Language.NB;
-
-    public UaLegantoEntryTest() throws IOException {
-
-        ua = mockUndervisningsAktivitet();
-        UserInput userInput = mockUserInput();
+    @Before
+    public void init() {
         entry = new UaLegantoEntry(ua, userInput);
-//            .setEmne(emne)
-//            .setOrganizationEntity(organizationEntity);
-//        emne = mockEmne();
-//        OrganizationEntity organizationEntity = mockOrganizationEntity();
-//        String numberOfPartcipants = numberOfPartcipantsString();
-//        InputStream campusParticipantsStream = stringToInputStream(numberOfPartcipants);
-//        InputStream numberOfParticipantsStream = stringToInputStream(numberOfPartcipants);
-//
-//        userInput.initFiles(campusParticipantsStream, numberOfParticipantsStream);
     }
 
     public UndervisningsAktivitet mockUndervisningsAktivitet() {
@@ -84,14 +76,6 @@ public class UaLegantoEntryTest {
             .setNavn(uaEmneNavn);
     }
 
-    private String numberOfPartcipantsString() {
-        return String.join(ParticipantsFile.CSV_DELIMITER, entry.getCourseCode(),
-            ARBITRARY_NUMBER_OF_PARTICIPANTS.toString());
-    }
-
-    private InputStream stringToInputStream(String input) {
-        return new ByteArrayInputStream(input.getBytes());
-    }
 
     @Test
     public void toStringShouldNotReturnEmptyString() {
@@ -117,14 +101,15 @@ public class UaLegantoEntryTest {
 
     @Test
     public void getCourseTitleWithNBShouldReturnCourseTitleWithTitleFromEmneForNBLanguage() {
-
+        Emne emne = mockEmne();
+        entry.setEmne(emne);
         String expectedCourseName = emne.getNavn()
             .stream()
-            .filter(langValue -> langValue.getLang().equalsIgnoreCase(preferredLanguage.toString()))
+            .filter(langValue -> langValue.getLang().equals(preferredLanguage))
             .findAny().map(LanguageValue::getValue).get();
         String expectedUACourseName = ua.getNavn()
             .stream()
-            .filter(langValue -> langValue.getLang().equalsIgnoreCase(preferredLanguage.toString()))
+            .filter(langValue -> langValue.getLang().equals(preferredLanguage))
             .findAny().map(LanguageValue::getValue).get();
 
         assertThat(entry.getCourseTitle(), containsString(expectedCourseName));
@@ -158,13 +143,90 @@ public class UaLegantoEntryTest {
         assertThat(entry.getStartDate(), is(not(equalTo(null))));
     }
 
+    @Test
+    public void getAllSearchableIdsShouldThrowExceptionForNonInitializedOrganizationEntity() {
+        expectedEx.expect(NullPointerException.class);
+        expectedEx.expectMessage(LegantoEntry.MISSING_ORGANIZATION_ENTITY_INFORMATION_ERROR);
+        entry.getAllSearchableIds();
+    }
+
+    @Test
+    public void getAllSearchableIdsShouldReturnNonEmptyString() {
+        entry.setOrganizationEntity(mockOrganizationEntity());
+        entry.getAllSearchableIds();
+    }
+
+    @Test
+    public void getOldCourseCodeShouldReturnEmptyForNormalOperation() {
+        userInput.setOperation(Operation.NORMAL);
+        assertThat(entry.getOldCourseCode(), is(emptyString()));
+    }
+
+    @Test
+    public void getOldCourseCodeShouldNotReturnEmptyForRolloverOperation() {
+        userInput.setOperation(Operation.ROLLOVER);
+        assertThat(entry.getOldCourseCode(), is(not(emptyString())));
+    }
+
+    @Test
+    public void getOldCourseSectionIdShouldNotReturnEmptyForRolloverOperation() {
+        userInput.setOperation(Operation.ROLLOVER);
+        assertThat(entry.getOldCourseSectionId(), is(not(emptyString())));
+    }
+
+    @Test
+    public void getOldCourseSectionIdShouldNotReturnEmptyForNormalOperation() {
+        userInput.setOperation(Operation.NORMAL);
+        assertThat(entry.getOldCourseSectionId(), is(emptyString()));
+    }
+
+    @Test
+    public void getEndDateShouldReturnNonEmptyString() {
+        assertThat(entry.getEndDate(), is(not(emptyString())));
+    }
+
+    @Test
+    public void getStartDateShouldReturnNonEmptyString() {
+        assertThat(entry.getStartDate(), is(not(emptyString())));
+    }
+
+    @Test
+    public void getTerm1ShouldReturnNonEmptyString() {
+        assertThat(entry.getTerm1(), is(not(emptyString())));
+    }
+
+    @Test
+    public void getWeeklyHoursShouldReturnEmptyString() {
+        assertThat(entry.getWeeklyHours(), is(emptyString()));
+    }
+
+    @Test
+    public void getYearShouldReturnTheSemesterYear() {
+        assertThat(entry.getYear(), is(ua.getSemester().getYear()));
+    }
+
+    @Test
+    public void getYearSectionIdShouldReturnEmneVersion() {
+        assertThat(entry.getSectionId(), is(ua.getEmne().getVersion()));
+    }
+
+    @Test
+    public void getNumberOfParticpantsShouldReturnEmptyStringForNonExistingFile() {
+        assertThat(entry.getNumberOfParticipants(), is(emptyString()));
+    }
+
     private UserInput mockUserInput() {
         Language[] languagesArray = {Language.NB, Language.NN, Language.EN};
         List<Language> languageOrder = Arrays.asList(languagesArray);
         return new UserInput()
             .setLanguageOrder(languageOrder)
-            .setIncludeInstitute(true)
-            .setCourseTitleFormat(UaCourseTitleFormat.DEFAULT_FORMAT);
+            .setIncludeInstitute(INCLUDE_INSTITUTE)
+            .setCourseTitleFormat(UaCourseTitleFormat.DEFAULT_FORMAT)
+            .setCampusParticipantsFilename(CAMPUS_PARTICIPANTS_FILENAME)
+            .setIncludeCampusParticipants(INCLUDE_CAMPUS_PARTICIPANTS)
+            .setNumberOfParticipantsFilename(NUMBER_OF_PARTICIPANTS_FILENAME)
+            .setIncludeNumberOfParticipants(INCLUDE_NUMBER_OF_PARTICIPANTS)
+            .setIncludeUA(true);
     }
 
     private OrganizationEntity mockOrganizationEntity() {
@@ -176,17 +238,17 @@ public class UaLegantoEntryTest {
 
     private Emne mockEmne() {
         List<LanguageValue> emneNames = new ArrayList<>();
-        emneNames.add(new LanguageValue(Language.NB.toString(), NORWEGIAN_EMNE_NAME));
-        emneNames.add(new LanguageValue(Language.NN.toString(), NYNORK_EMNE_NAME));
-        emneNames.add(new LanguageValue(Language.EN.toString(), ENGLISH_EMNE_NAME));
+        emneNames.add(new LanguageValue(Language.NB, NORWEGIAN_EMNE_NAME));
+        emneNames.add(new LanguageValue(Language.NN, NYNORK_EMNE_NAME));
+        emneNames.add(new LanguageValue(Language.EN, ENGLISH_EMNE_NAME));
         return new Emne().setNavn(emneNames);
     }
 
     private List<LanguageValue> mockEmneNanv() {
         List<LanguageValue> uaEmneNavn = new ArrayList<>();
-        uaEmneNavn.add(new LanguageValue(Language.NB.toString(), NORWEGIAN_UAEMNE_NAME));
-        uaEmneNavn.add(new LanguageValue(Language.NN.toString(), NYNORK_UAEMNE_NAME));
-        uaEmneNavn.add(new LanguageValue(Language.EN.toString(), ENGLISH_UAEMNE_NAME));
+        uaEmneNavn.add(new LanguageValue(Language.NB, NORWEGIAN_UAEMNE_NAME));
+        uaEmneNavn.add(new LanguageValue(Language.NN, NYNORK_UAEMNE_NAME));
+        uaEmneNavn.add(new LanguageValue(Language.EN, ENGLISH_UAEMNE_NAME));
         return uaEmneNavn;
     }
 
@@ -204,7 +266,4 @@ public class UaLegantoEntryTest {
             .setUaSemester(uSemester)
             .setTerminnumer(TERMINNUMER);
     }
-
-
-
 }

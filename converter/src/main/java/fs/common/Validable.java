@@ -12,8 +12,10 @@ import org.slf4j.LoggerFactory;
 
 public abstract class Validable {
 
-    public static final String INVALID_RESULT_MESSAGE = "Method {} in class {} is  not a valid result";
-    public static final String NUL_VALUE_MESSAGE = "Method {} in class {} return null result";
+    private static final String INVALID_RESULT_MESSAGE = "Method {} in class {} is  not a valid result";
+    private static final String NUL_VALUE_MESSAGE = "Method {} in class {} return null result";
+    private static final String PRIMITIVE_VALUE_ERROR = "Method %s returns probably a primitive value";
+    private static final String INVOKING_METHOD_ERROR = "Error invoking method %s. Does it return primitive values?";
     private static final String GETTER_PREFIX_REGEX = "^(get|is)[A-Z].*";
     private static final Logger logger = LoggerFactory.getLogger(Validable.class);
     private static final String ILLEGAL_STATE_MESSAGE = "Undefined boolean result";
@@ -21,10 +23,20 @@ public abstract class Validable {
     protected Validable() {
     }
 
+    public static boolean isGetter(Method method) {
+        boolean zeroParamaters = method.getParameterCount() == 0;
+        boolean matchesPattern = matchesGetterPattern(method.getName());
+        return zeroParamaters && matchesPattern;
+    }
+
+    protected static boolean matchesGetterPattern(String methodName) {
+        return methodName.matches(GETTER_PREFIX_REGEX);
+    }
+
     public boolean isValid() {
         List<Method> methods = Arrays.asList(this.getClass().getDeclaredMethods());
         Boolean validity = methods.stream()
-            .filter(method -> isGetter(method.getName()))
+            .filter(Validable::isGetter)
             .filter(this::shouldNotIgnore)
             .map(this::getValue)
             .map(this::isValid)
@@ -43,10 +55,10 @@ public abstract class Validable {
         Object value = nameValuePair.getValue();
         String methodName = nameValuePair.getKey();
         boolean result = false;
+
         if (value instanceof Validable) {
             result = ((Validable) value).isValid();
             if (!result) {
-
                 logger.warn(INVALID_RESULT_MESSAGE, methodName, this.getClass().getName());
             }
         } else {
@@ -54,6 +66,9 @@ public abstract class Validable {
             if (!result) {
                 logger.warn(NUL_VALUE_MESSAGE, methodName, this.getClass().getName());
             }
+        }
+        if (Objects.nonNull(value) && value.getClass().isPrimitive()) {
+            throw new IllegalArgumentException(String.format(PRIMITIVE_VALUE_ERROR, methodName));
         }
         return result;
     }
@@ -69,11 +84,8 @@ public abstract class Validable {
             // escalate Exceptions because Java 8 does not support exceptions inside maps
             // If we get any exception of public getters it would be a critical mistake
             // and should fix it
+            logger.error(INVOKING_METHOD_ERROR, method.getName());
             throw new RuntimeException(e);
         }
-    }
-
-    protected boolean isGetter(String methodName) {
-        return methodName.matches(GETTER_PREFIX_REGEX);
     }
 }

@@ -69,17 +69,17 @@ public class ValidableTest extends Validable {
     @Test
     public void isGetterShouldMatchValidGetters() {
         String get1 = "getFoo";
-        assertThat(isGetter(get1), is(equalTo(true)));
+        assertThat(matchesGetterPattern(get1), is(equalTo(true)));
         String get2 = "isFoo";
-        assertThat(isGetter(get2), is(equalTo(true)));
+        assertThat(matchesGetterPattern(get2), is(equalTo(true)));
     }
 
     @Test
     public void isGetterShoulNotdMatchInvalidGetters() {
         String get1 = "getfoo";
-        assertThat(isGetter(get1), is(equalTo(false)));
+        assertThat(matchesGetterPattern(get1), is(equalTo(false)));
         String get2 = "isfoo";
-        assertThat(isGetter(get2), is(equalTo(false)));
+        assertThat(matchesGetterPattern(get2), is(equalTo(false)));
     }
 
     @Test

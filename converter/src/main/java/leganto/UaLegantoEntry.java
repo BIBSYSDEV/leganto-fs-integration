@@ -69,8 +69,6 @@ public class UaLegantoEntry extends LegantoEntry {
             ua.getUndervisning().getUaSemester().getYear());
     }
 
-
-
     @Override
     public String getCourseCode() {
         String codePrefix = String
@@ -105,6 +103,7 @@ public class UaLegantoEntry extends LegantoEntry {
     @Override
     public String getAllSearchableIds() {
         List<String> searchableIds = new ArrayList<>();
+        Objects.requireNonNull(organizationEntity, MISSING_ORGANIZATION_ENTITY_INFORMATION_ERROR);
 
         String id1 = String.join(DEFAULT_DELIMITER,
             PREFIX,

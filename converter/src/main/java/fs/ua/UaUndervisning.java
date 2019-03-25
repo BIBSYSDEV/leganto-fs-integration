@@ -2,6 +2,7 @@ package fs.ua;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fs.common.IgnoreValidable;
 import fs.common.UEmne;
 import fs.common.Validable;
 
@@ -20,6 +21,7 @@ public class UaUndervisning extends Validable {
     @JsonProperty("terminnummer")
     private Integer terminnumer;
 
+    @IgnoreValidable
     public String getHref() {
         return href;
     }

@@ -49,9 +49,9 @@ public class LanguageTest {
     @Test
     public void getValueForLanguageShouldReturnTheMostFavorableLanguageValueAvailable() {
         List<LanguageValue> values = new ArrayList<>();
-        values.add(new LanguageValue(NB.toString(), NB_TEXT));
-        values.add(new LanguageValue(NN.toString(), NN_TEXT));
-        values.add(new LanguageValue(EN.toString(), EN_TEXT));
+        values.add(new LanguageValue(NB, NB_TEXT));
+        values.add(new LanguageValue(NN, NN_TEXT));
+        values.add(new LanguageValue(EN, EN_TEXT));
         List<Language> preferences = new ArrayList<>();
         preferences.add(EN);
         preferences.add(NB);
@@ -65,7 +65,7 @@ public class LanguageTest {
     @Test
     public void getValueForLanguagesShouldReturnEmptyIfNoSuitableValueIsFound() {
         List<LanguageValue> values = new ArrayList<>();
-        values.add(new LanguageValue(NN.toString(), NN_TEXT));
+        values.add(new LanguageValue(NN, NN_TEXT));
 
         List<Language> preferences = new ArrayList<>();
         preferences.add(EN);

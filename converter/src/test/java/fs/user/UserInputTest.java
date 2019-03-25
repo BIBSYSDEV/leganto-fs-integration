@@ -11,12 +11,19 @@ import static org.junit.Assert.assertThat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fs.common.Validable;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import utils.IoUtils;
@@ -123,7 +130,7 @@ public class UserInputTest {
     }
 
     @Test
-    public void getNumberOfParticipantsShouldReturnTheRespectiveEntryfromTheUserFileIf() throws IOException {
+    public void getNumberOfParticipantsShouldReturnTheRespectiveEntryFromTheUserFileIfEntryExists() throws IOException {
         ObjectNode userInputJson = inputWithBothFiles();
         UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class).initFiles();
         assertThat(userInput.getNumberOfParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(), is(equalTo(true)));
@@ -147,7 +154,7 @@ public class UserInputTest {
     }
 
     @Test
-    public void getCampusParticipantsShouldReturnTheRespectiveEntryfromTheUserFileIf() throws IOException {
+    public void getCampusParticipantsShouldReturnTheRespectiveEntryfromTheUserFileIfEntryExists() throws IOException {
         ObjectNode userInputJson = inputWithBothFiles();
         UserInput userInput = JsonUtils.readValue(userInputJson, UserInput.class).initFiles();
         assertThat(userInput.getCampusParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(), is(equalTo(true)));
@@ -178,6 +185,22 @@ public class UserInputTest {
         assertThat(userInput.getOperation(), is(equalTo(Operation.NORMAL)));
         assertThat(userInput.getIncludeCampusParticipants(), is(equalTo(true)));
         assertThat(userInput.getLanguageOrder(), contains(NN, EN, NB));
+    }
+
+    @Test
+    public void fieldsShouldNotBePrimitive() throws InvocationTargetException, IllegalAccessException {
+        UserInput userInput = new UserInput();
+        List<Method> getters = Arrays.asList(userInput.getClass().getDeclaredMethods())
+            .stream()
+            .filter(Validable::isGetter)
+            .collect(Collectors.toList());
+        for (Method getter : getters) {
+            Object result = getter.invoke(userInput);
+            boolean isNull = Objects.isNull(result);
+            boolean isNotPrimitive = Objects.nonNull(result) && !result.getClass().isPrimitive();
+
+            assertThat(isNull || isNotPrimitive, is(equalTo(true)));
+        }
     }
 
     private ObjectNode inputWithBothFiles() {

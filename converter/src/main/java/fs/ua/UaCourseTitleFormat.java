@@ -4,25 +4,33 @@ import static fs.ua.CourseTitle.FIRST_PART_DELIMITER;
 import static fs.ua.CourseTitle.FOUR_DIGIT_NUMBER;
 import static fs.ua.CourseTitle.SECOND_PART_DELIMITER;
 
+import java.util.Objects;
+
 public enum UaCourseTitleFormat {
 
     DEFAULT, ALTERNATIVE;
 
     public static final int DEFAULT_FORMAT = 1;
     public static final int ALTERNATIVE_FORMAT = 2;
+    public static final String WRONG_FORMAT_CODE = "Format integer codes should either be 1 or 2";
 
     public static UaCourseTitleFormat fromInteger(int format) {
         switch (format) {
             case ALTERNATIVE_FORMAT:
                 return ALTERNATIVE;
             case DEFAULT_FORMAT:
-            default:
                 return DEFAULT;
+            default:
+                throw new IllegalArgumentException(WRONG_FORMAT_CODE);
         }
     }
 
     public String formatUaCourseTitle(String uaNavn, String emneNavn, String emneKode, SemesterCode semesterCode,
         int year) {
+        Objects.requireNonNull(uaNavn);
+        Objects.requireNonNull(emneNavn);
+        Objects.requireNonNull(emneKode);
+        Objects.requireNonNull(semesterCode);
 
         switch (this) {
             case ALTERNATIVE:

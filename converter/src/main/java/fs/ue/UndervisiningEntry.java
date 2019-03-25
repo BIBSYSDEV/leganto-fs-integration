@@ -33,23 +33,27 @@ public class UndervisiningEntry extends Validable {
         return emne;
     }
 
-    public void setEmne(UEmne emne) {
+    public UndervisiningEntry setEmne(UEmne emne) {
         this.emne = emne;
+        return this;
     }
 
     public USemester getSemester() {
         return semester;
     }
 
-    public void setSemester(USemester semester) {
+    public UndervisiningEntry setSemester(USemester semester) {
         this.semester = semester;
+        return this;
+
     }
 
     public String getTerminNummer() {
         return terminNummer;
     }
 
-    public void setTerminNummer(String terminNummer) {
+    public UndervisiningEntry setTerminNummer(String terminNummer) {
         this.terminNummer = terminNummer;
+        return this;
     }
 }

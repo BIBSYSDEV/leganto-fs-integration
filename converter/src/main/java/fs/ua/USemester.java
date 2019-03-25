@@ -2,6 +2,7 @@ package fs.ua;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fs.common.IgnoreValidable;
 import fs.common.Validable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -25,6 +26,7 @@ public class USemester extends Validable {
         return this;
     }
 
+    @IgnoreValidable
     public String getHref() {
         return href;
     }

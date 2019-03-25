@@ -26,6 +26,7 @@ public class UEmne extends Validable {
         return this;
     }
 
+    @IgnoreValidable
     public String getInstitution() {
         return institution;
     }

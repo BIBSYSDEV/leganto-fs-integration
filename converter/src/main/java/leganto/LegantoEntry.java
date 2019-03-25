@@ -16,11 +16,12 @@ public abstract class LegantoEntry {
     protected static final String DEFAULT_DELIMITER = "_";
     protected static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
     protected static final String SEARCHABLE_IDS_DELIMITER = ",";
+    protected static final String MISSING_ORGANIZATION_ENTITY_INFORMATION_ERROR = "Missing organization entity "
+        + "information";
     private static final String ILLEGAL_STATE_MESSAGE = "Not available";
     private static final int NUMBER_OF_FIELDS = 34;
     private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
-
     protected final transient UserInput userInput;
     protected transient Emne emne;
     protected transient OrganizationEntity organizationEntity;
@@ -30,7 +31,7 @@ public abstract class LegantoEntry {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < NUMBER_OF_FIELDS; i++) {
             builder.append(FIELD_DELIMITER);

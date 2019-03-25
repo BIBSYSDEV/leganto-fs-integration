@@ -2,32 +2,29 @@ package fs.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class LanguageValue {
 
     @JsonProperty("lang")
-    @NonNull
-    private String lang;
+    private Language lang;
 
     @JsonProperty("value")
-    @NonNull
     private String value;
 
     public LanguageValue() {
     }
 
-    public LanguageValue(String lang, String value) {
+    public LanguageValue(Language lang, String value) {
 
         this.lang = lang;
         this.value = value;
     }
 
-    public String getLang() {
+    public Language getLang() {
         return lang;
     }
 
-    public void setLang(String lang) {
+    public void setLang(Language lang) {
         this.lang = lang;
     }
 

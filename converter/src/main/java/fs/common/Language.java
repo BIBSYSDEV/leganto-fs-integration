@@ -46,7 +46,7 @@ public enum Language {
      */
     public static Optional<String> getValueForLanguagePref(List<LanguageValue> values, List<Language> languageOrder) {
         Map<Language, String> valuesMap = values.stream()
-            .collect(Collectors.toMap(langValue -> Language.fromString(langValue.getLang()), LanguageValue::getValue));
+            .collect(Collectors.toMap(LanguageValue::getLang, LanguageValue::getValue));
         for (Language language : languageOrder) {
             if (valuesMap.containsKey(language)) {
                 return Optional.ofNullable(valuesMap.get(language));
