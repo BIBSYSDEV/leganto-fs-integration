@@ -80,10 +80,9 @@ public class UndervisningsAktivitet extends Validable {
             return false;
         }
         UndervisningsAktivitet that = (UndervisningsAktivitet) o;
-        boolean x = Objects.equals(getUndervisning(), that.getUndervisning());
-        return Objects.equals(getUndervisning(), that.getUndervisning()) &&
-            Objects.equals(getNavn(), that.getNavn()) &&
-            Objects.equals(getAktivitet(), that.getAktivitet());
+        return Objects.equals(getUndervisning(), that.getUndervisning())
+            && Objects.equals(getNavn(), that.getNavn())
+            && Objects.equals(getAktivitet(), that.getAktivitet());
     }
 
     @Override

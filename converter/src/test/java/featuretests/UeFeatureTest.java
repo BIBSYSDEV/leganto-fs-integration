@@ -6,24 +6,28 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.text.IsEmptyString.emptyString;
 import static utils.JsonUtils.putKeyInNode;
 import static utils.JsonUtils.readValue;
+import static utils.JsonUtils.write;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import fs.common.UEmne;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
+import fs.ua.SemesterCode;
+import fs.ua.USemester;
 import fs.ue.UndervisiningEntry;
 import fs.user.UserInput;
 import io.cucumber.datatable.DataTable;
 import java.io.IOException;
 import leganto.UaLegantoEntry;
 import leganto.UeLegantoEntry;
-import utils.JsonUtils;
 
 public class UeFeatureTest extends CucumberTestProcessor {
 
     private static final int INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER = -1;
+    private static final String EMPTY_STRING = "";
 
     private final World world;
     private transient ObjectNode ueEntry;
@@ -33,9 +37,28 @@ public class UeFeatureTest extends CucumberTestProcessor {
         this.world = world;
     }
 
-    @Given("there is a request to \\/undervisning\\/UE_ID")
-    public void there_is_a_request_to_undervisning_UE_ID() {
-        ueEntry = JsonUtils.newObjectNode();
+    @Given("there is a valid response from \\/undervisning\\/UE_ID")
+    public void there_is_a_valid_response_from_undervisning_UE_ID() throws IOException {
+        UEmne uemne = new UEmne()
+            .setCode(EMPTY_STRING)
+            .setHref(EMPTY_STRING)
+            .setInstitution(EMPTY_STRING)
+            .setVersion(EMPTY_STRING);
+
+        USemester semester = new USemester()
+            .setSemesterCode(SemesterCode.AUTUMN.toString())
+            .setHref(EMPTY_STRING)
+            .setYear(0);
+
+        UndervisiningEntry ue = new UndervisiningEntry()
+            .setEmne(uemne)
+            .setSemester(semester)
+            .setTerminNummer(EMPTY_STRING)
+            .setHref(EMPTY_STRING);
+
+        String ueJson = write(ue);
+        ueEntry = readValue(ueJson, ObjectNode.class);
+
     }
 
     @Given("the response from \\/undervisning\\/UE_ID has a field with name {string} and value {string}")
@@ -47,9 +70,9 @@ public class UeFeatureTest extends CucumberTestProcessor {
     @When("a new UE Leganto entry has been generated")
     public void new_UE_entry_is_generated() throws IOException {
         UndervisiningEntry ue = readValue(ueEntry, UndervisiningEntry.class);
-        UserInput userInput = readValue(world.getUserInput(), UserInput.class);
-
-        OrganizationEntity orgEntity = readValue(world.getOrganizationEntity(), OrganizationEntity.class);
+        UserInput userInput = readValue(world.getUserInput(), UserInput.class).initFiles();
+        OrganizationEntity orgEntity = readValue(world.getOrganizationEntity(),
+            OrganizationEntity.class);
         Emne emne = readValue(world.getEmneResponse(), Emne.class);
         ueLegantoEntry = (UeLegantoEntry) new UeLegantoEntry(ue, userInput)
             .setEmne(emne)
@@ -81,7 +104,8 @@ public class UeFeatureTest extends CucumberTestProcessor {
     }
 
     @Then("the field AcademicDepartment in the UE entry is the  string {string}")
-    public void the_field_AcademicDepartment_in_the_UE_entry_is_the_string(String academicDepartment) {
+    public void the_field_AcademicDepartment_in_the_UE_entry_is_the_string(
+        String academicDepartment) {
         assertThat(ueLegantoEntry.getAcademicDepartment(), is(equalTo(academicDepartment)));
     }
 
@@ -122,7 +146,8 @@ public class UeFeatureTest extends CucumberTestProcessor {
 
     @Then("the field NumberOfParticipants in the UE entry is the integer {int}")
     public void theFieldNumberOfParticipantsInTheUEEntryIsTheInteger(Integer numberOfParticipants) {
-        assertThat(ueLegantoEntry.getNumberOfParticipants(), is(equalTo(numberOfParticipants.toString())));
+        assertThat(ueLegantoEntry.getNumberOfParticipants(),
+            is(equalTo(numberOfParticipants.toString())));
     }
 
     @Then("the field WeeklyHours in the UE entry is empty")
@@ -186,7 +211,8 @@ public class UeFeatureTest extends CucumberTestProcessor {
     }
 
     @Then("the field OldCourseCode in the UE entry is the string {string}")
-    public void the_field_OldCourseCode_in_the_UE_entry_is_the_string(String expectedOldCourseCode) {
+    public void the_field_OldCourseCode_in_the_UE_entry_is_the_string(
+        String expectedOldCourseCode) {
         assertThat(ueLegantoEntry.getOldCourseCode(), is(equalTo(expectedOldCourseCode)));
     }
 
@@ -204,6 +230,5 @@ public class UeFeatureTest extends CucumberTestProcessor {
     public void the_field_Operation_in_the_UE_entry_is_empty() {
         assertThat(ueLegantoEntry.getOperation(), is(emptyString()));
     }
-
 
 }

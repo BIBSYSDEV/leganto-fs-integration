@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fs.common.Validable;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -27,7 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.jws.soap.SOAPBinding.Use;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import utils.IoUtils;
@@ -65,7 +63,8 @@ public class UserInputTest {
     @BeforeClass
     public static void temporaryCampusParticipantsFile() throws IOException {
         String participants = IoUtils
-            .resourceAsString(Paths.get(USER_INPUT_TEST_RESOURCES, CAMPUS_PARTICIPANTS_RESOURCE_FILE));
+            .resourceAsString(
+                Paths.get(USER_INPUT_TEST_RESOURCES, CAMPUS_PARTICIPANTS_RESOURCE_FILE));
 
         File participantsTempFile = createTemporaryFile(CAMPUS_PARTICIPANTS_RESOURCE_FILE);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(participantsTempFile))) {
@@ -77,7 +76,8 @@ public class UserInputTest {
     @BeforeClass
     public static void temporaryNumberOfParticipantsFile() throws IOException {
         String partipants = IoUtils
-            .resourceAsString(Paths.get(USER_INPUT_TEST_RESOURCES, NUMBER_OF_PARTICIPANTS_RESOURCE_FILE));
+            .resourceAsString(
+                Paths.get(USER_INPUT_TEST_RESOURCES, NUMBER_OF_PARTICIPANTS_RESOURCE_FILE));
         File participantsTempFile = createTemporaryFile(NUMBER_OF_PARTICIPANTS_RESOURCE_FILE);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(participantsTempFile))) {
@@ -135,86 +135,100 @@ public class UserInputTest {
     }
 
     @Test
-    public void getNumberOfParticipantsShouldReturnTheRespectiveEntryFromTheUserFileIfEntryExists() throws IOException {
+    public void getNumberOfParticipantsShouldReturnTheRespectiveEntryFromTheUserFileIfEntryExists()
+        throws IOException {
         ObjectNode userInputJson = inputWithBothFiles();
         UserInput userInput = readValue(userInputJson, UserInput.class).initFiles();
-        assertThat(userInput.getNumberOfParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(), is(equalTo(true)));
+        assertThat(userInput.getNumberOfParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(),
+            is(equalTo(true)));
         assertThat(userInput.getNumberOfParticipants(RESORUCE_FILE_COURSE_CODE).get(), is(equalTo(
             NUMBER_OF_PARTICIPANTS_RESOURCE_VALUE)));
     }
 
     @Test
-    public void getNumberOfParticipantsShouldReturnEmptyifTheCourseCodeDoesNotExist() throws IOException {
+    public void getNumberOfParticipantsShouldReturnEmptyifTheCourseCodeDoesNotExist()
+        throws IOException {
         ObjectNode userInputJson = inputWithBothFiles();
         UserInput userInput = readValue(userInputJson, UserInput.class).initFiles();
-        assertThat(userInput.getNumberOfParticipants(NON_EXISTING_COURSE_CODE).isPresent(), is(equalTo(false)));
+        assertThat(userInput.getNumberOfParticipants(NON_EXISTING_COURSE_CODE).isPresent(),
+            is(equalTo(false)));
     }
 
     @Test
-    public void getNumberOfParticipantsShouldReturnEmptyIfTheDecisionFieldIsSetToFalse() throws IOException {
+    public void getNumberOfParticipantsShouldReturnEmptyIfTheDecisionFieldIsSetToFalse()
+        throws IOException {
         ObjectNode userInputJson = inputWithBothFiles();
         userInputJson.put(INCLUDE_NUMBER_OF_PARTICIPANTS_FIELD, false);
         UserInput userInput = readValue(userInputJson, UserInput.class).initFiles();
-        assertThat(userInput.getNumberOfParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(), is(equalTo(false)));
+        assertThat(userInput.getNumberOfParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(),
+            is(equalTo(false)));
     }
 
     @Test
-    public void getCampusParticipantsShouldReturnTheRespectiveEntryfromTheUserFileIfEntryExists() throws IOException {
+    public void getCampusParticipantsShouldReturnTheRespectiveEntryfromTheUserFileIfEntryExists()
+        throws IOException {
         ObjectNode userInputJson = inputWithBothFiles();
         UserInput userInput = readValue(userInputJson, UserInput.class).initFiles();
-        assertThat(userInput.getCampusParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(), is(equalTo(true)));
+        assertThat(userInput.getCampusParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(),
+            is(equalTo(true)));
         assertThat(userInput.getCampusParticipants(RESORUCE_FILE_COURSE_CODE).get(), is(equalTo(
             CAMPUS_PARTICIPANTS_RESOURCE_VALUE)));
     }
 
     @Test
-    public void getCampusParticipantsShouldReturnEmptyifTheCourseCodeDoesNotExist() throws IOException {
+    public void getCampusParticipantsShouldReturnEmptyifTheCourseCodeDoesNotExist()
+        throws IOException {
         ObjectNode userInputJson = inputWithBothFiles();
         UserInput userInput = readValue(userInputJson, UserInput.class).initFiles();
-        assertThat(userInput.getCampusParticipants(NON_EXISTING_COURSE_CODE).isPresent(), is(equalTo(false)));
+        assertThat(userInput.getCampusParticipants(NON_EXISTING_COURSE_CODE).isPresent(),
+            is(equalTo(false)));
     }
 
     @Test
-    public void getcampusOfParticipantsShouldReturnEmptyIfTheDecisionFieldIsSetToFalse() throws IOException {
+    public void getcampusOfParticipantsShouldReturnEmptyIfTheDecisionFieldIsSetToFalse()
+        throws IOException {
         ObjectNode userInputJson = inputWithBothFiles();
         userInputJson.put(INCLUDE_CAMPUS_PARTICIPANTS_FIELD, false);
         UserInput userInput = readValue(userInputJson, UserInput.class).initFiles();
-        assertThat(userInput.getCampusParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(), is(equalTo(false)));
+        assertThat(userInput.getCampusParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(),
+            is(equalTo(false)));
     }
 
-
     @Test(expected = NoSuchFileException.class)
-    public void initFilesShouldThrowExceptionIfFilesDoNotExistAndTheDecisionFieldAIsTrue() throws IOException {
-        ObjectNode json=inputWithBothFiles();
-        UserInput userInput=readValue(json,UserInput.class);
+    public void initFilesShouldThrowExceptionIfFilesDoNotExistAndTheDecisionFieldAIsTrue()
+        throws IOException {
+        ObjectNode json = inputWithBothFiles();
+        UserInput userInput = readValue(json, UserInput.class);
         userInput.setNumberOfParticipantsFilename(NON_EXISTING_FILE);
         userInput.initFiles();
 
     }
 
     @Test(expected = NoSuchFileException.class)
-    public void initFilesShouldThrowExceptionIfFilesDoNotExistAndTheDecisionFieldBIsTrue() throws IOException {
-        ObjectNode json=inputWithBothFiles();
-        UserInput userInput=readValue(json,UserInput.class);
+    public void initFilesShouldThrowExceptionIfFilesDoNotExistAndTheDecisionFieldBIsTrue()
+        throws IOException {
+        ObjectNode json = inputWithBothFiles();
+        UserInput userInput = readValue(json, UserInput.class);
         userInput.setCampusParticipantsFilename(NON_EXISTING_FILE);
         userInput.initFiles();
 
     }
 
-
     @Test
-    public void initFilesShouldNotThrowExceptionIfFilesDoNotExistAndTheDecisionFieldsAreFalse() throws IOException {
-        ObjectNode json=inputWithBothFiles();
-        UserInput userInput=readValue(json,UserInput.class);
+    public void initFilesShouldNotThrowExceptionIfFilesDoNotExistAndTheDecisionFieldsAreFalse()
+        throws IOException {
+        ObjectNode json = inputWithBothFiles();
+        UserInput userInput = readValue(json, UserInput.class);
         userInput.setIncludeCampusParticipants(false);
         userInput.setIncludeNumberOfParticipants(false);
         userInput.setCampusParticipantsFilename(NON_EXISTING_FILE);
         userInput.setNumberOfParticipantsFilename(NON_EXISTING_FILE);
         userInput.initFiles();
 
-        assertThat(userInput.getCampusParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(),is(equalTo(false)));
-        assertThat(userInput.getNumberOfParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(),is(equalTo(false)));
-
+        assertThat(userInput.getCampusParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(),
+            is(equalTo(false)));
+        assertThat(userInput.getNumberOfParticipants(RESORUCE_FILE_COURSE_CODE).isPresent(),
+            is(equalTo(false)));
 
     }
 
@@ -229,7 +243,8 @@ public class UserInputTest {
     }
 
     @Test
-    public void fieldsShouldNotBePrimitive() throws InvocationTargetException, IllegalAccessException {
+    public void fieldsShouldNotBePrimitive()
+        throws InvocationTargetException, IllegalAccessException {
         UserInput userInput = new UserInput();
         List<Method> getters = Arrays.asList(userInput.getClass().getDeclaredMethods())
             .stream()
@@ -248,7 +263,8 @@ public class UserInputTest {
         ObjectNode userInputJson = JsonUtils.newObjectNode();
         userInputJson.put(INCLUDE_CAMPUS_PARTICIPANTS_FIELD, INCLUDE_CAMPUS_PARTICIPANTS_VALUE);
         userInputJson.put(CAMPUS_PARTICIPANTS_FILE_FIELD, CAMPUS_PARTICIPANTS_GENERATED_FILE);
-        userInputJson.put(INCLUDE_NUMBER_OF_PARTICIPANTS_FIELD, INCLUDE_NUMBER_OF_PARTICIPANTS_VALUE);
+        userInputJson
+            .put(INCLUDE_NUMBER_OF_PARTICIPANTS_FIELD, INCLUDE_NUMBER_OF_PARTICIPANTS_VALUE);
         userInputJson.put(NUMBER_OF_PARTICIPANTS_FILE_FIELD, NUMBER_OF_PARTICIPANTS_GENERATED_FILE);
 
         ArrayNode laguageOrder = JsonUtils.newArrayNode();

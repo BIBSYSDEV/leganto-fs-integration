@@ -90,7 +90,7 @@ allprojects {
 
         test {
             testLogging {
-                events "standardOut", "standardError"
+                events "started","passed", "skipped","failed"
             }
         }
 

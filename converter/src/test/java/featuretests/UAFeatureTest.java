@@ -13,7 +13,6 @@ import static utils.JsonUtils.write;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -27,7 +26,6 @@ import fs.ua.UndervisningsAktivitet;
 import fs.user.UserInput;
 import io.cucumber.datatable.DataTable;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import leganto.UaLegantoEntry;
@@ -43,12 +41,9 @@ public class UAFeatureTest extends CucumberTestProcessor {
     private UaLegantoEntry uaLegantoEntry;
     private transient ObjectNode uaResponse;
 
-
     public UAFeatureTest(World world) {
         this.world = world;
     }
-
-
 
     @Given("the response from \\/undervisningsaktiviteter\\/UA_ID has a field {string} with value {string}")
     public void the_response_from_undervisningsaktiviteter_UA_ID_has_a_field_with_value(String key,
@@ -116,7 +111,7 @@ public class UAFeatureTest extends CucumberTestProcessor {
 
         UndervisningsAktivitet uaEntry = readValue(uaResponse, UndervisningsAktivitet.class);
         UserInput userInput = readValue(world.getUserInput(), UserInput.class).initFiles();
-        OrganizationEntity org=readValue(world.getOrganizationEntity(),OrganizationEntity.class);
+        OrganizationEntity org = readValue(world.getOrganizationEntity(), OrganizationEntity.class);
         uaLegantoEntry = (UaLegantoEntry) new UaLegantoEntry(uaEntry, userInput)
             .setEmne(readValue(world.getEmneResponse(), Emne.class))
             .setOrganizationEntity(org);
@@ -243,7 +238,8 @@ public class UAFeatureTest extends CucumberTestProcessor {
 
     @Then("NumberOfParticipants has the value {int}")
     public void numberofparticipants_has_the_value(Integer numberOfParticipants) {
-        assertThat(uaLegantoEntry.getNumberOfParticipants(), is(equalTo(numberOfParticipants.toString())));
+        assertThat(uaLegantoEntry.getNumberOfParticipants(),
+            is(equalTo(numberOfParticipants.toString())));
     }
 
     @Then("Old Course Code is the string {string}")
@@ -273,38 +269,34 @@ public class UAFeatureTest extends CucumberTestProcessor {
 
     @Then("Operation is empty")
     public void operationIsEmpty() {
-        assertThat(uaLegantoEntry.getOperation(),is(emptyString()));
+        assertThat(uaLegantoEntry.getOperation(), is(emptyString()));
     }
 
     @Given("there is a valid response from \\/undervisningsaktiviteter\\/UA_ID")
     public void thereIsAValidUaEntry() throws IOException {
-        UndervisningsAktivitet ua=new UndervisningsAktivitet();
-        USemester semester=new USemester()
+        UndervisningsAktivitet ua = new UndervisningsAktivitet();
+        USemester semester = new USemester()
             .setSemesterCode(SemesterCode.AUTUMN.toString())
             .setHref(EMPTY_STRING)
             .setYear(0);
-        UEmne emne= new UEmne()
+        UEmne emne = new UEmne()
             .setCode(EMPTY_STRING)
             .setHref(EMPTY_STRING)
             .setInstitution(EMPTY_STRING)
             .setVersion(EMPTY_STRING);
-        UaUndervisning uaUndervisning=new UaUndervisning()
+        UaUndervisning uaUndervisning = new UaUndervisning()
             .setUaSemester(semester)
             .setEmne(emne)
             .setHref(EMPTY_STRING)
             .setTerminnumer(0);
-
 
         ua.setAktivitet(EMPTY_STRING)
             .setNavn(Collections.emptyList())
             .setUndervisning(uaUndervisning)
             .setNavn(Collections.emptyList());
 
-        uaResponse=readValue(write(ua),ObjectNode.class);
+        uaResponse = readValue(write(ua), ObjectNode.class);
 
     }
-
-
-
 
 }

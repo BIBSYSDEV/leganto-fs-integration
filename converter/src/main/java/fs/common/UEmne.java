@@ -63,11 +63,11 @@ public class UEmne extends Validable {
         if (!(o instanceof UEmne)) {
             return false;
         }
-        UEmne uEmne = (UEmne) o;
-        return Objects.equals(getHref(), uEmne.getHref()) &&
-            Objects.equals(getInstitution(), uEmne.getInstitution()) &&
-            Objects.equals(getCode(), uEmne.getCode()) &&
-            Objects.equals(getVersion(), uEmne.getVersion());
+        UEmne uemne = (UEmne) o;
+        return Objects.equals(getHref(), uemne.getHref())
+            && Objects.equals(getInstitution(), uemne.getInstitution())
+            && Objects.equals(getCode(), uemne.getCode())
+            && Objects.equals(getVersion(), uemne.getVersion());
     }
 
     @Override

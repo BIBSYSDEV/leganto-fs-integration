@@ -68,10 +68,10 @@ public class UaUndervisning extends Validable {
             return false;
         }
         UaUndervisning that = (UaUndervisning) o;
-        return getHref().equals(that.getHref()) &&
-            getEmne().equals(that.getEmne()) &&
-            getUaSemester().equals(that.getUaSemester()) &&
-            getTerminnumer().equals(that.getTerminnumer());
+        return getHref().equals(that.getHref())
+            && getEmne().equals(that.getEmne())
+            && getUaSemester().equals(that.getUaSemester())
+            && getTerminnumer().equals(that.getTerminnumer());
     }
 
     @Override

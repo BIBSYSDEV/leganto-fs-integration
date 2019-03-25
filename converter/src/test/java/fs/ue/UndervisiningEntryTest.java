@@ -2,9 +2,8 @@ package fs.ue;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
-import fs.ua.UndervisningsAktivitet;
 import java.io.IOException;
 import java.nio.file.Paths;
 import org.junit.Test;
@@ -20,9 +19,9 @@ public class UndervisiningEntryTest {
     @Test
     public void undervsigingsAktiviterShouldBeAbleToParseItsOwnJson() throws IOException {
         UndervisiningEntry ue = JsonUtils.mapper.readValue(ueJson, UndervisiningEntry.class);
-        String newJson=JsonUtils.write(ue);
-        UndervisiningEntry newUE= JsonUtils.readValue(newJson,UndervisiningEntry.class);
-        assertThat(newUE,is(equalTo(ue)));
+        String newJson = JsonUtils.write(ue);
+        UndervisiningEntry newUE = JsonUtils.readValue(newJson, UndervisiningEntry.class);
+        assertThat(newUE, is(equalTo(ue)));
 
     }
 

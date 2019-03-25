@@ -47,12 +47,6 @@ public abstract class Validable {
         return validity;
     }
 
-    private boolean shouldNotIgnore(Method method) {
-        boolean noParameters = method.getParameterCount() == 0;
-        boolean notIgnorable = !method.isAnnotationPresent(IgnoreValidable.class);
-        return noParameters && notIgnorable;
-    }
-
     private boolean isValid(Entry<String, Object> nameValuePair) {
         Object value = nameValuePair.getValue();
         String methodName = nameValuePair.getKey();
@@ -73,6 +67,12 @@ public abstract class Validable {
             throw new IllegalArgumentException(String.format(PRIMITIVE_VALUE_ERROR, methodName));
         }
         return result;
+    }
+
+    private boolean shouldNotIgnore(Method method) {
+        boolean noParameters = method.getParameterCount() == 0;
+        boolean notIgnorable = !method.isAnnotationPresent(IgnoreValidable.class);
+        return noParameters && notIgnorable;
     }
 
     private boolean combineAllResults(Boolean bool1, Boolean bool2) {

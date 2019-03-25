@@ -26,8 +26,9 @@ public class UndervisiningEntry extends Validable {
         return href;
     }
 
-    public void setHref(String href) {
+    public UndervisiningEntry setHref(String href) {
         this.href = href;
+        return this;
     }
 
     public UEmne getEmne() {
@@ -67,10 +68,10 @@ public class UndervisiningEntry extends Validable {
             return false;
         }
         UndervisiningEntry that = (UndervisiningEntry) o;
-        return getHref().equals(that.getHref()) &&
-            getEmne().equals(that.getEmne()) &&
-            getSemester().equals(that.getSemester()) &&
-            getTerminNummer().equals(that.getTerminNummer());
+        return getHref().equals(that.getHref())
+            && getEmne().equals(that.getEmne())
+            && getSemester().equals(that.getSemester())
+            && getTerminNummer().equals(that.getTerminNummer());
     }
 
     @Override

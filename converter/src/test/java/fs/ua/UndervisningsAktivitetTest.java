@@ -23,16 +23,18 @@ public class UndervisningsAktivitetTest {
 
     @Test
     public void uaShouldParseEmneField() throws IOException {
-        UndervisningsAktivitet ua = JsonUtils.mapper.readValue(uaJson, UndervisningsAktivitet.class);
+        UndervisningsAktivitet ua = JsonUtils.mapper
+            .readValue(uaJson, UndervisningsAktivitet.class);
         assertThat(ua.getUndervisning().getEmne().getCode(), is(not(emptyString())));
     }
 
     @Test
     public void undervsigingsAktiviterShouldBeAbleToParseItsOwnJson() throws IOException {
-        UndervisningsAktivitet ua = JsonUtils.mapper.readValue(uaJson, UndervisningsAktivitet.class);
-        String newJson=JsonUtils.write(ua);
-        UndervisningsAktivitet newUA= JsonUtils.readValue(newJson,UndervisningsAktivitet.class);
-        assertThat(newUA,is(equalTo(ua)));
+        UndervisningsAktivitet ua = JsonUtils.mapper
+            .readValue(uaJson, UndervisningsAktivitet.class);
+        String newJson = JsonUtils.write(ua);
+        UndervisningsAktivitet newUA = JsonUtils.readValue(newJson, UndervisningsAktivitet.class);
+        assertThat(newUA, is(equalTo(ua)));
 
     }
 

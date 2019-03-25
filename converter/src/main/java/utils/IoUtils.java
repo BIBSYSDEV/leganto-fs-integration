@@ -12,7 +12,8 @@ public final class IoUtils {
 
     private static final int END_OF_STREAM = -1;
 
-    private IoUtils(){}
+    private IoUtils() {
+    }
 
     public static InputStream resourceAsStream(Path path) {
         return Thread.currentThread().getContextClassLoader().getResourceAsStream(path.toString());
@@ -35,8 +36,7 @@ public final class IoUtils {
             .lines().collect(Collectors.toList());
     }
 
-
-    public static InputStream emptyStream(){
+    public static InputStream emptyStream() {
         return new InputStream() {
             @Override
             public int read() throws IOException {

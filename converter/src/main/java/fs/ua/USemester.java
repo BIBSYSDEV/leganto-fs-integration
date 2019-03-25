@@ -55,9 +55,9 @@ public class USemester extends Validable {
             return false;
         }
         USemester semester = (USemester) o;
-        return getHref().equals(semester.getHref()) &&
-            getYear().equals(semester.getYear()) &&
-            getSemesterCode() == semester.getSemesterCode();
+        return getHref().equals(semester.getHref())
+            && getYear().equals(semester.getYear())
+            && getSemesterCode() == semester.getSemesterCode();
     }
 
     @Override
