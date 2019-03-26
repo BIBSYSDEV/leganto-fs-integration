@@ -20,7 +20,6 @@ Feature:
     And the user input has a field with name "include_ua" with boolean value "true"
     And the user input has a field with name "include_institute_in_acad_department" with boolean value "true"
 
-
     And there is a valid response from /undervisningsaktiviteter/UA_ID
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.href" with value "emne/emneId"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.kode" with value "emneKode"
@@ -35,8 +34,8 @@ Feature:
       | lang | en | value | EngelskUANavn |
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.terminnummer" with value 12
 
-    And there is a request to /emne/emneId
     And there is a valid response from /emne/emneId
+
     And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
       | lang | nb | value | BokmalEmneNavn  |
       | lang | nn | value | NynorskEmneNavn |

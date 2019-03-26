@@ -69,10 +69,6 @@ public class Background extends CucumberTestProcessor {
         world.getUserInput().set(key, array);
     }
 
-    @Given("there is a request to \\/emne\\/emneId")
-    public void there_is_a_request_to_emne_emneId() {
-        world.setEmneResponse(JsonUtils.newObjectNode());
-    }
 
     @Given(
         "the response from \\/emne\\/emneId from FS has a field {string} that is an array with the key-element "
@@ -146,15 +142,11 @@ public class Background extends CucumberTestProcessor {
         world.setOrganizationEntity(readValue(write(organizationEntity), ObjectNode.class));
     }
 
-    @Given("there is a valid response from /emne/emneId")
+    @Given("there is a valid response from \\/emne\\/emneId")
     public void thersIsAValidEmneResponse() throws IOException {
         Emne emne = new Emne()
             .setNavn(Collections.emptyList());
         world.setEmneResponse(readValue(write(emne), ObjectNode.class));
 
-    }
-
-    @Given("null")
-    public void thereIsAValidResponseFromUndervisningsaktiviteterUA_ID() {
     }
 }

@@ -230,5 +230,4 @@ public class UeFeatureTest extends CucumberTestProcessor {
     public void the_field_Operation_in_the_UE_entry_is_empty() {
         assertThat(ueLegantoEntry.getOperation(), is(emptyString()));
     }
-
 }

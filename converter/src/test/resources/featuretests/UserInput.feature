@@ -5,7 +5,7 @@ Feature:
   Background:
     Given there is a valid organization response
     Given there is a valid response from /undervisningsaktiviteter/UA_ID
-    And there is a valid emne response
+    And there is a valid response from /emne/emneId
     And  there is a valid user input
 
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.href" with value "emne/emneId"

@@ -14,6 +14,9 @@ public class Emne extends Validable {
     @JsonProperty("navn")
     private List<LanguageValue> navn;
 
+    @JsonProperty("organisasjonsenheter")
+    private List<OrganizationEntityEmneEntry> organizationEntities;
+
     public static Emne fromJson(String emneJson) throws IOException {
         return JsonUtils.mapper.readValue(emneJson, Emne.class);
     }
@@ -25,5 +28,13 @@ public class Emne extends Validable {
     public Emne setNavn(List<LanguageValue> navn) {
         this.navn = navn;
         return this;
+    }
+
+    public List<OrganizationEntityEmneEntry> getOrganizationEntities() {
+        return organizationEntities;
+    }
+
+    public void setOrganizationEntities(List<OrganizationEntityEmneEntry> organizationEntities) {
+        this.organizationEntities = organizationEntities;
     }
 }
