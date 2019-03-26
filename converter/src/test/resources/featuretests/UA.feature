@@ -36,6 +36,7 @@ Feature:
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.terminnummer" with value 12
 
     And there is a request to /emne/emneId
+    And there is a valid response from /emne/emneId
     And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
       | lang | nb | value | BokmalEmneNavn  |
       | lang | nn | value | NynorskEmneNavn |

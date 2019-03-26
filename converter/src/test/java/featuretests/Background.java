@@ -146,7 +146,7 @@ public class Background extends CucumberTestProcessor {
         world.setOrganizationEntity(readValue(write(organizationEntity), ObjectNode.class));
     }
 
-    @Given("there is a valid emne response")
+    @Given("there is a valid response from /emne/emneId")
     public void thersIsAValidEmneResponse() throws IOException {
         Emne emne = new Emne()
             .setNavn(Collections.emptyList());
