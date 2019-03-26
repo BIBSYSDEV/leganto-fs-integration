@@ -5,6 +5,7 @@ Feature:
 
   Background:
     Given there is a valid user input
+
 #    And the user input has a field with name "include_campus_participants" with boolean value "true"
 #    And  the user input has a field with name "campus_participants_file" with value "campus_participants_file.csv"
 #    And the user input has a field with name "include_number_of_participants" with boolean value "true"
@@ -49,47 +50,15 @@ Feature:
     And the response to organisasjonsEnhetUrl has a field "fakultet" with value 39
     And the response to organisasjonsEnhetUrl has a field "institutt" with value 7
 
+    And there is a valid response from /personroller/PR_ID
+    And there is a valid response from /rolle/ROLLE_ID
+
 
   Scenario: Update Leganto with new course information
     And the user input has field with name "include_institute_in_acad_department" with value true
     And the response from /undervisningsaktiviteter/UA_ID from FS has no field "perioder"
 
     When a new UA Leganto entry has been generated
-    Then the courses in FS are populated in Leganto with the following data:
-      | CourseCode (mandatory)             |
-      | CourseTitle (mandatory)            |
-      | SectionId                          |
-      | AcademicDepartment                 |
-      | ProcessingDepartment (mandatory)   |
-      | Term1                              |
-      | Term2                              |
-      | Term3                              |
-      | Term4                              |
-      | StartDate                          |
-      | EndDate                            |
-      | NumberOfParticipants               |
-      | WeeklyHours                        |
-      | Year                               |
-      | SearchableId1                      |
-      | SearchableId2                      |
-      | AllSearchableIds                   |
-      | Instructor1                        |
-      | Instructor2                        |
-      | Instructor3                        |
-      | Instructor4                        |
-      | Instructor5                        |
-      | Instructor6                        |
-      | Instructor7                        |
-      | Instructor8                        |
-      | Instructor9                        |
-      | Instructor10                       |
-      | AllInstructors                     |
-      | Operation (mandatory)              |
-      | OldCourseCode (rollover only)      |
-      | OldCourseSectionId (rollover only) |
-      | SubmitByDate                       |
-      | CampusParticipants                 |
-      | ReadingListName                    |
 
     And CourseCode is the string "UA_emneKode-emneVersjon-1980-HØST"
     And CourseTitle is the string "NynorskEmneNavn - NynorskUANavn - emneKode HØST 1980"

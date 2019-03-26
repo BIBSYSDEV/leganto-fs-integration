@@ -2,6 +2,7 @@ package leganto;
 
 import fs.common.Language;
 import fs.common.UEmne;
+import fs.personroller.UndervisningReference;
 import fs.ua.SemesterCode;
 import fs.ua.USemester;
 import fs.ue.UeCourseTitleFormat;
@@ -141,7 +142,10 @@ public class UeLegantoEntry extends LegantoEntry {
         }
     }
 
-
+    @Override
+    protected UndervisningReference undervisningsReference() {
+        return new UndervisningReference(ue.getHref());
+    }
 
     private UEmne getUeEmne() {
         return ue.getEmne();

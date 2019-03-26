@@ -2,6 +2,7 @@ package leganto;
 
 import com.google.common.base.Preconditions;
 import fs.common.Language;
+import fs.personroller.UndervisningReference;
 import fs.ua.SemesterCode;
 import fs.ua.UaCourseTitleFormat;
 import fs.ua.UndervisningsAktivitet;
@@ -117,7 +118,7 @@ public class UaLegantoEntry extends LegantoEntry {
         String id2 = ua.getAktivitet();
         searchableIds.add(id1);
         searchableIds.add(id2);
-        return String.join(SEARCHABLE_IDS_DELIMITER, id1, id2);
+        return String.join(SEARCHABLE_IDS_DELIMITER, searchableIds);
     }
 
     @Override
@@ -156,5 +157,8 @@ public class UaLegantoEntry extends LegantoEntry {
         }
     }
 
-
+    @Override
+    protected UndervisningReference undervisningsReference() {
+        return new UndervisningReference(ua.getUndervisning().getHref());
+    }
 }

@@ -125,7 +125,8 @@ public class Background extends CucumberTestProcessor {
             .setIncludeInstitute(DEFAULT_INCLUDE_INSTITUTE)
             .setOperation(Operation.NORMAL)
             .setLanguageOrder(Collections.emptyList())
-            .setCourseTitleFormat(UaCourseTitleFormat.DEFAULT_FORMAT);
+            .setCourseTitleFormat(UaCourseTitleFormat.DEFAULT_FORMAT)
+            .setRoleCodes(Collections.emptyList());
 
         String userInputJson = write(userInput);
         ObjectNode userInputObjectNode = readValue(userInputJson, ObjectNode.class);
@@ -133,7 +134,7 @@ public class Background extends CucumberTestProcessor {
 
     }
 
-    @Given("there is a valid organization response")
+    @Given("there is a valid response from \\/organizationsenheter\\/ORG_ID")
     public void thereIsAValidOrgEntry() throws IOException {
         OrganizationEntity organizationEntity = new OrganizationEntity()
             .setInstitute(0)

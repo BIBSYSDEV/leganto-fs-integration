@@ -4,11 +4,16 @@ import com.google.common.base.Preconditions;
 import fs.common.LanguageValue;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
+import fs.personroller.PersonRole;
+import fs.personroller.UndervisningReference;
 import fs.user.UserInput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public abstract class LegantoEntry {
 
@@ -24,10 +29,15 @@ public abstract class LegantoEntry {
     private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
     public static final String INVALID_USER_INPUT_MESSAGE = "Invalid user input";
+    public static final String INSTUCTOR_LIST_DELIMITER = ",";
 
     protected final transient UserInput userInput;
     protected transient Emne emne;
     protected transient OrganizationEntity organizationEntity;
+
+    protected transient Map<UndervisningReference, List<PersonRole>> personRoles;
+
+
 
     public LegantoEntry(UserInput userInput) {
         this.userInput = userInput;
@@ -177,5 +187,17 @@ public abstract class LegantoEntry {
     public final String getCampusParticipants() {
         return userInput.getCampusParticipants(getCourseCode()).orElse(EMPTY_STRING);
     }
+
+    public final String getAllInstructorIds(Map<UndervisningReference, List<PersonRole>> personRoles) {
+        UndervisningReference undervisningReference = new UndervisningReference(undervisningsReference().getHref());
+        List<PersonRole> roles = personRoles.getOrDefault(undervisningReference, Collections.emptyList());
+        List<String> ids = roles.stream().map(PersonRole::getPersonLopeNummer).collect(Collectors.toList());
+        return String.join(INSTUCTOR_LIST_DELIMITER, ids);
+    }
+
+    protected abstract UndervisningReference undervisningsReference();
+
+
+
 
 }
