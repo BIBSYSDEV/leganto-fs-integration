@@ -1,26 +1,29 @@
 package leganto;
 
+import com.google.common.base.Preconditions;
 import fs.common.LanguageValue;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
-import fs.user.Operation;
 import fs.user.UserInput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class LegantoEntry {
 
     public static final String FIELD_DELIMITER = "\t";
+    public static final String EMPTY_STRING = "";
     protected static final String DEFAULT_DELIMITER = "_";
     protected static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
-    protected static final String CAMPUS_PARTICIPANTS_DELIMITER = ",";
-
-    protected static final String EMPTY_STRING = "";
+    protected static final String SEARCHABLE_IDS_DELIMITER = ",";
+    protected static final String MISSING_ORGANIZATION_ENTITY_INFORMATION_ERROR = "Missing organization entity "
+        + "information";
     private static final String ILLEGAL_STATE_MESSAGE = "Not available";
     private static final int NUMBER_OF_FIELDS = 34;
     private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
+    public static final String INVALID_USER_INPUT_MESSAGE = "Invalid user input";
 
     protected final transient UserInput userInput;
     protected transient Emne emne;
@@ -28,16 +31,21 @@ public abstract class LegantoEntry {
 
     public LegantoEntry(UserInput userInput) {
         this.userInput = userInput;
+        Preconditions.checkArgument(userInput.isValid(),INVALID_USER_INPUT_MESSAGE);
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < NUMBER_OF_FIELDS; i++) {
             builder.append(FIELD_DELIMITER);
         }
 
         return builder.toString();
+    }
+
+    public Optional<String> toOptionalString() {
+        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
     }
 
     protected String getRandomValue(List<LanguageValue> valueList) {
@@ -59,10 +67,17 @@ public abstract class LegantoEntry {
     }
 
     public final String getAcademicDepartment() {
-        return String.join(DEFAULT_DELIMITER,
-            organizationEntity.getInstitution().toString(),
-            organizationEntity.getFaculty().toString(),
-            organizationEntity.getInstitute().toString());
+        if (userInput.getIncludeInstitute()) {
+            return String.join(DEFAULT_DELIMITER,
+                organizationEntity.getInstitution().toString(),
+                organizationEntity.getFaculty().toString(),
+                organizationEntity.getInstitute().toString());
+        } else {
+            return String.join(DEFAULT_DELIMITER,
+                organizationEntity.getInstitution().toString(),
+                organizationEntity.getFaculty().toString()
+            );
+        }
     }
 
     public final String getProcessingDepartment() {
@@ -117,8 +132,8 @@ public abstract class LegantoEntry {
         return EMPTY_STRING;
     }
 
-    public final Operation getOperation() {
-        return userInput.getOperation();
+    public final String getOperation() {
+        return userInput.getOperation().toString();
     }
 
     public final String getSubmitByDate() {
@@ -163,5 +178,4 @@ public abstract class LegantoEntry {
         return userInput.getCampusParticipants(getCourseCode()).orElse(EMPTY_STRING);
     }
 
-    ;
 }

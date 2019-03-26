@@ -4,9 +4,12 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.util.Optional;
 import org.junit.Test;
 import utils.IoUtils;
 
@@ -43,4 +46,7 @@ public class ParticipantsFileTest {
             is(false));
 
     }
+
+
+
 }

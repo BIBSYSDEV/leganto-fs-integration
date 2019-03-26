@@ -6,23 +6,25 @@ import java.util.Objects;
 public class LanguageValue {
 
     @JsonProperty("lang")
-    private String lang;
+    private Language lang;
+
     @JsonProperty("value")
     private String value;
 
     public LanguageValue() {
     }
 
-    public LanguageValue(String lang, String value) {
+    public LanguageValue(Language lang, String value) {
+
         this.lang = lang;
         this.value = value;
     }
 
-    public String getLang() {
+    public Language getLang() {
         return lang;
     }
 
-    public void setLang(String lang) {
+    public void setLang(Language lang) {
         this.lang = lang;
     }
 

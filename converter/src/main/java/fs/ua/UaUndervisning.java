@@ -2,10 +2,13 @@ package fs.ua;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fs.common.IgnoreValidable;
 import fs.common.UEmne;
+import fs.common.Validable;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UaUndervisning {
+public class UaUndervisning extends Validable {
 
     @JsonProperty("href")
     private String href;
@@ -19,6 +22,7 @@ public class UaUndervisning {
     @JsonProperty("terminnummer")
     private Integer terminnumer;
 
+    @IgnoreValidable
     public String getHref() {
         return href;
     }
@@ -53,5 +57,25 @@ public class UaUndervisning {
     public UaUndervisning setTerminnumer(Integer terminnumer) {
         this.terminnumer = terminnumer;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UaUndervisning)) {
+            return false;
+        }
+        UaUndervisning that = (UaUndervisning) o;
+        return getHref().equals(that.getHref())
+            && getEmne().equals(that.getEmne())
+            && getUaSemester().equals(that.getUaSemester())
+            && getTerminnumer().equals(that.getTerminnumer());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getHref(), getEmne(), getUaSemester(), getTerminnumer());
     }
 }

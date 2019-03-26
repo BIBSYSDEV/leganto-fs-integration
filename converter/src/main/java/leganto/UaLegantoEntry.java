@@ -1,12 +1,16 @@
 package leganto;
 
+import com.google.common.base.Preconditions;
 import fs.common.Language;
 import fs.ua.SemesterCode;
-import fs.ua.UaCourseTitle;
+import fs.ua.UaCourseTitleFormat;
 import fs.ua.UndervisningsAktivitet;
 import fs.user.Operation;
 import fs.user.UserInput;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class UaLegantoEntry extends LegantoEntry {
 
@@ -18,12 +22,17 @@ public class UaLegantoEntry extends LegantoEntry {
 
     public UaLegantoEntry(UndervisningsAktivitet ua, UserInput userInput) {
         super(userInput);
+        Objects.requireNonNull(ua);
+        Preconditions.checkArgument(ua.isValid());
         this.ua = ua;
     }
 
     @Override
     public String getEndDate() {
         Integer year = ua.getSemester().getYear();
+        if (ua.getSemester().getSemesterCode().equals(SemesterCode.AUTUMN)) {
+            year = year + 1;
+        }
         LocalDate endDate = getSemesterCode().semesterEndDate(year);
         return dateToString(endDate);
     }
@@ -37,7 +46,7 @@ public class UaLegantoEntry extends LegantoEntry {
 
     @Override
     public String getTerm1() {
-        return getSemesterCode().toString();
+        return getSemesterCode().toEnglishString();
     }
 
     @Override
@@ -47,10 +56,11 @@ public class UaLegantoEntry extends LegantoEntry {
             .getValueForLanguagePref(emne.getNavn(), userInput.getLanguageOrder())
             .orElse(getRandomValue(emne.getNavn()));
 
-        String uaNavn = Language.getValueForLanguagePref(ua.getNanv(), userInput.getLanguageOrder())
-            .orElse(getRandomValue(ua.getNanv()));
+        String uaNavn = Language.getValueForLanguagePref(ua.getNavn(), userInput.getLanguageOrder())
+            .orElse(getRandomValue(ua.getNavn()));
 
-        return UaCourseTitle.DEFAULT.formatUaCourseTitle(
+        UaCourseTitleFormat titleFormat = UaCourseTitleFormat.fromInteger(userInput.getCourseTitleFormat());
+        return titleFormat.formatUaCourseTitle(
             uaNavn,
             emneNavn,
             ua.getUndervisning().getEmne().getCode(),
@@ -91,16 +101,23 @@ public class UaLegantoEntry extends LegantoEntry {
 
     @Override
     public String getAllSearchableIds() {
-        return String.join(DEFAULT_DELIMITER,
+        List<String> searchableIds = new ArrayList<>();
+        Objects.requireNonNull(organizationEntity, MISSING_ORGANIZATION_ENTITY_INFORMATION_ERROR);
+
+        String id1 = String.join(DEFAULT_DELIMITER,
             PREFIX,
             organizationEntity.getInstitution().toString(),
             ua.getEmne().getCode(),
             ua.getEmne().getVersion(),
             ua.getSemester().getYear().toString(),
             ua.getSemester().getSemesterCode().toString(),
-            ua.getUndervisning().getTerminnumer().toString(),
-            ua.getAktivitet()
+            ua.getUndervisning().getTerminnumer().toString()
         );
+
+        String id2 = ua.getAktivitet();
+        searchableIds.add(id1);
+        searchableIds.add(id2);
+        return String.join(SEARCHABLE_IDS_DELIMITER, id1, id2);
     }
 
     @Override
@@ -138,4 +155,6 @@ public class UaLegantoEntry extends LegantoEntry {
             return EMPTY_STRING;
         }
     }
+
+
 }

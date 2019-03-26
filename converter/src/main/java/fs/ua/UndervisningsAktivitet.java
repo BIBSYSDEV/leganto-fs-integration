@@ -7,17 +7,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.LanguageValue;
 import fs.common.UEmne;
+import fs.common.Validable;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UndervisningsAktivitet {
+public class UndervisningsAktivitet extends Validable {
 
     @JsonProperty("undervisning")
     private UaUndervisning undervisning;
 
     @JsonProperty("navn")
-    private List<LanguageValue> nanv;
+    private List<LanguageValue> navn;
 
     @JsonProperty("aktivitet")
     private String aktivitet;
@@ -41,12 +43,12 @@ public class UndervisningsAktivitet {
         return this;
     }
 
-    public List<LanguageValue> getNanv() {
-        return nanv;
+    public List<LanguageValue> getNavn() {
+        return navn;
     }
 
-    public UndervisningsAktivitet setNanv(List<LanguageValue> nanv) {
-        this.nanv = nanv;
+    public UndervisningsAktivitet setNavn(List<LanguageValue> navn) {
+        this.navn = navn;
         return this;
     }
 
@@ -54,8 +56,9 @@ public class UndervisningsAktivitet {
         return aktivitet;
     }
 
-    public void setAktivitet(String aktivitet) {
+    public UndervisningsAktivitet setAktivitet(String aktivitet) {
         this.aktivitet = aktivitet;
+        return this;
     }
 
     @JsonIgnore
@@ -66,5 +69,24 @@ public class UndervisningsAktivitet {
     @JsonIgnore
     public USemester getSemester() {
         return this.getUndervisning().getUaSemester();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UndervisningsAktivitet)) {
+            return false;
+        }
+        UndervisningsAktivitet that = (UndervisningsAktivitet) o;
+        return Objects.equals(getUndervisning(), that.getUndervisning())
+            && Objects.equals(getNavn(), that.getNavn())
+            && Objects.equals(getAktivitet(), that.getAktivitet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUndervisning(), getNavn(), getAktivitet());
     }
 }
