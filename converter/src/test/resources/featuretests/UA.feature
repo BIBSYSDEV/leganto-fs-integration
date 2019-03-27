@@ -5,12 +5,6 @@ Feature:
 
   Background:
     Given there is a valid user input
-
-#    And the user input has a field with name "include_campus_participants" with boolean value "true"
-#    And  the user input has a field with name "campus_participants_file" with value "campus_participants_file.csv"
-#    And the user input has a field with name "include_number_of_participants" with boolean value "true"
-#    And the user input has a field with name "number_of_participants_file" with value "number_of_participants.csv"
-
     And the user input has a field with name "operation" with value "NORMAL"
     And the user input has a field with name "course_title_format" with value 1
     And the user input has a field with name "language_order" that is an array with string values
@@ -50,8 +44,7 @@ Feature:
     And the response to organisasjonsEnhetUrl has a field "fakultet" with value 39
     And the response to organisasjonsEnhetUrl has a field "institutt" with value 7
 
-    And there is a valid response from /personroller/PR_ID
-    And there is a valid response from /rolle/ROLLE_ID
+    And there is a possibly empty personroller list
 
 
   Scenario: Update Leganto with new course information
@@ -60,7 +53,7 @@ Feature:
 
     When a new UA Leganto entry has been generated
 
-    And CourseCode is the string "UA_emneKode-emneVersjon-1980-HØST"
+    Then CourseCode is the string "UA_emneKode-emneVersjon-1980-HØST"
     And CourseTitle is the string "NynorskEmneNavn - NynorskUANavn - emneKode HØST 1980"
     And SectionId is the string "emneVersjon"
     And AcademicDepartment is the  string "222_39_7"
@@ -86,7 +79,7 @@ Feature:
     And Instructor8 is empty
     And Instructor9 is empty
     And Instructor10 is empty
-#    And AllInstructors is not empty
+    And AllInstructors is empty
     And Operation is empty
     And SubmitByDate is empty
     And OldCourse Code is empty
