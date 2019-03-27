@@ -47,8 +47,8 @@ public class PersonRole extends Validable {
             return false;
         }
         PersonRole that = (PersonRole) o;
-        return Objects.equals(getPerson(), that.getPerson()) &&
-            Objects.equals(getUndervisning(), that.getUndervisning());
+        return Objects.equals(getPerson(), that.getPerson())
+            && Objects.equals(getUndervisning(), that.getUndervisning());
     }
 
     @Override

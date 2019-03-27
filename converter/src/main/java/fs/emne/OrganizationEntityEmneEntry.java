@@ -17,16 +17,18 @@ public class OrganizationEntityEmneEntry {
         return href;
     }
 
-    public void setHref(String href) {
+    public OrganizationEntityEmneEntry setHref(String href) {
         this.href = href;
+        return this;
     }
 
     public Type getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public OrganizationEntityEmneEntry setType(Type type) {
         this.type = type;
+        return this;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class OrganizationEntityEmneEntry {
         return Objects.hash(getHref(), getType());
     }
 
-    private enum Type {
+    public  enum Type {
         STUDIE, ADMINISTRATIV;
 
         @JsonCreator
@@ -62,6 +64,7 @@ public class OrganizationEntityEmneEntry {
             }
         }
 
+        @Override
         @JsonValue
         public String toString() {
             return this.name();

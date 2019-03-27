@@ -14,7 +14,7 @@ public class Personroller extends CucumberTestProcessor {
     }
 
     @Given("there is a list of personrolle entries for this undervisningsaktivitet with the following key-value pairs")
-    public void there_is_a_list_of_personrolle_entries_for_this_undervisningsaktivitet_with_the_following_key_value_pairs(
+    public void there_is_a_list_of_personrolle_entries_for_undervisningsaktivitet_with_the_following_key_value_pairs(
         DataTable keyValuePairs) {
 
         List<ObjectNode> personroller = createElementList(keyValuePairs);

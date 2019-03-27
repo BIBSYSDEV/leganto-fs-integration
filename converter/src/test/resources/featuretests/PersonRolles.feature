@@ -18,6 +18,11 @@ Feature: Instructors for each Leganto entry
     Then AllInstructors is the string "PERSONID1,PERSONID2,PERSONID3"
 
 
+#  Scenario: Filtering RoleCodes from a user input field
+#    Given there is a valid user input
+#    And the user input has a field with name "role_codes" that is array with values
+#      |role_code1|
+#      |role_code2|
 
 
 

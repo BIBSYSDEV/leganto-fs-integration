@@ -11,9 +11,11 @@ public class UndervisningReference extends Validable {
 
     //for json
     public UndervisningReference() {
+        super();
     }
 
     public UndervisningReference(String href) {
+        super();
         this.href = href;
     }
 

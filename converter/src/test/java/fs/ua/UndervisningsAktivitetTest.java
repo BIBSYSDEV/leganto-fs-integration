@@ -35,7 +35,6 @@ public class UndervisningsAktivitetTest {
         String newJson = JsonUtils.write(ua);
         UndervisningsAktivitet newUA = JsonUtils.readValue(newJson, UndervisningsAktivitet.class);
         assertThat(newUA, is(equalTo(ua)));
-
     }
 
     @Test
@@ -54,5 +53,14 @@ public class UndervisningsAktivitetTest {
         assertThat(ua.getUndervisning().getUaSemester().getHref(),
             is(equalTo(INPUT_FILE_SEMESTER_HREF)));
         assertThat(ua.getAktivitet(), is(equalTo(INPUT_FILE_AKTIVITET_VALUE)));
+    }
+
+    @Test
+    public void equalShouldBeDeepEqual() throws IOException {
+        UndervisningsAktivitet ua1 = UndervisningsAktivitet.fromJson(uaJson);
+        UndervisningsAktivitet ua2 = UndervisningsAktivitet.fromJson(uaJson);
+
+        assertThat(ua1.hashCode(), is(equalTo(ua2.hashCode())));
+        assertThat(ua1, is(equalTo(ua2)));
     }
 }
