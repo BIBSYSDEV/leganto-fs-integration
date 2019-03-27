@@ -27,15 +27,15 @@ public class Background extends CucumberTestProcessor {
     private static final int SINGLE_ELEMENT_IN_SINGLE_COLUMN_TABLE = 0;
     private static final String EMPTY_DATA_FROM_CUCUMBER_DEFINTION_FILE =
         "Datatable should not be empty. Add some data in the test";
-    public static final boolean DEFAULT_INCLUDE_NUMBER_OF_PARTICIPANTS = false;
-    public static final boolean DEFAULT_INCLUDE_UA = false;
+    private static final boolean DEFAULT_INCLUDE_NUMBER_OF_PARTICIPANTS = false;
+    private static final boolean DEFAULT_INCLUDE_UA = false;
     private static final String EMPTY_STRING = "";
-    public static final boolean DEFAULT_INCLUDE_CAMPUS_PARTICIPANTS = false;
-    public static final boolean DEFAULT_INCLUDE_INSTITUTE = false;
-    private final World world;
+    private static final boolean DEFAULT_INCLUDE_CAMPUS_PARTICIPANTS = false;
+    private static final boolean DEFAULT_INCLUDE_INSTITUTE = false;
+
 
     public Background(World world) {
-        this.world = world;
+        super(world);
     }
 
     @Given("the user input has no field with name {string}")

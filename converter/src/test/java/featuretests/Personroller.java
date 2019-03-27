@@ -9,11 +9,10 @@ import utils.JsonUtils;
 
 public class Personroller extends CucumberTestProcessor {
 
-    private final World world;
     private String EMPTY_STRING = "";
 
     public Personroller(World world) {
-        this.world = world;
+        super(world);
     }
 
     @Given("there is a list of personrolle entries for this undervisningsaktivitet with the following key-value pairs")

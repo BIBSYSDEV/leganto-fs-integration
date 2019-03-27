@@ -12,8 +12,6 @@ import static utils.JsonUtils.removeKeyFromNode;
 import static utils.JsonUtils.write;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
 import cucumber.api.java.en.Given;
@@ -31,14 +29,9 @@ import fs.ua.UndervisningsAktivitet;
 import fs.user.UserInput;
 import io.cucumber.datatable.DataTable;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import leganto.UaLegantoEntry;
 import utils.JsonUtils;
 
@@ -50,12 +43,11 @@ public class UAFeatureTest extends CucumberTestProcessor implements FeatureTests
     private static final int EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL = 1;
     public static final String NULL_UA_RESPONSE_MESSAGE = "UA response is null";
 
-    private final World world;
     private UaLegantoEntry uaLegantoEntry;
     private transient ObjectNode uaResponse;
 
     public UAFeatureTest(World world) {
-        this.world = world;
+        super(world);
     }
 
     @Given("the response from \\/undervisningsaktiviteter\\/UA_ID has a field {string} with value {string}")
@@ -332,39 +324,5 @@ public class UAFeatureTest extends CucumberTestProcessor implements FeatureTests
         assertThat(uaLegantoEntry.getAllInstructorIds(personRolesMap), is(emptyString()));
     }
 
-    private Map<UndervisningReference, List<PersonRole>> createPersonRolesMap() throws JsonProcessingException {
-        List<ObjectNode> personRolesJson = arrayNodeToObjectNodeList(world.getPersonRolleEntries());
-        List<PersonRole> personRoles = objectNodesToPersonRoles(personRolesJson);
 
-        return listToMap(personRoles);
-    }
-
-    private Map<UndervisningReference, List<PersonRole>> listToMap(List<PersonRole> personRoles) {
-        Map<UndervisningReference, List<PersonRole>> personRolesMap = new HashMap<>();
-        for (PersonRole personRole : personRoles) {
-            if (!personRolesMap.containsKey(personRole.getUndervisning())) {
-                personRolesMap.put(personRole.getUndervisning(), new ArrayList<>());
-            }
-            personRolesMap.get(personRole.getUndervisning()).add(personRole);
-        }
-        return personRolesMap;
-    }
-
-    private List<PersonRole> objectNodesToPersonRoles(List<ObjectNode> personRolesJson)
-        throws JsonProcessingException {
-        List<PersonRole> personRoles = new ArrayList<>();
-        for (ObjectNode json : personRolesJson) {
-            PersonRole personRole = readValue(json, PersonRole.class);
-            personRoles.add(personRole);
-        }
-        return personRoles;
-    }
-
-    private List<ObjectNode> arrayNodeToObjectNodeList(ArrayNode arrayNode) {
-        Iterator<JsonNode> iterator = arrayNode.elements();
-        Iterable<JsonNode> iterable = () -> iterator;
-        return StreamSupport.stream(iterable.spliterator(), false)
-            .map(jsonNode -> (ObjectNode) jsonNode)
-            .collect(Collectors.toList());
-    }
 }

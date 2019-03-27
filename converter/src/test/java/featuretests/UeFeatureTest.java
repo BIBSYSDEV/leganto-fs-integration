@@ -8,6 +8,7 @@ import static utils.JsonUtils.putKeyInNode;
 import static utils.JsonUtils.readValue;
 import static utils.JsonUtils.write;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
 import cucumber.api.java.en.Given;
@@ -16,12 +17,16 @@ import cucumber.api.java.en.When;
 import fs.common.UEmne;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
+import fs.personroller.PersonRole;
+import fs.personroller.UndervisningReference;
 import fs.ua.SemesterCode;
 import fs.ua.USemester;
 import fs.ue.UndervisiningEntry;
 import fs.user.UserInput;
 import io.cucumber.datatable.DataTable;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import leganto.UaLegantoEntry;
 import leganto.UeLegantoEntry;
 
@@ -31,12 +36,12 @@ public class UeFeatureTest extends CucumberTestProcessor implements FeatureTests
     private static final String EMPTY_STRING = "";
     private static final String NULL_UE_RESPONSE_MESSAGE = "undervisingsentry response is empty";
 
-    private final World world;
+
     private transient ObjectNode ueEntry;
     private UeLegantoEntry ueLegantoEntry;
 
     public UeFeatureTest(World world) {
-        this.world = world;
+        super(world);
     }
 
     @Given("there is a valid response from \\/undervisning\\/UE_ID")
@@ -238,5 +243,11 @@ public class UeFeatureTest extends CucumberTestProcessor implements FeatureTests
     @Then("the field Operation in the UE entry is empty")
     public void the_field_Operation_in_the_UE_entry_is_empty() {
         assertThat(ueLegantoEntry.getOperation(), is(emptyString()));
+    }
+
+    @Then("the field AllInstuctors in the UE entry is empty")
+    public void theFieldAllInstuctorsInTheUEEntryIsEmpty() throws JsonProcessingException {
+        Map<UndervisningReference, List<PersonRole>> personRoller = createPersonRolesMap();
+        assertThat(ueLegantoEntry.getAllInstructorIds(personRoller), is(emptyString()));
     }
 }

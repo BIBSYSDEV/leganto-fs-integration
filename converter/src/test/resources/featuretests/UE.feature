@@ -38,7 +38,7 @@ Feature:
     And the response to organisasjonsEnhetUrl has a field "institusjon" with value 222
     And the response to organisasjonsEnhetUrl has a field "fakultet" with value 39
     And the response to organisasjonsEnhetUrl has a field "institutt" with value 7
-
+    And there is a possibly empty personroller list
 
   Scenario: Update Leganto with new undervisning information
     When a new UE Leganto entry has been generated
