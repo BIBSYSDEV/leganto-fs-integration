@@ -12,6 +12,8 @@ import static utils.JsonUtils.removeKeyFromNode;
 import static utils.JsonUtils.write;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
 import cucumber.api.java.en.Given;
@@ -20,6 +22,8 @@ import cucumber.api.java.en.When;
 import fs.common.UEmne;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
+import fs.personroller.PersonRole;
+import fs.personroller.UndervisningReference;
 import fs.ua.SemesterCode;
 import fs.ua.USemester;
 import fs.ua.UaUndervisning;
@@ -27,22 +31,25 @@ import fs.ua.UndervisningsAktivitet;
 import fs.user.UserInput;
 import io.cucumber.datatable.DataTable;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import leganto.UaLegantoEntry;
 import utils.JsonUtils;
 
-public class UAFeatureTest extends CucumberTestProcessor {
+public class UAFeatureTest extends CucumberTestProcessor implements FeatureTestsErrorMessages {
 
     private static final String NOT = "not";
     private static final String EMPTY_STRING = new String();
     private static final int INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER = -1;
     private static final int EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL = 1;
     public static final String NULL_UA_RESPONSE_MESSAGE = "UA response is null";
-    private static final String NULL_USER_INPUT_MESSAGE = "User input is null";
-    private static final String NULL_ORG_ENTITY_MESSAGE = "Organization entity is null";
-    private static final String NULL_EMNE_MESSAGE = "Emne response is empty";
-    private static final String NULL_PERSONROLE_MESSAGE = "PersonRolle is empty";
+
     private final World world;
     private UaLegantoEntry uaLegantoEntry;
     private transient ObjectNode uaResponse;
@@ -313,13 +320,51 @@ public class UAFeatureTest extends CucumberTestProcessor {
     }
 
     @Then("AllInstructors is the string {string}")
-    public void allinstructors_is_the_string(String instuctorIds) {
-        world.getPersonRolleEntries();
-        assertThat(uaLegantoEntry.getAllInstructorIds(), is(equalTo(instuctorIds)));
+    public void allinstructors_is_the_string(String instructorsString) throws JsonProcessingException {
+        Map<UndervisningReference, List<PersonRole>> personRolesMap = createPersonRolesMap();
+
+        assertThat(uaLegantoEntry.getAllInstructorIds(personRolesMap), is(equalTo(instructorsString)));
     }
 
+    @Then("AllInstructors is empty")
+    public void allinstructors_is_empty() throws JsonProcessingException {
+        Map<UndervisningReference, List<PersonRole>> personRolesMap = createPersonRolesMap();
+        assertThat(uaLegantoEntry.getAllInstructorIds(personRolesMap), is(emptyString()));
+    }
 
+    private Map<UndervisningReference, List<PersonRole>> createPersonRolesMap() throws JsonProcessingException {
+        List<ObjectNode> personRolesJson = arrayNodeToObjectNodeList(world.getPersonRolleEntries());
+        List<PersonRole> personRoles = objectNodesToPersonRoles(personRolesJson);
 
+        return listToMap(personRoles);
+    }
 
+    private Map<UndervisningReference, List<PersonRole>> listToMap(List<PersonRole> personRoles) {
+        Map<UndervisningReference, List<PersonRole>> personRolesMap = new HashMap<>();
+        for (PersonRole personRole : personRoles) {
+            if (!personRolesMap.containsKey(personRole.getUndervisning())) {
+                personRolesMap.put(personRole.getUndervisning(), new ArrayList<>());
+            }
+            personRolesMap.get(personRole.getUndervisning()).add(personRole);
+        }
+        return personRolesMap;
+    }
 
+    private List<PersonRole> objectNodesToPersonRoles(List<ObjectNode> personRolesJson)
+        throws JsonProcessingException {
+        List<PersonRole> personRoles = new ArrayList<>();
+        for (ObjectNode json : personRolesJson) {
+            PersonRole personRole = readValue(json, PersonRole.class);
+            personRoles.add(personRole);
+        }
+        return personRoles;
+    }
+
+    private List<ObjectNode> arrayNodeToObjectNodeList(ArrayNode arrayNode) {
+        Iterator<JsonNode> iterator = arrayNode.elements();
+        Iterable<JsonNode> iterable = () -> iterator;
+        return StreamSupport.stream(iterable.spliterator(), false)
+            .map(jsonNode -> (ObjectNode) jsonNode)
+            .collect(Collectors.toList());
+    }
 }

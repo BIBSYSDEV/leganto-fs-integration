@@ -57,7 +57,7 @@ public class LegantoEntryTest extends LocalTest {
 
             @Override
             protected UndervisningReference undervisningsReference() {
-                return UNDERVISNING_HREF;
+                return new UndervisningReference(UNDERVISNING_HREF);
             }
         };
         OrganizationEntity organizationEntity = new OrganizationEntity()

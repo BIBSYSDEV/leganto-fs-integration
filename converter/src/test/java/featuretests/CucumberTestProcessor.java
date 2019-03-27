@@ -23,7 +23,8 @@ public abstract class CucumberTestProcessor {
     private void createSingleArrayElement(DataTable keyValuePairs, int row, ObjectNode arrayElement) {
         for (int valueIndex = 1; valueIndex < keyValuePairs.width(); valueIndex = valueIndex + 2) {
             int keyIndex = valueIndex - 1;
-            arrayElement.put(keyValuePairs.cell(row, keyIndex), keyValuePairs.cell(row, valueIndex));
+            JsonUtils
+                .putKeyInNode(arrayElement, keyValuePairs.cell(row, keyIndex), keyValuePairs.cell(row, valueIndex));
         }
     }
 }

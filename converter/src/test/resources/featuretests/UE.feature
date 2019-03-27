@@ -69,6 +69,7 @@ Feature:
     And the field Instructor8 in the UE entry is empty
     And the field Instructor9 in the UE entry is empty
     And the field Instructor10 in the UE entry is empty
+    And the field AllInstuctors in the UE entry is empty
     And the field OldCourseCode in the UE entry is empty
     And the field OldCourseSectionId in the UE entry is empty
     And the field Operation in the UE entry is empty

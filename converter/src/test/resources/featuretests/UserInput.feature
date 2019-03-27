@@ -6,9 +6,8 @@ Feature:
     Given there is a valid response from /organizationsenheter/ORG_ID
     Given there is a valid response from /undervisningsaktiviteter/UA_ID
     And there is a valid response from /emne/emneId
+    And there is a possibly empty personroller list
     And there is a valid user input
-    And there is a valid response from /personroller/PR_ID
-    And there is a valid response from /rolle/ROLLE_ID
 
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.href" with value "emne/emneId"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.kode" with value "emneKode"
@@ -23,7 +22,6 @@ Feature:
     And the response from /undervisning/UE_ID has a field with name "emne.versjon" and value "emneVersjon"
     And the response from /undervisning/UE_ID has a field with name "semester.ar" and value "1980"
     And the response from /undervisning/UE_ID has a field with name "semester.termin" and value "HØST"
-
 
 
   Scenario: campus participants in UA entry

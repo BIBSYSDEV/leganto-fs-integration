@@ -9,6 +9,7 @@ import static utils.JsonUtils.readValue;
 import static utils.JsonUtils.write;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.base.Preconditions;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -24,10 +25,11 @@ import java.io.IOException;
 import leganto.UaLegantoEntry;
 import leganto.UeLegantoEntry;
 
-public class UeFeatureTest extends CucumberTestProcessor {
+public class UeFeatureTest extends CucumberTestProcessor implements FeatureTestsErrorMessages {
 
     private static final int INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER = -1;
     private static final String EMPTY_STRING = "";
+    private static final String NULL_UE_RESPONSE_MESSAGE = "undervisingsentry response is empty";
 
     private final World world;
     private transient ObjectNode ueEntry;
@@ -69,6 +71,13 @@ public class UeFeatureTest extends CucumberTestProcessor {
 
     @When("a new UE Leganto entry has been generated")
     public void new_UE_entry_is_generated() throws IOException {
+        Preconditions.checkNotNull(ueEntry, NULL_UE_RESPONSE_MESSAGE);
+        Preconditions.checkNotNull(world.getUserInput(), NULL_USER_INPUT_MESSAGE);
+        Preconditions.checkNotNull(world.getOrganizationEntity(), NULL_ORG_ENTITY_MESSAGE);
+        Preconditions.checkNotNull(world.getEmneResponse(), NULL_EMNE_MESSAGE);
+        Preconditions.checkNotNull(world.getPersonRolleEntries(), NULL_PERSONROLE_MESSAGE);
+
+
         UndervisiningEntry ue = readValue(ueEntry, UndervisiningEntry.class);
         UserInput userInput = readValue(world.getUserInput(), UserInput.class).initFiles();
         OrganizationEntity orgEntity = readValue(world.getOrganizationEntity(),
