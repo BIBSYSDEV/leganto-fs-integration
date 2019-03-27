@@ -8,11 +8,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.LanguageValue;
 import fs.common.UEmne;
 import fs.common.Validable;
-import fs.user.UserInput;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UndervisningsAktivitet extends Validable {
@@ -70,20 +68,6 @@ public class UndervisningsAktivitet extends Validable {
     @JsonIgnore
     public USemester getSemester() {
         return this.getUndervisning().getUaSemester();
-    }
-
-    public List<PersonRolleRequest> personrolesRequests(UserInput userInput) {
-        return userInput.getRoleCodes().stream()
-            .map(this::personroleRequest)
-            .collect(Collectors.toList());
-    }
-
-    private PersonRolleRequest personroleRequest(String roleCode) {
-        return new PersonRolleRequest()
-            .setEmneKode(this.getEmne().getCode())
-            .setYear(this.getSemester().getYear())
-            .setSemesterCode(this.getSemester().getSemesterCode())
-            .setRolleKode(roleCode);
     }
 
     @Override

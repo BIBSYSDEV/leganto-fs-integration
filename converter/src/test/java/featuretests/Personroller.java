@@ -9,8 +9,6 @@ import utils.JsonUtils;
 
 public class Personroller extends CucumberTestProcessor {
 
-    private String EMPTY_STRING = "";
-
     public Personroller(World world) {
         super(world);
     }
@@ -29,6 +27,4 @@ public class Personroller extends CucumberTestProcessor {
     public void there_is_a_possibly_empty_personroller_list() {
         world.setPersonRoleEntries(JsonUtils.newArrayNode());
     }
-
-
 }

@@ -38,6 +38,24 @@ public class PersonRole extends Validable {
         return this;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PersonRole)) {
+            return false;
+        }
+        PersonRole that = (PersonRole) o;
+        return Objects.equals(getPerson(), that.getPerson()) &&
+            Objects.equals(getUndervisning(), that.getUndervisning());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPerson(), getUndervisning());
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Person extends Validable {
 
