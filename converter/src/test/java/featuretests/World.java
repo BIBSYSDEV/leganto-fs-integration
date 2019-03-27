@@ -18,7 +18,7 @@ public class World {
     private ObjectNode userInput;
     private ObjectNode emneResponse;
     private ObjectNode orgnanizationEntity;
-    private ObjectNode personRoleEntry;
+    private ArrayNode personRoleEntries;
     private ObjectNode role;
 
     private File campusParticipantsFile;
@@ -84,12 +84,12 @@ public class World {
         numberOfParticipantsFile.deleteOnExit();
     }
 
-    public void setPersonRoleEntry(ObjectNode personRoleEntry) {
-        this.personRoleEntry = personRoleEntry;
+    public void setPersonRoleEntries(ArrayNode personRoleEntries) {
+        this.personRoleEntries = personRoleEntries;
     }
 
     public ArrayNode getPersonRolleEntries() {
-        return this.personRoleEntry;
+        return this.personRoleEntries;
     }
 
     public ObjectNode getRole() {

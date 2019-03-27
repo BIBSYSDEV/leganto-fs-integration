@@ -1,55 +1,35 @@
 package featuretests;
 
-import static utils.JsonUtils.putKeyInNode;
-
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cucumber.api.java.en.Given;
-import fs.personroller.PersonRole;
-import fs.personroller.PersonRole.Person;
-import fs.personroller.Role;
+import io.cucumber.datatable.DataTable;
+import java.util.List;
 import utils.JsonUtils;
 
-public class Personroller {
+public class Personroller extends CucumberTestProcessor {
 
     private final World world;
     private String EMPTY_STRING = "";
-
-
 
     public Personroller(World world) {
         this.world = world;
     }
 
-    @Given("there is a valid response from \\/personroller\\/PR_ID")
-    public void there_is_valid_response_from_personroller_PR_ID() {
-        PersonRole.Person person = new Person()
-            .setPersonLopeNummer(EMPTY_STRING)
-            .setHref(EMPTY_STRING);
+    @Given("there is a list of personrolle entries for this undervisningsaktivitet with the following key-value pairs")
+    public void there_is_a_list_of_personrolle_entries_for_this_undervisningsaktivitet_with_the_following_key_value_pairs(
+        DataTable keyValuePairs) {
 
-        ObjectNode personRoleJson = JsonUtils.mapper.convertValue(person, ObjectNode.class);
-        world.setPersonRoleEntry(personRoleJson);
+        List<ObjectNode> personroller = createElementList(keyValuePairs);
+        ArrayNode personrolleEntries = JsonUtils.newArrayNode();
+        personroller.forEach(personrolleEntries::add);
+        world.setPersonRoleEntries(personrolleEntries);
     }
 
-    @Given("the response from \\/personroller\\/PR_ID has a field {string} with value {string}")
-    public void the_response_from_personroller_PR_ID_has_a_field_with_value(String key, String value) {
-        putKeyInNode(world.getPersonRolleEntries(), key, value);
+    @Given("there is a possibly empty personroller list")
+    public void there_is_a_possibly_empty_personroller_list() {
+        world.setPersonRoleEntries(JsonUtils.newArrayNode());
     }
-
-    @Given("there is a valid response from \\/rolle\\/ROLLE_ID")
-    public void there_is_a_valid_response_from_rolle_ROLLE_ID() {
-        Role role = new Role().setCode(EMPTY_STRING);
-        ObjectNode roleJson = JsonUtils.mapper.convertValue(role, ObjectNode.class);
-        world.setRole(roleJson);
-    }
-
-    @Given("the response from \\/rolle\\/ROLLE_ID has a field with name {string} and value {string}")
-    public void the_response_from_rolle_ROLLE_ID_has_a_field_with_name_and_value(String key, String value) {
-        putKeyInNode(world.getRole(), key, value);
-    }
-
-
-
-
 
 
 }
