@@ -3,10 +3,11 @@ Feature:
 
 
   Background:
-    Given there is a valid organization response
+    Given there is a valid response from /organizationsenheter/ORG_ID
     Given there is a valid response from /undervisningsaktiviteter/UA_ID
-    And there is a valid emne response
-    And  there is a valid user input
+    And there is a valid response from /emne/emneId
+    And there is a possibly empty personroller list
+    And there is a valid user input
 
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.href" with value "emne/emneId"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.kode" with value "emneKode"
@@ -22,8 +23,6 @@ Feature:
     And the response from /undervisning/UE_ID has a field with name "semester.ar" and value "1980"
     And the response from /undervisning/UE_ID has a field with name "semester.termin" and value "HØST"
 
-
-#    And the user input has a field with name "include_number_of_participants" with boolean value "false"
 
   Scenario: campus participants in UA entry
     Given the user input has a field with name "include_campus_participants" with boolean value "true"

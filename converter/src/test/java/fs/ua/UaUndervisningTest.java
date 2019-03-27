@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import org.junit.Test;
 import utils.IoUtils;
-import utils.JsonUtils;
 
 public class UaUndervisningTest {
 
@@ -18,10 +17,11 @@ public class UaUndervisningTest {
     private static final String SAMPLE_UA_FILE = "UA.json";
     private static final Integer INPUT_FILE_TERMIN_NUMMER = 1;
     private final UndervisningsAktivitet ua;
+    private final String uaJson;
 
     public UaUndervisningTest() throws IOException {
-        String uaJson = IoUtils.resourceAsString(Paths.get(UA_RESOURCES, SAMPLE_UA_FILE));
-        ua = JsonUtils.mapper.readValue(uaJson, UndervisningsAktivitet.class);
+        uaJson = IoUtils.resourceAsString(Paths.get(UA_RESOURCES, SAMPLE_UA_FILE));
+        ua = UndervisningsAktivitet.fromJson(uaJson);
     }
 
     @Test
@@ -43,5 +43,17 @@ public class UaUndervisningTest {
     @Test
     public void terminNumberShouldBeParsedCorrectly() {
         assertThat(ua.getUndervisning().getTerminnumer(), is(equalTo(INPUT_FILE_TERMIN_NUMMER)));
+    }
+
+    @Test
+    public void equalsShouldBeDeepEqual() throws IOException {
+        UndervisningsAktivitet anotherUA = UndervisningsAktivitet.fromJson(uaJson);
+        assertThat(ua.getUndervisning(), is(equalTo(anotherUA.getUndervisning())));
+    }
+
+    @Test
+    public void hashCodeShouldBeHashCodeOfTheFields() throws IOException {
+        UndervisningsAktivitet anotherUA = UndervisningsAktivitet.fromJson(uaJson);
+        assertThat(ua.getUndervisning().hashCode(), is(equalTo(anotherUA.getUndervisning().hashCode())));
     }
 }

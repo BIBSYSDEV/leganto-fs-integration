@@ -24,7 +24,7 @@ Feature:
     And the response from /undervisning/UE_ID has a field with name "semester.termin" and value "HØST"
     And the response from /undervisning/UE_ID has a field with name "terminnummer" and value "12"
 
-    And there is a request to /emne/emneId
+    And there is a valid response from /emne/emneId
     And the response from /emne/emneId from FS has a field "navn" that is an array with the key-element pairs
       | lang | nb | value | BokmalEmneNavn  |
       | lang | nn | value | NynorskEmneNavn |
@@ -38,7 +38,7 @@ Feature:
     And the response to organisasjonsEnhetUrl has a field "institusjon" with value 222
     And the response to organisasjonsEnhetUrl has a field "fakultet" with value 39
     And the response to organisasjonsEnhetUrl has a field "institutt" with value 7
-
+    And there is a possibly empty personroller list
 
   Scenario: Update Leganto with new undervisning information
     When a new UE Leganto entry has been generated
@@ -69,6 +69,7 @@ Feature:
     And the field Instructor8 in the UE entry is empty
     And the field Instructor9 in the UE entry is empty
     And the field Instructor10 in the UE entry is empty
+    And the field AllInstuctors in the UE entry is empty
     And the field OldCourseCode in the UE entry is empty
     And the field OldCourseSectionId in the UE entry is empty
     And the field Operation in the UE entry is empty

@@ -12,18 +12,25 @@ import fs.common.Language;
 import fs.common.LanguageValue;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
+import fs.personroller.PersonRole;
+import fs.personroller.PersonRole.Person;
+import fs.personroller.UndervisningReference;
 import fs.user.Operation;
 import fs.user.UserInput;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.Test;
+import utils.LocalTest;
 
-public class LegantoEntryTest {
+public class LegantoEntryTest extends LocalTest {
 
+    public static final String UNDERVISNING_HREF = "undervisningRef";
     private static final String ARBITRARY_NORWEGIAN_TEXT = "noeHer";
     private static final String ARBITRARY_ENGLISH_TEXT = "something";
     private static final Integer INSTITUTION = 123;
@@ -40,17 +47,7 @@ public class LegantoEntryTest {
         List<String> campuses = new ArrayList<>();
         campuses.add(CAMPUS1);
         campuses.add(CAMPUS2);
-        userInput = new UserInput()
-            .setOperation(Operation.NORMAL)
-            .setIncludeInstitute(true)
-            .setLanguageOrder(Collections.emptyList())
-            .setIncludeNumberOfParticipants(false)
-            .setIncludeCampusParticipants(false)
-            .setCampusParticipantsFilename(EMPTY_STRING)
-            .setNumberOfParticipantsFilename(EMPTY_STRING)
-            .setCourseTitleFormat(1)
-            .setIncludeUA(false);
-
+        userInput = mockUserInput();
 
         legantoEntry = new LegantoEntry(userInput) {
             @Override
@@ -58,6 +55,10 @@ public class LegantoEntryTest {
                 return Optional.empty();
             }
 
+            @Override
+            protected UndervisningReference undervisningsReference() {
+                return new UndervisningReference(UNDERVISNING_HREF);
+            }
         };
         OrganizationEntity organizationEntity = new OrganizationEntity()
             .setInstitution(INSTITUTION)
@@ -223,5 +224,26 @@ public class LegantoEntryTest {
         OrganizationEntity organizationEntity = new OrganizationEntity();
         legantoEntry.setOrganizationEntity(organizationEntity);
         assertThat(legantoEntry.organizationEntity, is(equalTo(organizationEntity)));
+    }
+
+    @Test
+    public void getAllInstructorIdsShouldReturnTheIdsOfPersonRoles() {
+        List<String> ids = new ArrayList<>();
+        ids.add("id1");
+        ids.add("id2");
+        List<PersonRole> personRoles = ids.stream()
+            .map(id -> new Person().setPersonLopeNummer(id))
+            .map(person -> new PersonRole().setPerson(person))
+            .collect(Collectors.toList());
+        Map<UndervisningReference, List<PersonRole>> roles = new HashMap<>();
+        roles.put(new UndervisningReference(UNDERVISNING_HREF), personRoles);
+        assertThat(legantoEntry.getAllInstructorIds(roles), is(equalTo("id1,id2")));
+    }
+
+    @Test
+    public void getAllInstructorIdsShouldReturnEmptyStringForEmptyList() {
+
+        Map<UndervisningReference, List<PersonRole>> personRoles = Collections.emptyMap();
+        assertThat(legantoEntry.getAllInstructorIds(personRoles), is((emptyString())));
     }
 }

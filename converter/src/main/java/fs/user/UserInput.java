@@ -47,6 +47,11 @@ public class UserInput extends Validable {
     @JsonProperty("include_ua")
     private Boolean includeUA;
 
+    @JsonProperty("role_codes")
+    private List<String> roleCodes;
+
+
+
     @JsonIgnore
     private transient ParticipantsFile campusParticipantsFile;
 
@@ -184,6 +189,15 @@ public class UserInput extends Validable {
 
     public UserInput setCourseTitleFormat(Integer courseTitleFormat) {
         this.courseTitleFormat = courseTitleFormat;
+        return this;
+    }
+
+    public List<String> getRoleCodes() {
+        return roleCodes;
+    }
+
+    public UserInput setRoleCodes(List<String> roleCodes) {
+        this.roleCodes = roleCodes;
         return this;
     }
 

@@ -24,7 +24,6 @@ public class UndervisningsAktivitet extends Validable {
     @JsonProperty("aktivitet")
     private String aktivitet;
 
-
     public static UndervisningsAktivitet fromJson(String json) throws IOException {
         return mapper.readValue(json, UndervisningsAktivitet.class);
     }

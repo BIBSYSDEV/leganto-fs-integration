@@ -1,5 +1,6 @@
 package featuretests;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,9 +18,12 @@ public class World {
     private ObjectNode userInput;
     private ObjectNode emneResponse;
     private ObjectNode orgnanizationEntity;
+    private ArrayNode personRoleEntries;
+    private ObjectNode role;
 
     private File campusParticipantsFile;
     private File numberOfParticipantsFile;
+
 
     public World() {
         userInput = JsonUtils.newObjectNode();
@@ -78,5 +82,21 @@ public class World {
             numberOfParticipantsFile.delete();
         }
         numberOfParticipantsFile.deleteOnExit();
+    }
+
+    public void setPersonRoleEntries(ArrayNode personRoleEntries) {
+        this.personRoleEntries = personRoleEntries;
+    }
+
+    public ArrayNode getPersonRolleEntries() {
+        return this.personRoleEntries;
+    }
+
+    public ObjectNode getRole() {
+        return role;
+    }
+
+    public void setRole(ObjectNode roleJson) {
+        this.role = roleJson;
     }
 }

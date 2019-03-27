@@ -22,7 +22,5 @@ public class UndervisiningEntryTest {
         String newJson = JsonUtils.write(ue);
         UndervisiningEntry newUE = JsonUtils.readValue(newJson, UndervisiningEntry.class);
         assertThat(newUE, is(equalTo(ue)));
-
     }
-
 }

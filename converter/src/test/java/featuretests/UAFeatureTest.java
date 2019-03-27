@@ -13,12 +13,15 @@ import static utils.JsonUtils.write;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.base.Preconditions;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import fs.common.UEmne;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
+import fs.personroller.PersonRole;
+import fs.personroller.UndervisningReference;
 import fs.ua.SemesterCode;
 import fs.ua.USemester;
 import fs.ua.UaUndervisning;
@@ -28,21 +31,23 @@ import io.cucumber.datatable.DataTable;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import leganto.UaLegantoEntry;
 import utils.JsonUtils;
 
-public class UAFeatureTest extends CucumberTestProcessor {
+public class UAFeatureTest extends CucumberTestProcessor implements FeatureTestsErrorMessages {
 
     private static final String NOT = "not";
     private static final String EMPTY_STRING = new String();
     private static final int INCLUDE_EMPTY_STRINGS_BETWEEN_DELIMITER = -1;
     private static final int EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL = 1;
-    private final World world;
+    public static final String NULL_UA_RESPONSE_MESSAGE = "UA response is null";
+
     private UaLegantoEntry uaLegantoEntry;
     private transient ObjectNode uaResponse;
 
     public UAFeatureTest(World world) {
-        this.world = world;
+        super(world);
     }
 
     @Given("the response from \\/undervisningsaktiviteter\\/UA_ID has a field {string} with value {string}")
@@ -106,15 +111,49 @@ public class UAFeatureTest extends CucumberTestProcessor {
         putKeyInNode(world.getUserInput(), compositeKey, alteredValue);
     }
 
+    @Given("there is a valid response from \\/undervisningsaktiviteter\\/UA_ID")
+    public void thereIsAValidUaEntry() throws IOException {
+        UndervisningsAktivitet ua = new UndervisningsAktivitet();
+        USemester semester = new USemester()
+            .setSemesterCode(SemesterCode.AUTUMN.toString())
+            .setHref(EMPTY_STRING)
+            .setYear(0);
+        UEmne emne = new UEmne()
+            .setCode(EMPTY_STRING)
+            .setHref(EMPTY_STRING)
+            .setInstitution(EMPTY_STRING)
+            .setVersion(EMPTY_STRING);
+        UaUndervisning uaUndervisning = new UaUndervisning()
+            .setUaSemester(semester)
+            .setEmne(emne)
+            .setHref(EMPTY_STRING)
+            .setTerminnumer(0);
+
+        ua.setAktivitet(EMPTY_STRING)
+            .setNavn(Collections.emptyList())
+            .setUndervisning(uaUndervisning)
+            .setNavn(Collections.emptyList());
+
+        uaResponse = readValue(write(ua), ObjectNode.class);
+    }
+
+
     @When("a new UA Leganto entry has been generated")
     public void new_UA_entry_has_been_generated() throws IOException {
-
+        Preconditions.checkNotNull(uaResponse, NULL_UA_RESPONSE_MESSAGE);
+        Preconditions.checkNotNull(world.getUserInput(), NULL_USER_INPUT_MESSAGE);
+        Preconditions.checkNotNull(world.getOrganizationEntity(), NULL_ORG_ENTITY_MESSAGE);
+        Preconditions.checkNotNull(world.getEmneResponse(), NULL_EMNE_MESSAGE);
+        Preconditions.checkNotNull(world.getPersonRolleEntries(), NULL_PERSONROLE_MESSAGE);
         UndervisningsAktivitet uaEntry = readValue(uaResponse, UndervisningsAktivitet.class);
+
         UserInput userInput = readValue(world.getUserInput(), UserInput.class).initFiles();
         OrganizationEntity org = readValue(world.getOrganizationEntity(), OrganizationEntity.class);
+
         uaLegantoEntry = (UaLegantoEntry) new UaLegantoEntry(uaEntry, userInput)
             .setEmne(readValue(world.getEmneResponse(), Emne.class))
-            .setOrganizationEntity(org);
+            .setOrganizationEntity(org)
+        ;
     }
 
     @Then("the courses in FS are populated in Leganto with the following data:")
@@ -272,31 +311,18 @@ public class UAFeatureTest extends CucumberTestProcessor {
         assertThat(uaLegantoEntry.getOperation(), is(emptyString()));
     }
 
-    @Given("there is a valid response from \\/undervisningsaktiviteter\\/UA_ID")
-    public void thereIsAValidUaEntry() throws IOException {
-        UndervisningsAktivitet ua = new UndervisningsAktivitet();
-        USemester semester = new USemester()
-            .setSemesterCode(SemesterCode.AUTUMN.toString())
-            .setHref(EMPTY_STRING)
-            .setYear(0);
-        UEmne emne = new UEmne()
-            .setCode(EMPTY_STRING)
-            .setHref(EMPTY_STRING)
-            .setInstitution(EMPTY_STRING)
-            .setVersion(EMPTY_STRING);
-        UaUndervisning uaUndervisning = new UaUndervisning()
-            .setUaSemester(semester)
-            .setEmne(emne)
-            .setHref(EMPTY_STRING)
-            .setTerminnumer(0);
+    @Then("AllInstructors is the string {string}")
+    public void allinstructors_is_the_string(String instructorsString) throws JsonProcessingException {
+        Map<UndervisningReference, List<PersonRole>> personRolesMap = createPersonRolesMap();
 
-        ua.setAktivitet(EMPTY_STRING)
-            .setNavn(Collections.emptyList())
-            .setUndervisning(uaUndervisning)
-            .setNavn(Collections.emptyList());
-
-        uaResponse = readValue(write(ua), ObjectNode.class);
-
+        assertThat(uaLegantoEntry.getAllInstructorIds(personRolesMap), is(equalTo(instructorsString)));
     }
+
+    @Then("AllInstructors is empty")
+    public void allinstructors_is_empty() throws JsonProcessingException {
+        Map<UndervisningReference, List<PersonRole>> personRolesMap = createPersonRolesMap();
+        assertThat(uaLegantoEntry.getAllInstructorIds(personRolesMap), is(emptyString()));
+    }
+
 
 }

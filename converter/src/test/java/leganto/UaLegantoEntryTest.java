@@ -14,26 +14,22 @@ import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
 import fs.ua.SemesterCode;
 import fs.ua.USemester;
-import fs.ua.UaCourseTitleFormat;
 import fs.ua.UaUndervisning;
 import fs.ua.UndervisningsAktivitet;
 import fs.user.Operation;
 import fs.user.UserInput;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import utils.LocalTest;
 
-public class UaLegantoEntryTest {
+public class UaLegantoEntryTest extends LocalTest {
 
-    public static final boolean INCLUDE_NUMBER_OF_PARTICIPANTS = false;
     private static final int TERMINNUMER = 12;
-    private static final String CAMPUS_PARTICIPANTS_FILENAME = "campus_participants.csv";
-    private static final boolean INCLUDE_INSTITUTE = true;
-    private static final boolean INCLUDE_CAMPUS_PARTICIPANTS = false;
+
     private static final String EMNE_HREF = "emneHref";
     private static final String EMNE_CODE = "emneCode";
     private static final String EMNE_INSITUTION = "emneInsitution";
@@ -51,8 +47,6 @@ public class UaLegantoEntryTest {
     private static final int INSTITUTION_NUMBER = 222;
     private static final int FACULTY_NUMBER = 35;
     private static final int INSTITUTE_NUMBER = 7;
-    private static final Integer ARBITRARY_NUMBER_OF_PARTICIPANTS = 100;
-    private static final String NUMBER_OF_PARTICIPANTS_FILENAME = "number_of_participants.csv";
     private final transient UndervisningsAktivitet ua = mockUndervisningsAktivitet();
 
     @Rule
@@ -212,20 +206,6 @@ public class UaLegantoEntryTest {
     @Test
     public void getNumberOfParticpantsShouldReturnEmptyStringForNonExistingFile() {
         assertThat(entry.getNumberOfParticipants(), is(emptyString()));
-    }
-
-    private UserInput mockUserInput() {
-        Language[] languagesArray = {Language.NB, Language.NN, Language.EN};
-        List<Language> languageOrder = Arrays.asList(languagesArray);
-        return new UserInput()
-            .setLanguageOrder(languageOrder)
-            .setIncludeInstitute(INCLUDE_INSTITUTE)
-            .setCourseTitleFormat(UaCourseTitleFormat.DEFAULT_FORMAT)
-            .setCampusParticipantsFilename(CAMPUS_PARTICIPANTS_FILENAME)
-            .setIncludeCampusParticipants(INCLUDE_CAMPUS_PARTICIPANTS)
-            .setNumberOfParticipantsFilename(NUMBER_OF_PARTICIPANTS_FILENAME)
-            .setIncludeNumberOfParticipants(INCLUDE_NUMBER_OF_PARTICIPANTS)
-            .setIncludeUA(true);
     }
 
     private OrganizationEntity mockOrganizationEntity() {
