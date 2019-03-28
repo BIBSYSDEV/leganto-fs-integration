@@ -4,7 +4,7 @@ Feature:
 
   Background:
     Given there is a valid response from /organizationsenheter/ORG_ID
-    Given there is a valid response from /undervisningsaktiviteter/UA_ID
+    And there is a valid response from /undervisningsaktiviteter/UA_ID
     And there is a valid response from /emne/emneId
     And there is a possibly empty personroller list
     And there is a valid user input
