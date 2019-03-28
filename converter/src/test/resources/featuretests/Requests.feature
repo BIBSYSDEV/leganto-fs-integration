@@ -1,4 +1,4 @@
-Feature: Requests
+Feature: General features
 
 
   Background:
@@ -24,3 +24,11 @@ Feature: Requests
     Then the leganto file will contain all relevenat UndervisningEnhet entries
 
 
+   Scenario: Generation of report file
+     When the leganto file has been generated
+     Then a report file will be generated
+     And the report file will contain the user input field
+     And the report file will contain the number of the UA entries included in the leganto file
+     And the report file will contain the number of the UE entries included in the leganto file
+     And the report file will contain the date and time of the generation of the latest leganto file
+     And the report file will be located in the same folder as the the leganto file
