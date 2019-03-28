@@ -3,6 +3,7 @@ build/
 target/
 *.iml
 .gradle/
+out/*
 out/
 
 # Ignore Gradle GUI config
