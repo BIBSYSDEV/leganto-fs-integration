@@ -3,8 +3,8 @@ Feature:
 
 
   Background:
-    Given there is a valid response from /organizationsenheter/ORG_ID
     Given there is a valid response from /undervisningsaktiviteter/UA_ID
+    Given there is a valid response from /organizationsenheter/ORG_ID
     And there is a valid response from /emne/emneId
     And there is a possibly empty personroller list
     And there is a valid user input
@@ -34,7 +34,30 @@ Feature:
     When a new UA Leganto entry has been generated
     Then CampusParticipants is the string "GLOS|10,DRAG|20"
 
-#
+
+  Scenario: campus participants in UA entry
+    Given the user input has a field with name "include_campus_participants" with boolean value "false"
+    When a new UA Leganto entry has been generated
+    Then CampusParticipants is empty
+
+
+
+  Scenario:  number of participants in UA entry
+    Given the user input has a field with name "include_number_of_participants" with boolean value "true"
+    And the user input has a field with name "number_of_participants_file" with value "number_of_participants_file.csv"
+    And the number_of_participants file is a semicolon separated file
+    And the number_of_participants file contains a row with the following value
+      | UA_emneKode-emneVersjon-1980-HØST;123 |
+    When a new UA Leganto entry has been generated
+    Then  NumberOfParticipants is the string "123"
+
+
+  Scenario: exclusion of number of participants in UA entry
+    Given the user input has a field with name "include_number_of_participants" with boolean value "false"
+    When a new UA Leganto entry has been generated
+    Then NumberOfParticipants is empty
+
+
   Scenario: campus participants in UE entry
     Given the user input has a field with name "include_campus_participants" with boolean value "true"
     And the user input has a field with name "campus_participants_file" with value "campus_participants_file.csv"
@@ -45,6 +68,12 @@ Feature:
 
     When a new UE Leganto entry has been generated
     Then the field CampusParticipants in the UE entry is the string "GLOS|10,DRAG|20"
+
+  Scenario: campus participants in UE entry
+    Given the user input has a field with name "include_campus_participants" with boolean value "false"
+    When a new UE Leganto entry has been generated
+    Then the field CampusParticipants in the UE entry is empty
+
 
 
   Scenario:  number of participants in UE entry
@@ -57,4 +86,7 @@ Feature:
     Then the field NumberOfParticipants in the UE entry is the integer 123
 
 
-
+  Scenario: exclusion of number of participants in UE entry
+    Given the user input has a field with name "include_number_of_participants" with boolean value "false"
+    When a new UE Leganto entry has been generated
+    Then the field NumberOfParticipants in the UE entry is empty
