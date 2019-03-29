@@ -311,18 +311,4 @@ public class UAFeatureTest extends CucumberTestProcessor implements FeatureTests
         assertThat(uaLegantoEntry.getOperation(), is(emptyString()));
     }
 
-    @Then("AllInstructors is the string {string}")
-    public void allinstructors_is_the_string(String instructorsString) throws JsonProcessingException {
-        Map<UndervisningReference, List<PersonRole>> personRolesMap = createPersonRolesMap();
-
-        assertThat(uaLegantoEntry.getAllInstructorIds(personRolesMap), is(equalTo(instructorsString)));
-    }
-
-    @Then("AllInstructors is empty")
-    public void allinstructors_is_empty() throws JsonProcessingException {
-        Map<UndervisningReference, List<PersonRole>> personRolesMap = createPersonRolesMap();
-        assertThat(uaLegantoEntry.getAllInstructorIds(personRolesMap), is(emptyString()));
-    }
-
-
 }

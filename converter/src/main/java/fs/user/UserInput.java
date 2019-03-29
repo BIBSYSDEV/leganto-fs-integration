@@ -4,6 +4,7 @@ import static utils.IoUtils.emptyStream;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fs.common.IgnoreValidable;
 import fs.common.Language;
 import fs.common.Validable;
 import java.io.BufferedInputStream;
@@ -50,6 +51,8 @@ public class UserInput extends Validable {
     @JsonProperty("role_codes")
     private List<String> roleCodes;
 
+    @JsonProperty("feide_domain")
+    private String feideDomain;
 
 
     @JsonIgnore
@@ -210,4 +213,14 @@ public class UserInput extends Validable {
         this.includeUA = includeUA;
         return this;
     }
+
+    @IgnoreValidable
+    public String getFeideDomain() {
+        return feideDomain;
+    }
+
+    public void setFeideDomain(String feideDomain) {
+        this.feideDomain = feideDomain;
+    }
+
 }

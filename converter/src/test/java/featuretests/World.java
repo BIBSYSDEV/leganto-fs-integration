@@ -6,6 +6,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
+
 import utils.JsonUtils;
 
 public class World {
@@ -19,6 +21,8 @@ public class World {
     private ObjectNode emneResponse;
     private ObjectNode orgnanizationEntity;
     private ArrayNode personRoleEntries;
+    private List<ObjectNode> persons;
+
     private ObjectNode role;
 
     private File campusParticipantsFile;
@@ -99,4 +103,12 @@ public class World {
     public void setRole(ObjectNode roleJson) {
         this.role = roleJson;
     }
+    public List<ObjectNode> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<ObjectNode> persons) {
+        this.persons = persons;
+    }
+
 }

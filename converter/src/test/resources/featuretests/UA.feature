@@ -79,7 +79,7 @@ Feature:
     And Instructor8 is empty
     And Instructor9 is empty
     And Instructor10 is empty
-    And AllInstructors is empty
+    #And AllInstructors is empty
     And Operation is empty
     And SubmitByDate is empty
     And OldCourse Code is empty

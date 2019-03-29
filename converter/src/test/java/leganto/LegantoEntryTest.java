@@ -1,5 +1,22 @@
 package leganto;
 
+import fs.common.Language;
+import fs.common.LanguageValue;
+import fs.common.Person;
+import fs.emne.Emne;
+import fs.organizations.OrganizationEntity;
+import fs.personroller.UndervisningReference;
+import fs.user.Operation;
+import fs.user.UserInput;
+import org.junit.Before;
+import org.junit.Test;
+import utils.LocalTest;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.not;
@@ -7,26 +24,6 @@ import static org.hamcrest.core.AnyOf.anyOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.StringContains.containsString;
-
-import fs.common.Language;
-import fs.common.LanguageValue;
-import fs.emne.Emne;
-import fs.organizations.OrganizationEntity;
-import fs.personroller.PersonRole;
-import fs.personroller.PersonRole.Person;
-import fs.personroller.UndervisningReference;
-import fs.user.Operation;
-import fs.user.UserInput;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import org.junit.Before;
-import org.junit.Test;
-import utils.LocalTest;
 
 public class LegantoEntryTest extends LocalTest {
 
@@ -39,6 +36,8 @@ public class LegantoEntryTest extends LocalTest {
     private static final String CAMPUS1 = "GLOS";
     private static final String CAMPUS2 = "DRAG";
     private static final String EMPTY_STRING = "";
+    public static final String FEIDE_ID_1 = "feideId1";
+    private static final String FEIDE_ID_2 = "feideId2";
     private transient LegantoEntry legantoEntry;
     private transient UserInput userInput;
 
@@ -228,22 +227,17 @@ public class LegantoEntryTest extends LocalTest {
 
     @Test
     public void getAllInstructorIdsShouldReturnTheIdsOfPersonRoles() {
-        List<String> ids = new ArrayList<>();
-        ids.add("id1");
-        ids.add("id2");
-        List<PersonRole> personRoles = ids.stream()
-            .map(id -> new Person().setPersonLopeNummer(id))
-            .map(person -> new PersonRole().setPerson(person))
-            .collect(Collectors.toList());
-        Map<UndervisningReference, List<PersonRole>> roles = new HashMap<>();
-        roles.put(new UndervisningReference(UNDERVISNING_HREF), personRoles);
-        assertThat(legantoEntry.getAllInstructorIds(roles), is(equalTo("id1,id2")));
+        List<Person> persons = new ArrayList<>();
+        persons.add(new Person().setPersonnummer(FEIDE_ID_1));
+        persons.add(new Person().setPersonnummer(FEIDE_ID_2));
+        legantoEntry.setInstructors(persons);
+        String expected = String.join(LegantoEntry.INSTUCTOR_LIST_DELIMITER,FEIDE_ID_1, FEIDE_ID_2);
+        assertThat(legantoEntry.getAllInstructorIds(), is(equalTo(expected)));
     }
 
     @Test
     public void getAllInstructorIdsShouldReturnEmptyStringForEmptyList() {
-
-        Map<UndervisningReference, List<PersonRole>> personRoles = Collections.emptyMap();
-        assertThat(legantoEntry.getAllInstructorIds(personRoles), is((emptyString())));
+        legantoEntry.setInstructors(Collections.emptyList());
+        assertThat(legantoEntry.getAllInstructorIds(), is((emptyString())));
     }
 }
