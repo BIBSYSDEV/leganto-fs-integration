@@ -170,80 +170,80 @@ public class UAFeatureTest extends CucumberTestProcessor implements FeatureTests
             is(equalTo(expectedFieldsNumber + EXTRA_DELIMITER_AT_EOL_SIGNIGNIFING_EOL)));
     }
 
-    @Then("CourseCode is the string {string}")
+    @Then("the field CourseCode in the UA entry is the string {string}")
     public void coursecode_is_the_string(String expectedCourseCode) {
         String courseCode = uaLegantoEntry.getCourseCode();
 
         assertThat(courseCode, is(equalTo(expectedCourseCode)));
     }
 
-    @Then("CourseTitle is the string {string}")
+    @Then("the field  CourseTitle in the UA entry is the string {string}")
     public void cousetitle_is_the_string(String courseTitle) {
         assertThat(uaLegantoEntry.getCourseTitle(), is(equalTo(courseTitle)));
     }
 
-    @Then("SectionId is the string {string}")
+    @Then("the field  SectionId in the UA entry is the string {string}")
     public void sectionid_is_the_string(String expectedSectionId) {
         assertThat(uaLegantoEntry.getSectionId(), is(equalTo(expectedSectionId)));
     }
 
-    @Then("AcademicDepartment is the  string {string}")
+    @Then("the field AcademicDepartment in the UA entry is the string {string}")
     public void academicdepartment_is_the_string(String expectedAcedemicDepartment) {
 
         assertThat(uaLegantoEntry.getAcademicDepartment(), is(equalTo(expectedAcedemicDepartment)));
     }
 
-    @Then("ProcessingDepartment is set to the invariant value LEGANTO")
+    @Then("the field ProcessingDepartment in the UA entry is set to the invariant value LEGANTO")
     public void processingdepartmentIsSetToTheInvariantValueLeganto() {
         assertThat(uaLegantoEntry.getProcessingDepartment(), is(equalTo("LEGANTO")));
     }
 
-    @Then("Term1 is the string  {string}")
+    @Then("the field  Term1 in the UA entry is the string {string}")
     public void termIsTheString(String semesterCode) {
         assertThat(uaLegantoEntry.getTerm1(), is(equalTo(semesterCode)));
     }
 
-    @Then("Term2 is empty")
+    @Then("the field Term2 in the UA entry is empty")
     public void term2_is_empty() {
         assertThat(uaLegantoEntry.getTerm2(), is(equalTo(EMPTY_STRING)));
     }
 
-    @Then("Term3 is empty")
+    @Then("the field Term3 in the UA entry is empty")
     public void term3_is_empty() {
         assertThat(uaLegantoEntry.getTerm3(), is(equalTo(EMPTY_STRING)));
     }
 
-    @Then("Term4 is empty")
+    @Then("the field Term4 in the UA entry is empty")
     public void term4_is_empty() {
         assertThat(uaLegantoEntry.getTerm4(), is(equalTo(EMPTY_STRING)));
     }
 
-    @Then("StartDate is the string {string}")
+    @Then("the field StartDate in the UA entry is the string {string}")
     public void startdate_is_the_string(String startDate) {
         assertThat(uaLegantoEntry.getStartDate(), is(equalTo(startDate)));
     }
 
-    @Then("EndDate is the string {string}")
+    @Then("the field EndDate in the UA entry is the string{string}")
     public void enddate_is_the_string(String endDate) {
         assertThat(uaLegantoEntry.getEndDate(), is(equalTo(endDate)));
     }
 
-    @Then("WeeklyHours is empty")
+    @Then("the field WeeklyHours in the UA entry is empty")
     public void weeklyhours_is_empty() {
         assertThat(uaLegantoEntry.getWeeklyHours(), is(emptyString()));
     }
 
-    @Then("Year has the value {int}")
+    @Then("The field Year in the UA entry has the value {int}")
     public void year_has_the_value(Integer year) {
         assertThat(uaLegantoEntry.getYear(), is(equalTo(year)));
     }
 
-    @Then("SearchableId1 is empty")
+    @Then("The field SearchableId1 in the UA entry is empty")
     public void searchableid1_is_empty() {
         assertThat(uaLegantoEntry.getSearchableId1(), is(emptyString()));
     }
 
-    @Then("SearchableId2 is empty")
+    @Then("The field SearchableId2 in the UA entry is empty")
     public void searchableid2_is_empty() {
         assertThat(uaLegantoEntry.getSearchableId2(), is(emptyString()));
     }
@@ -310,19 +310,5 @@ public class UAFeatureTest extends CucumberTestProcessor implements FeatureTests
     public void operationIsEmpty() {
         assertThat(uaLegantoEntry.getOperation(), is(emptyString()));
     }
-
-    @Then("AllInstructors is the string {string}")
-    public void allinstructors_is_the_string(String instructorsString) throws JsonProcessingException {
-        Map<UndervisningReference, List<PersonRole>> personRolesMap = createPersonRolesMap();
-
-        assertThat(uaLegantoEntry.getAllInstructorIds(personRolesMap), is(equalTo(instructorsString)));
-    }
-
-    @Then("AllInstructors is empty")
-    public void allinstructors_is_empty() throws JsonProcessingException {
-        Map<UndervisningReference, List<PersonRole>> personRolesMap = createPersonRolesMap();
-        assertThat(uaLegantoEntry.getAllInstructorIds(personRolesMap), is(emptyString()));
-    }
-
 
 }
