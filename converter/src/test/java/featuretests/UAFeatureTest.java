@@ -20,8 +20,6 @@ import cucumber.api.java.en.When;
 import fs.common.UEmne;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
-import fs.personroller.PersonRole;
-import fs.personroller.UndervisningReference;
 import fs.ua.SemesterCode;
 import fs.ua.USemester;
 import fs.ua.UaUndervisning;
@@ -31,7 +29,6 @@ import io.cucumber.datatable.DataTable;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import leganto.UaLegantoEntry;
 import utils.JsonUtils;
 
@@ -137,7 +134,6 @@ public class UAFeatureTest extends CucumberTestProcessor implements FeatureTests
         uaResponse = readValue(write(ua), ObjectNode.class);
     }
 
-
     @When("a new UA Leganto entry has been generated")
     public void new_UA_entry_has_been_generated() throws IOException {
         Preconditions.checkNotNull(uaResponse, NULL_UA_RESPONSE_MESSAGE);
@@ -177,12 +173,12 @@ public class UAFeatureTest extends CucumberTestProcessor implements FeatureTests
         assertThat(courseCode, is(equalTo(expectedCourseCode)));
     }
 
-    @Then("the field  CourseTitle in the UA entry is the string {string}")
+    @Then("the field CourseTitle in the UA entry is the string {string}")
     public void cousetitle_is_the_string(String courseTitle) {
         assertThat(uaLegantoEntry.getCourseTitle(), is(equalTo(courseTitle)));
     }
 
-    @Then("the field  SectionId in the UA entry is the string {string}")
+    @Then("the field SectionId in the UA entry is the string {string}")
     public void sectionid_is_the_string(String expectedSectionId) {
         assertThat(uaLegantoEntry.getSectionId(), is(equalTo(expectedSectionId)));
     }
@@ -198,7 +194,7 @@ public class UAFeatureTest extends CucumberTestProcessor implements FeatureTests
         assertThat(uaLegantoEntry.getProcessingDepartment(), is(equalTo("LEGANTO")));
     }
 
-    @Then("the field  Term1 in the UA entry is the string {string}")
+    @Then("the field Term1 in the UA entry is the string {string}")
     public void termIsTheString(String semesterCode) {
         assertThat(uaLegantoEntry.getTerm1(), is(equalTo(semesterCode)));
     }
@@ -223,7 +219,7 @@ public class UAFeatureTest extends CucumberTestProcessor implements FeatureTests
         assertThat(uaLegantoEntry.getStartDate(), is(equalTo(startDate)));
     }
 
-    @Then("the field EndDate in the UA entry is the string{string}")
+    @Then("the field EndDate in the UA entry is the string {string}")
     public void enddate_is_the_string(String endDate) {
         assertThat(uaLegantoEntry.getEndDate(), is(equalTo(endDate)));
     }
@@ -233,80 +229,80 @@ public class UAFeatureTest extends CucumberTestProcessor implements FeatureTests
         assertThat(uaLegantoEntry.getWeeklyHours(), is(emptyString()));
     }
 
-    @Then("The field Year in the UA entry has the value {int}")
+    @Then("the field Year in the UA entry has the value {int}")
     public void year_has_the_value(Integer year) {
         assertThat(uaLegantoEntry.getYear(), is(equalTo(year)));
     }
 
-    @Then("The field SearchableId1 in the UA entry is empty")
+    @Then("the field SearchableId1 in the UA entry is empty")
     public void searchableid1_is_empty() {
         assertThat(uaLegantoEntry.getSearchableId1(), is(emptyString()));
     }
 
-    @Then("The field SearchableId2 in the UA entry is empty")
+    @Then("the field SearchableId2 in the UA entry is empty")
     public void searchableid2_is_empty() {
         assertThat(uaLegantoEntry.getSearchableId2(), is(emptyString()));
     }
 
-    @Then("AllSearchableIds is the string {string}")
+    @Then("the field AllSearchableIds in the UA entry is the string {string}")
     public void allsearchableids_is_the_string(String searchableId) throws JsonProcessingException {
 
         assertThat(uaLegantoEntry.getAllSearchableIds(), is(equalTo(searchableId)));
 
     }
 
-    @Then("Instructor{int} is empty")
+    @Then("the field Instructor{int} in the UA entry is empty")
     public void instructor_is_empty(Integer index) {
         assertThat(uaLegantoEntry.getInstructor(), is(emptyString()));
     }
 
-    @Then("SubmitByDate is empty")
+    @Then("the field SubmitByDate in the UA entry is empty")
     public void submitByDateIsEmpty() {
         assertThat(uaLegantoEntry.getSubmitByDate(), is(emptyString()));
     }
 
-    @Then("CampusParticipants is the string {string}")
+    @Then("the field CampusParticipants in the UA entry is the string {string}")
     public void campusparticipantsIsTheString(String campuses) {
         assertThat(uaLegantoEntry.getCampusParticipants(), is(equalTo(campuses)));
     }
 
-    @Then("Reading List Name is empty")
+    @Then("the field Reading List Name in the UA entry is empty")
     public void readingListNameIsEmpty() {
         assertThat(uaLegantoEntry.getReadingListName(), is(emptyString()));
     }
 
-    @Then("NumberOfParticipants has the value {int}")
+    @Then("the field NumberOfParticipants in the UA entry has the value {int}")
     public void numberofparticipants_has_the_value(Integer numberOfParticipants) {
         assertThat(uaLegantoEntry.getNumberOfParticipants(),
             is(equalTo(numberOfParticipants.toString())));
     }
 
-    @Then("Old Course Code is the string {string}")
+    @Then("the field Old Course Code in the UA entry is the string {string}")
     public void old_Course_Code_is_the_string(String oldCourseCode) {
         assertThat(uaLegantoEntry.getOldCourseCode(), is(equalTo(oldCourseCode)));
     }
 
-    @Then("Old Course Section ID is the string {string}")
+    @Then("the field Old Course Section ID in the UA entry is the string {string}")
     public void old_Course_Section_ID_is_the_string(String oldCourseSectionId) {
         assertThat(uaLegantoEntry.getOldCourseSectionId(), is(equalTo(oldCourseSectionId)));
     }
 
-    @Then("Operation is the string {string}")
+    @Then("the field Operation in the UA entry is the string {string}")
     public void operationIsTheString(String operation) {
         assertThat(uaLegantoEntry.getOperation(), is(equalTo(operation)));
     }
 
-    @Then("OldCourse Code is empty")
+    @Then("the field OldCourseCode in the UA entry is empty")
     public void oldcourseCodeIsEmpty() {
         assertThat(uaLegantoEntry.getOldCourseCode(), is(emptyString()));
     }
 
-    @Then("OldCourseSectionId is empty")
+    @Then("the field OldCourseSectionId in the UA entry is empty")
     public void oldcoursesectionidIsEmpty() {
         assertThat(uaLegantoEntry.getOldCourseSectionId(), is(emptyString()));
     }
 
-    @Then("Operation is empty")
+    @Then("the field Operation in the UA entry is empty")
     public void operationIsEmpty() {
         assertThat(uaLegantoEntry.getOperation(), is(emptyString()));
     }

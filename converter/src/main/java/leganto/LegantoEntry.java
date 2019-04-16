@@ -197,14 +197,14 @@ public abstract class LegantoEntry {
 
     protected abstract UndervisningReference undervisningsReference();
 
-    String formatFeideId(String toCheck){
+    private String formatFeideId(String toCheck) {
         if (toCheck.contains("@")){
             return toCheck;
         }
         return toCheck + (userInput.getFeideDomain()==null?"":userInput.getFeideDomain());
     }
 
-  public LegantoEntry setInstructors(List<fs.common.Person> instructors) {
+    public LegantoEntry setInstructors(List<Person> instructors) {
       this.instructors = instructors;
       return this;
   }
