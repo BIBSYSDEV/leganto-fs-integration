@@ -4,6 +4,7 @@ import static utils.JsonUtils.readValue;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -27,7 +28,7 @@ public class Person {
   }
 
   public static Person fromJson(String json) throws IOException {
-    return readValue(json,Person.class);
+    return readValue(json, Person.class);
   }
 
   public Long getPersonlopenummer() {
