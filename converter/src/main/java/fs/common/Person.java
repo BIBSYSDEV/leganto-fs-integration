@@ -1,12 +1,11 @@
 package fs.common;
 
+import static utils.JsonUtils.readValue;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.IOException;
 import java.util.Objects;
-
-import static utils.JsonUtils.readValue;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Person {
@@ -14,17 +13,9 @@ public class Person {
   @JsonProperty("personnummer")
   private transient String personnummer;
 
+
   @JsonProperty("personlopenummer")
   private transient Long personlopenummer;
-
-  public Long getPersonlopenummer() {
-    return personlopenummer;
-  }
-
-  public Person setPersonlopenummer(Long personlopenummer) {
-    this.personlopenummer = personlopenummer;
-    return this;
-  }
 
   public String getPersonnummer() {
     return personnummer;
@@ -36,7 +27,16 @@ public class Person {
   }
 
   public static Person fromJson(String json) throws IOException {
-    return readValue(json, Person.class);
+    return readValue(json,Person.class);
+  }
+
+  public Long getPersonlopenummer() {
+    return personlopenummer;
+  }
+
+  public Person setPersonlopenummer(Long personlopenummer) {
+    this.personlopenummer = personlopenummer;
+    return this;
   }
 
   @Override

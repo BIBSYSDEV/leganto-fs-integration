@@ -53,72 +53,72 @@ Feature:
 
     When a new UA Leganto entry has been generated
 
-    Then CourseCode is the string "UA_emneKode-emneVersjon-1980-HØST"
-    And CourseTitle is the string "NynorskEmneNavn - NynorskUANavn - emneKode HØST 1980"
-    And SectionId is the string "emneVersjon"
-    And AcademicDepartment is the  string "222_39_7"
-    And ProcessingDepartment is set to the invariant value LEGANTO
-    And Term1 is the string  "AUTUMN"
-    And Term2 is empty
-    And Term3 is empty
-    And Term4 is empty
-    And StartDate is the string "1980-08-01"
-    And EndDate is the string "1981-01-31"
-    And WeeklyHours is empty
-    And Year has the value 1980
-    And SearchableId1 is empty
-    And SearchableId2 is empty
-    And AllSearchableIds is the string "UA_222_emneKode_emneVersjon_1980_HØST_12,MEAKB00000"
-    And Instructor1 is empty
-    And Instructor2 is empty
-    And Instructor3 is empty
-    And Instructor4 is empty
-    And Instructor5 is empty
-    And Instructor6 is empty
-    And Instructor7 is empty
-    And Instructor8 is empty
-    And Instructor9 is empty
-    And Instructor10 is empty
+    Then the field CourseCode in the UA entry is the string "UA_emneKode-emneVersjon-1980-HØST"
+    And the field CourseTitle in the UA entry is the string "NynorskEmneNavn - NynorskUANavn - emneKode HØST 1980"
+    And the field SectionId in the UA entry is the string "emneVersjon"
+    And the field AcademicDepartment in the UA entry is the string "222_39_7"
+    And the field ProcessingDepartment in the UA entry is set to the invariant value LEGANTO
+    And the field Term1 in the UA entry is the string "AUTUMN"
+    And the field Term2 in the UA entry is empty
+    And the field Term3 in the UA entry is empty
+    And the field Term4 in the UA entry is empty
+    And the field StartDate in the UA entry is the string "1980-08-01"
+    And the field EndDate in the UA entry is the string "1981-01-31"
+    And the field WeeklyHours in the UA entry is empty
+    And the field Year in the UA entry has the value 1980
+    And the field SearchableId1 in the UA entry is empty
+    And the field SearchableId2 in the UA entry is empty
+    And the field AllSearchableIds in the UA entry is the string "UA_222_emneKode_emneVersjon_1980_HØST_12,MEAKB00000"
+    And the field Instructor1 in the UA entry is empty
+    And the field Instructor2 in the UA entry is empty
+    And the field Instructor3 in the UA entry is empty
+    And the field Instructor4 in the UA entry is empty
+    And the field Instructor5 in the UA entry is empty
+    And the field Instructor6 in the UA entry is empty
+    And the field Instructor7 in the UA entry is empty
+    And the field Instructor8 in the UA entry is empty
+    And the field Instructor9 in the UA entry is empty
+    And the field Instructor10 in the UA entry is empty
     #And AllInstructors is empty
-    And Operation is empty
-    And SubmitByDate is empty
-    And OldCourse Code is empty
-    And OldCourseSectionId is empty
-    And Reading List Name is empty
+    And the field Operation in the UA entry is empty
+    And the field SubmitByDate in the UA entry is empty
+    And the field OldCourseCode in the UA entry is empty
+    And the field OldCourseSectionId in the UA entry is empty
+    And the field Reading List Name in the UA entry is empty
 
   Scenario: Start date for the Spring semester
     Given the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.termin" with value "VÅR"
     When a new UA Leganto entry has been generated
-    Then StartDate is the string "1980-01-01"
-    And EndDate is the string "1980-07-31"
-    And Term1 is the string  "SPRING"
-    And CourseCode is the string "UA_emneKode-emneVersjon-1980-VÅR"
-    And CourseTitle is the string "NynorskEmneNavn - NynorskUANavn - emneKode VÅR 1980"
-    And AllSearchableIds is the string "UA_222_emneKode_emneVersjon_1980_VÅR_12,MEAKB00000"
+    Then the field StartDate in the UA entry is the string "1980-01-01"
+    And the field EndDate in the UA entry is the string "1980-07-31"
+    And the field Term1 in the UA entry is the string "SPRING"
+    And the field CourseCode in the UA entry is the string "UA_emneKode-emneVersjon-1980-VÅR"
+    And the field CourseTitle in the UA entry is the string "NynorskEmneNavn - NynorskUANavn - emneKode VÅR 1980"
+    And the field AllSearchableIds in the UA entry is the string "UA_222_emneKode_emneVersjon_1980_VÅR_12,MEAKB00000"
 
 
   Scenario: UserInput field operation has value ROLLOVER
     Given the user input field "operation" has the value "ROLLOVER"
     When a new UA Leganto entry has been generated
-    Then Old Course Code is the string "UA_emneKode-emneVersjon-1979-HØST"
-    And Old Course Section ID is the string "emneVersjon"
-    And Operation is the string "ROLLOVER"
+    Then the field Old Course Code in the UA entry is the string "UA_emneKode-emneVersjon-1979-HØST"
+    And the field Old Course Section ID in the UA entry is the string "emneVersjon"
+    And the field Operation in the UA entry is the string "ROLLOVER"
 
   Scenario: UserInput field operation has value DELETE
     Given the user input field "operation" has the value "DELETE"
     When a new UA Leganto entry has been generated
-    Then Operation is the string "DELETE"
-    And OldCourse Code is empty
-    And OldCourseSectionId is empty
+    Then the field Operation in the UA entry is the string "DELETE"
+    And the field OldCourseCode in the UA entry is empty
+    And the field OldCourseSectionId in the UA entry is empty
 
 
   Scenario: User does include institute in AcademicDepartment
     Given the user input field "include_institute_in_acad_department" has the boolean value "false"
     When a new UA Leganto entry has been generated
-    Then AcademicDepartment is the  string "222_39"
+    Then the field AcademicDepartment in the UA entry is the string "222_39"
 
 
   Scenario: CourseTitle first alternative format
     Given the user input has a field with name "course_title_format" with value 2
     When a new UA Leganto entry has been generated
-    Then CourseTitle is the string "emneKode - NynorskEmneNavn - NynorskUANavn (HØST 1980)"
+    Then the field CourseTitle in the UA entry is the string "emneKode - NynorskEmneNavn - NynorskUANavn (HØST 1980)"
