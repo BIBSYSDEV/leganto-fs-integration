@@ -9,48 +9,48 @@ import org.junit.Test;
 
 public class PersonRoleTest {
 
-    public static final String ARBITRARY_PERSON_NUMBER = "randomId";
-    public static final String ARBITRARY_HREF = "someHref";
+  public static final String ARBITRARY_PERSON_NUMBER = "randomId";
+  public static final String ARBITRARY_HREF = "someHref";
 
-    @Test
-    public void setPersonShouldSetAPerson() {
-        PersonRole personRole = new PersonRole();
-        assertThat(personRole.getPerson(), is(equalTo(null)));
-        Person person = new Person().setPersonLopeNummer(ARBITRARY_PERSON_NUMBER);
-        personRole.setPerson(person);
-        assertThat(personRole.getPerson(), is(equalTo(person)));
-    }
+  @Test
+  public void setPersonShouldSetAPerson() {
+    PersonRole personRole = new PersonRole();
+    assertThat(personRole.getPerson(), is(equalTo(null)));
+    Person person = new Person().setPersonLopeNummer(ARBITRARY_PERSON_NUMBER);
+    personRole.setPerson(person);
+    assertThat(personRole.getPerson(), is(equalTo(person)));
+  }
 
-    @Test
-    public void personRoleEqualsShouldBeDeepEqual() {
-        UndervisningReference undervisningReference = new UndervisningReference(ARBITRARY_HREF);
+  @Test
+  public void personRoleEqualsShouldBeDeepEqual() {
+    UndervisningReference undervisningReference = new UndervisningReference(ARBITRARY_HREF);
 
-        PersonRole personRole = new PersonRole().setUndervisning(undervisningReference);
-        PersonRole anotherPersonRole = new PersonRole().setUndervisning(undervisningReference);
+    PersonRole personRole = new PersonRole().setUndervisning(undervisningReference);
+    PersonRole anotherPersonRole = new PersonRole().setUndervisning(undervisningReference);
 
-        assertThat(personRole, is(equalTo(anotherPersonRole)));
-    }
+    assertThat(personRole, is(equalTo(anotherPersonRole)));
+  }
 
-    @Test
-    public void personRoleHashCodeShouldBeTheHashCodeOfItsFields() {
-        UndervisningReference undervisningReference = new UndervisningReference(ARBITRARY_HREF);
+  @Test
+  public void personRoleHashCodeShouldBeTheHashCodeOfItsFields() {
+    UndervisningReference undervisningReference = new UndervisningReference(ARBITRARY_HREF);
 
-        PersonRole personRole = new PersonRole().setUndervisning(undervisningReference);
-        PersonRole anotherPersonRole = new PersonRole().setUndervisning(undervisningReference);
+    PersonRole personRole = new PersonRole().setUndervisning(undervisningReference);
+    PersonRole anotherPersonRole = new PersonRole().setUndervisning(undervisningReference);
 
-        assertThat(personRole.hashCode(), is(equalTo(anotherPersonRole.hashCode())));
-    }
+    assertThat(personRole.hashCode(), is(equalTo(anotherPersonRole.hashCode())));
+  }
 
-    @Test
-    public void personEqualsShouldDoDeepEqualCheck() {
-        Person person = new Person()
-            .setPersonLopeNummer(ARBITRARY_PERSON_NUMBER)
-            .setHref(ARBITRARY_HREF);
+  @Test
+  public void personEqualsShouldDoDeepEqualCheck() {
+    Person person = new Person()
+      .setPersonLopeNummer(ARBITRARY_PERSON_NUMBER)
+      .setHref(ARBITRARY_HREF);
 
-        Person anotherPerson = new Person()
-            .setPersonLopeNummer(ARBITRARY_PERSON_NUMBER)
-            .setHref(ARBITRARY_HREF);
+    Person anotherPerson = new Person()
+      .setPersonLopeNummer(ARBITRARY_PERSON_NUMBER)
+      .setHref(ARBITRARY_HREF);
 
-        assertThat(person, is(equalTo(anotherPerson)));
-    }
+    assertThat(person, is(equalTo(anotherPerson)));
+  }
 }

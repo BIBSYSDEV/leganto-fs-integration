@@ -4,37 +4,39 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.LanguageValue;
 import fs.common.Validable;
+
 import java.io.IOException;
 import java.util.List;
+
 import utils.JsonUtils;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Emne extends Validable {
 
-    @JsonProperty("navn")
-    private List<LanguageValue> navn;
+  @JsonProperty("navn")
+  private List<LanguageValue> navn;
 
-    @JsonProperty("organisasjonsenheter")
-    private List<OrganizationEntityEmneEntry> organizationEntities;
+  @JsonProperty("organisasjonsenheter")
+  private List<OrganizationEntityEmneEntry> organizationEntities;
 
-    public static Emne fromJson(String emneJson) throws IOException {
-        return JsonUtils.mapper.readValue(emneJson, Emne.class);
-    }
+  public static Emne fromJson(String emneJson) throws IOException {
+    return JsonUtils.mapper.readValue(emneJson, Emne.class);
+  }
 
-    public List<LanguageValue> getNavn() {
-        return navn;
-    }
+  public List<LanguageValue> getNavn() {
+    return navn;
+  }
 
-    public Emne setNavn(List<LanguageValue> navn) {
-        this.navn = navn;
-        return this;
-    }
+  public Emne setNavn(List<LanguageValue> navn) {
+    this.navn = navn;
+    return this;
+  }
 
-    public List<OrganizationEntityEmneEntry> getOrganizationEntities() {
-        return organizationEntities;
-    }
+  public List<OrganizationEntityEmneEntry> getOrganizationEntities() {
+    return organizationEntities;
+  }
 
-    public void setOrganizationEntities(List<OrganizationEntityEmneEntry> organizationEntities) {
-        this.organizationEntities = organizationEntities;
-    }
+  public void setOrganizationEntities(List<OrganizationEntityEmneEntry> organizationEntities) {
+    this.organizationEntities = organizationEntities;
+  }
 }

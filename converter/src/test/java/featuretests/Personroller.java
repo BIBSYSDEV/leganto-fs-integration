@@ -49,7 +49,8 @@ public class Personroller extends CucumberTestProcessor {
 
   @Then("the field AllInstructors in the UE entry is the string {string}")
   public void the_field_AllInstructors_in_the_UE_entry_is_the_string(String instructors) {
-    assertThat(results.getUeLegantoEntry().getAllInstructorIds(),is(equalTo(instructors)));
+    assertThat(results.getUeLegantoEntry()
+      .getAllInstructorIds(), is(equalTo(instructors)));
   }
 
 }

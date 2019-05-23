@@ -14,6 +14,9 @@ public class Person {
   @JsonProperty("personnummer")
   private transient String personnummer;
 
+  @JsonProperty("personlopenummer")
+  private transient Long personlopenummer;
+
   public Long getPersonlopenummer() {
     return personlopenummer;
   }
@@ -22,9 +25,6 @@ public class Person {
     this.personlopenummer = personlopenummer;
     return this;
   }
-
-  @JsonProperty("personlopenummer")
-  private transient Long personlopenummer;
 
   public String getPersonnummer() {
     return personnummer;
@@ -36,13 +36,17 @@ public class Person {
   }
 
   public static Person fromJson(String json) throws IOException {
-    return readValue(json,Person.class);
+    return readValue(json, Person.class);
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     Person person = (Person) o;
     return Objects.equals(personnummer, person.personnummer) &&
       Objects.equals(personlopenummer, person.personlopenummer);

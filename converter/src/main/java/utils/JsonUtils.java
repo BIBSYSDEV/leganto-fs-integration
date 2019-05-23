@@ -3,6 +3,7 @@ package utils;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -136,4 +137,11 @@ public final class JsonUtils {
         return mapper.readValue(json, clazz);
 
     }
+
+    public static <T> List<T> readListValue(String json, Class<T> clazz) throws IOException {
+        TypeReference ref = new TypeReference<List<T>>(){ };
+        return mapper.readValue(json, ref);
+
+    }
+
 }
