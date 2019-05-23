@@ -1,14 +1,22 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'no.unit.mule'
+version = '1.0'
+
 dependencies {
     testCompile 'io.cucumber:cucumber-java:4.2.0'
     testCompile 'io.cucumber:cucumber-junit:4.2.0'
+    testCompile group: 'io.cucumber', name: 'cucumber-picocontainer', version: '4.2.0'
     implementation 'io.cucumber:cucumber-java:4.2.0'
     implementation 'com.google.guava:guava:27.1-jre'
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
-    implementation  group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
-
-    testCompile group: 'io.cucumber', name: 'cucumber-picocontainer', version: '4.2.0'
 
     implementation 'com.typesafe:config:1.3.2'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
 }
 
 
@@ -20,6 +28,7 @@ configurations {
 
 task cucumber() {
     dependsOn assemble, compileTestJava
+    apply plugin: "maven"
     doLast {
         javaexec {
             main = "cucumber.api.cli.Main"
@@ -28,5 +37,38 @@ task cucumber() {
         }
     }
 }
+
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier "sources"
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'fs-leganto-converter-lib'
+            from components.java
+            //artifact sourcesJar
+            //artifact javadocJar
+            pom {
+                //name = 'A converter library to transform fs json classes to leganto lines'
+                description = 'Jo, kommer etter hvert'
+                //url = 'http://www.example.com/library'
+                //properties = ["prop.with.dots": "anotherValue"]
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+
 
 
