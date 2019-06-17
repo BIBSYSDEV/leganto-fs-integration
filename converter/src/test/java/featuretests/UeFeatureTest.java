@@ -306,9 +306,20 @@ public class UeFeatureTest extends CucumberTestProcessor implements FeatureTests
 
   @Then("the field AllInstuctors in the UE entry is empty")
   public void theFieldAllInstuctorsInTheUEEntryIsEmpty() throws JsonProcessingException {
-
     assertThat(result.getUeLegantoEntry()
       .getAllInstructorIds(), is(emptyString()));
+  }
+
+  @Then("the field CampusParticipants in the UE entry is empty")
+  public void the_field_CampusParticipants_in_the_UE_entry_is_empty() {
+    assertThat(result.getUeLegantoEntry()
+      .getCampusParticipants(), is(emptyString()));
+  }
+
+  @Then("the field NumberOfParticipants in the UE entry is empty")
+  public void the_field_NumberOfParticipants_in_the_UE_entry_is_empty() {
+    assertThat(result.getUeLegantoEntry()
+      .getNumberOfParticipants(), is(emptyString()));
   }
 
 

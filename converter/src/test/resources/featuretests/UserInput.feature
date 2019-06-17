@@ -47,7 +47,7 @@ Feature:
     And the number_of_participants file is a semicolon separated file
     And the number_of_participants file contains a row with the following value
       | UA_emneKode-emneVersjon-1980-HØST;123 |
-    When a new UA Leganto entry has been generatedN
+    When a new UA Leganto entry has been generated
     Then  NumberOfParticipants is the string "123"
 
 

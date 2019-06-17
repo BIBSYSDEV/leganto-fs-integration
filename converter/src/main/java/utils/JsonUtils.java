@@ -137,7 +137,6 @@ public final class JsonUtils {
 
   public static <T> T readValue(String json, Class<T> clazz) throws IOException {
     return mapper.readValue(json, clazz);
-
   }
 
   public static <T> List<T> readListValue(String json, Class<T> clazz) throws IOException {

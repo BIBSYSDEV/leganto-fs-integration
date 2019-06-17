@@ -46,10 +46,8 @@ public abstract class LegantoEntry {
   @Override
   public final String toString() {
     StringBuilder builder = new StringBuilder();
-    for (int i = 0; i < NUMBER_OF_FIELDS; i++) {
-      builder.append(FIELD_DELIMITER);
-    }
-
+    builder.append(getCourseTitle()).append(FIELD_DELIMITER);
+    builder.append(getCourseCode()).append(FIELD_DELIMITER);
     return builder.toString();
   }
 

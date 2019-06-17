@@ -1,11 +1,14 @@
 package fs.ue;
 
+import static utils.JsonUtils.mapper;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.UEmne;
 import fs.common.Validable;
 import fs.ua.USemester;
 
+import java.io.IOException;
 import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -22,6 +25,10 @@ public class UndervisiningEntry extends Validable {
 
   @JsonProperty("terminnummer")
   private String terminNummer;
+
+  public static UndervisiningEntry fromJson(String json) throws IOException {
+    return mapper.readValue(json, UndervisiningEntry.class);
+  }
 
   public String getHref() {
     return href;

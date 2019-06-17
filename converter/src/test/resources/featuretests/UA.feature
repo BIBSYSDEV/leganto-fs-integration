@@ -88,7 +88,9 @@ Feature:
 
   Scenario: Start date for the Spring semester
     Given the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.termin" with value "VÅR"
+
     When a new UA Leganto entry has been generated
+
     Then the field StartDate in the UA entry is the string "1980-01-01"
     And the field EndDate in the UA entry is the string "1980-07-31"
     And the field Term1 in the UA entry is the string "SPRING"
@@ -99,14 +101,18 @@ Feature:
 
   Scenario: UserInput field operation has value ROLLOVER
     Given the user input field "operation" has the value "ROLLOVER"
+
     When a new UA Leganto entry has been generated
+
     Then the field Old Course Code in the UA entry is the string "UA_emneKode-emneVersjon-1979-HØST"
     And the field Old Course Section ID in the UA entry is the string "emneVersjon"
     And the field Operation in the UA entry is the string "ROLLOVER"
 
   Scenario: UserInput field operation has value DELETE
     Given the user input field "operation" has the value "DELETE"
+
     When a new UA Leganto entry has been generated
+
     Then the field Operation in the UA entry is the string "DELETE"
     And the field OldCourseCode in the UA entry is empty
     And the field OldCourseSectionId in the UA entry is empty
@@ -114,11 +120,15 @@ Feature:
 
   Scenario: User does include institute in AcademicDepartment
     Given the user input field "include_institute_in_acad_department" has the boolean value "false"
+
     When a new UA Leganto entry has been generated
+
     Then the field AcademicDepartment in the UA entry is the string "222_39"
 
 
   Scenario: CourseTitle first alternative format
     Given the user input has a field with name "course_title_format" with value 2
+
     When a new UA Leganto entry has been generated
+
     Then the field CourseTitle in the UA entry is the string "emneKode - NynorskEmneNavn - NynorskUANavn (HØST 1980)"

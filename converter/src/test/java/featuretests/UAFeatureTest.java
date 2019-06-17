@@ -309,4 +309,24 @@ public class UAFeatureTest extends CucumberTestProcessor implements FeatureTests
     assertThat(uaLegantoEntry.getOperation(), is(emptyString()));
   }
 
+  @Then("CampusParticipants is the string {string}")
+  public void campusparticipants_is_the_string(String string) {
+    assertThat(uaLegantoEntry.getCampusParticipants(), is(string));
+  }
+
+  @Then("CampusParticipants is empty")
+  public void campusparticipants_is_empty() {
+    assertThat(uaLegantoEntry.getCampusParticipants(), is(emptyString()));
+  }
+
+  @Then("NumberOfParticipants is the string {string}")
+  public void numberofparticipants_is_the_string(String string) {
+    assertThat(uaLegantoEntry.getNumberOfParticipants(), is(string));
+  }
+
+  @Then("NumberOfParticipants is empty")
+  public void numberofparticipants_is_empty() {
+    assertThat(uaLegantoEntry.getNumberOfParticipants(), is(emptyString()));
+  }
+
 }

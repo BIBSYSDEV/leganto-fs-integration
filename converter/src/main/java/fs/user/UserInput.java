@@ -55,16 +55,19 @@ public class UserInput extends Validable {
   @JsonProperty("feide_domain")
   private String feideDomain;
 
-
   @JsonIgnore
   private transient ParticipantsFile campusParticipantsFile;
 
   @JsonIgnore
   private transient ParticipantsFile numberOfPartipantsFile;
 
+  @JsonIgnore
+  public Class clazz;
+
   public UserInput() {
     super();
     this.operation = Operation.NORMAL;
+    clazz = getClass();
   }
 
   public List<Language> getLanguageOrder() {
