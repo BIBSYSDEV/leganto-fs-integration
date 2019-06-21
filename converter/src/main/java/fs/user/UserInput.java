@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -52,6 +53,9 @@ public class UserInput extends Validable {
   @JsonProperty("role_codes")
   private List<String> roleCodes;
 
+  @JsonProperty("ims_codes")
+  private List<Integer> imsCodes = new ArrayList<>();
+
   @JsonProperty("feide_domain")
   private String feideDomain;
 
@@ -80,9 +84,8 @@ public class UserInput extends Validable {
   }
 
   public UserInput initFiles() throws IOException {
-    InputStream campusParticipantsInputStream = emptyStream();
-    InputStream numberOfParticipantsInputStream = emptyStream();
-
+    InputStream campusParticipantsInputStream = null;
+    InputStream numberOfParticipantsInputStream = null;
 
     if (includeCampusParticipants) {
       File campusParticipantsFile = new File(campusParticipantsFilename);
@@ -100,13 +103,15 @@ public class UserInput extends Validable {
     return this;
   }
 
-  private UserInput initFiles(InputStream campusParticipnatsInputStream, InputStream numberOfParticipantsInputSteam) {
-    BufferedInputStream campusParticipantsStream = new BufferedInputStream(campusParticipnatsInputStream);
-    campusParticipantsFile = new ParticipantsFile(campusParticipantsStream).init();
-
-    BufferedInputStream numberOfParticipantsStream = new BufferedInputStream(numberOfParticipantsInputSteam);
-    numberOfPartipantsFile = new ParticipantsFile(numberOfParticipantsStream).init();
-
+  public UserInput initFiles(InputStream campusParticipnatsInputStream, InputStream numberOfParticipantsInputSteam) {
+    if (campusParticipnatsInputStream != null) {
+      BufferedInputStream campusParticipantsStream = new BufferedInputStream(campusParticipnatsInputStream);
+      campusParticipantsFile = new ParticipantsFile(campusParticipantsStream).init();
+    }
+    if (numberOfParticipantsInputSteam != null) {
+      BufferedInputStream numberOfParticipantsStream = new BufferedInputStream(numberOfParticipantsInputSteam);
+      numberOfPartipantsFile = new ParticipantsFile(numberOfParticipantsStream).init();
+    }
     return this;
   }
 
@@ -205,6 +210,15 @@ public class UserInput extends Validable {
 
   public UserInput setRoleCodes(List<String> roleCodes) {
     this.roleCodes = roleCodes;
+    return this;
+  }
+
+  public List<Integer> getImsCodes() {
+    return imsCodes;
+  }
+
+  public UserInput setImsCodes(List<Integer> roleCodes) {
+    this.imsCodes = roleCodes;
     return this;
   }
 

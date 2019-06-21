@@ -14,9 +14,20 @@ public class Person {
   @JsonProperty("personnummer")
   private transient String personnummer;
 
+  @JsonProperty("brukernavn")
+  private transient String brukernavn;
 
   @JsonProperty("personlopenummer")
   private transient Long personlopenummer;
+
+  public String getBrukernavn() {
+    return brukernavn;
+  }
+
+  public Person setBrukernavn(String personnummer) {
+    this.brukernavn = personnummer;
+    return this;
+  }
 
   public String getPersonnummer() {
     return personnummer;

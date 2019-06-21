@@ -228,8 +228,8 @@ public class LegantoEntryTest extends LocalTest {
   @Test
   public void getAllInstructorIdsShouldReturnTheIdsOfPersonRoles() {
     List<Person> persons = new ArrayList<>();
-    persons.add(new Person().setPersonnummer(FEIDE_ID_1));
-    persons.add(new Person().setPersonnummer(FEIDE_ID_2));
+    persons.add(new Person().setBrukernavn(FEIDE_ID_1));
+    persons.add(new Person().setBrukernavn(FEIDE_ID_2));
     legantoEntry.setInstructors(persons);
     String expected = String.join(LegantoEntry.INSTUCTOR_LIST_DELIMITER, FEIDE_ID_1, FEIDE_ID_2);
     assertThat(legantoEntry.getAllInstructorIds(), is(equalTo(expected)));

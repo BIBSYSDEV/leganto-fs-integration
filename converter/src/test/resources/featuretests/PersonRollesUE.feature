@@ -16,9 +16,9 @@ Feature: Instructors for each UE Leganto entry
       | undervisning.href | UE_HREF | person.href | /personer/345 | person.personlopenummer | 345 |
 
     And there is a valid response from /personner for the following ids
-      |personlopenummer|123|personnummer|feideId1@someDomain.com|
-      |personlopenummer|234|personnummer|feideId2@otherDomain.com|
-      |personlopenummer|345|personnummer|feideId3|
+      |personlopenummer|123|brukernavn|feideId1@someDomain.com|
+      |personlopenummer|234|brukernavn|feideId2@otherDomain.com|
+      |personlopenummer|345|brukernavn|feideId3|
 
   Scenario: AllInstructorIds string formation for UE Leganto Entries
     Given the user input has a field with name "feide_domain" with value "@userdomain.com"

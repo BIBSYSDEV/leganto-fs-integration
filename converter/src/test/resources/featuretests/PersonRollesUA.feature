@@ -16,7 +16,7 @@
 #      | undervisning.href | UE_HREF | person.href | /personer/PERSONID2 | person.personlopenummer | PERSONID2 |
 #      | undervisning.href | UE_HREF | person.href | /personer/PERSONID3 | person.personlopenummer | PERSONID3 |
 #
-#    And there is a valid response from /personner for the following ids
+#    And there is a valid response from /personer for the following ids
 #      |PERSONID1|
 #      |PERSONID2|
 #      |PERSONID3|

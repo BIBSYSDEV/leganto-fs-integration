@@ -54,7 +54,7 @@ publishing {
         mavenJava(MavenPublication) {
             artifactId = 'fs-leganto-converter-lib'
             from components.java
-            //artifact sourcesJar
+            artifact sourcesJar
             //artifact javadocJar
             pom {
                 //name = 'A converter library to transform fs json classes to leganto lines'

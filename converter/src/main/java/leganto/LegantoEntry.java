@@ -46,8 +46,34 @@ public abstract class LegantoEntry {
   @Override
   public final String toString() {
     StringBuilder builder = new StringBuilder();
-    builder.append(getCourseTitle()).append(FIELD_DELIMITER);
     builder.append(getCourseCode()).append(FIELD_DELIMITER);
+    builder.append(getCourseTitle()).append(FIELD_DELIMITER);
+    builder.append(getSectionId()).append(FIELD_DELIMITER);
+    builder.append(getAcademicDepartment()).append(FIELD_DELIMITER);
+    builder.append(getProcessingDepartment()).append(FIELD_DELIMITER);
+    builder.append(getTerm1()).append(FIELD_DELIMITER);
+    builder.append(getTerm2()).append(FIELD_DELIMITER);
+    builder.append(getTerm3()).append(FIELD_DELIMITER);
+    builder.append(getTerm4()).append(FIELD_DELIMITER);
+    builder.append(getStartDate()).append(FIELD_DELIMITER);
+    builder.append(getEndDate()).append(FIELD_DELIMITER);
+    builder.append(getNumberOfParticipants()).append(FIELD_DELIMITER);
+    builder.append(getWeeklyHours()).append(FIELD_DELIMITER);
+    builder.append(getYear()).append(FIELD_DELIMITER);
+    builder.append(getSearchableId1()).append(FIELD_DELIMITER);
+    builder.append(getSearchableId2()).append(FIELD_DELIMITER);
+    builder.append(getAllSearchableIds()).append(FIELD_DELIMITER);
+    for (int i = 0; i < 10; i++){
+      builder.append(getInstructor()).append(FIELD_DELIMITER);
+    }
+    builder.append(getAllInstructorIds()).append(FIELD_DELIMITER);
+    builder.append(getOperation()).append(FIELD_DELIMITER);
+    builder.append(getOldCourseCode()).append(FIELD_DELIMITER);
+    builder.append(getOldCourseSectionId()).append(FIELD_DELIMITER);
+    builder.append(getSubmitByDate()).append(FIELD_DELIMITER);
+    builder.append(getCampusParticipants()).append(FIELD_DELIMITER);
+    builder.append(getReadingListName());
+
     return builder.toString();
   }
 
@@ -196,7 +222,7 @@ public abstract class LegantoEntry {
   public final String getAllInstructorIds() {
 
     List<String> ids = instructors.stream()
-      .map(Person::getPersonnummer)
+      .map(Person::getBrukernavn)
       .map(p -> formatFeideId(p))
       .collect(Collectors.toList());
 

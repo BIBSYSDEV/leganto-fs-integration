@@ -60,6 +60,8 @@ public class UaLegantoEntryTest extends LocalTest {
   @Before
   public void init() {
     entry = new UaLegantoEntry(ua, userInput);
+    entry.setEmne(    mockEmne());
+    entry.setOrganizationEntity(mockOrganizationEntity());
   }
 
   public UndervisningsAktivitet mockUndervisningsAktivitet() {
@@ -96,9 +98,7 @@ public class UaLegantoEntryTest extends LocalTest {
 
   @Test
   public void getCourseTitleWithNBShouldReturnCourseTitleWithTitleFromEmneForNBLanguage() {
-    Emne emne = mockEmne();
-    entry.setEmne(emne);
-    String expectedCourseName = emne.getNavn()
+    String expectedCourseName = mockEmne().getNavn()
       .stream()
       .filter(langValue -> langValue.getLang()
         .equals(preferredLanguage))
@@ -146,6 +146,7 @@ public class UaLegantoEntryTest extends LocalTest {
 
   @Test
   public void getAllSearchableIdsShouldThrowExceptionForNonInitializedOrganizationEntity() {
+    entry.setOrganizationEntity(null);
     expectedEx.expect(NullPointerException.class);
     expectedEx.expectMessage(LegantoEntry.MISSING_ORGANIZATION_ENTITY_INFORMATION_ERROR);
     entry.getAllSearchableIds();
@@ -153,7 +154,6 @@ public class UaLegantoEntryTest extends LocalTest {
 
   @Test
   public void getAllSearchableIdsShouldReturnNonEmptyString() {
-    entry.setOrganizationEntity(mockOrganizationEntity());
     entry.getAllSearchableIds();
   }
 
