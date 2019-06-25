@@ -10,6 +10,7 @@ import fs.user.UserInput;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -220,12 +221,10 @@ public abstract class LegantoEntry {
   }
 
   public final String getAllInstructorIds() {
-
-    List<String> ids = instructors.stream()
-      .map(Person::getBrukernavn)
-      .map(p -> formatFeideId(p))
-      .collect(Collectors.toList());
-
+    List<String> ids = new ArrayList<>();
+    for (Person p: instructors){
+      ids.add(formatFeideId(p.getBrukernavn()));
+    }
     return String.join(INSTUCTOR_LIST_DELIMITER, ids);
   }
 

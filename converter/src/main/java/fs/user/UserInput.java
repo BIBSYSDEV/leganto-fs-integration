@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.IgnoreValidable;
 import fs.common.Language;
 import fs.common.Validable;
+import utils.JsonUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -64,16 +65,14 @@ public class UserInput extends Validable {
 
   @JsonIgnore
   private transient ParticipantsFile numberOfPartipantsFile;
-
-  @JsonIgnore
-  public Class clazz;
-
+  
   public UserInput() {
     super();
     this.operation = Operation.NORMAL;
-    clazz = getClass();
   }
-
+  public static UserInput fromJson(String emneJson) throws IOException {
+    return JsonUtils.mapper.readValue(emneJson, UserInput.class);
+  }
   public List<Language> getLanguageOrder() {
     return languageOrder;
   }
