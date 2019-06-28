@@ -53,7 +53,7 @@ Feature:
 
     When a new UA Leganto entry has been generated
 
-    Then the field CourseCode in the UA entry is the string "UA_emneKode-emneVersjon-1980-HØST"
+    Then the field CourseCode in the UA entry is the string "UA_emneKode_emneVersjon_1980_HØST_12_MEAKB00000"
     And the field CourseTitle in the UA entry is the string "NynorskEmneNavn - NynorskUANavn - emneKode HØST 1980"
     And the field SectionId in the UA entry is the string "emneVersjon"
     And the field AcademicDepartment in the UA entry is the string "222_39_7"
@@ -68,7 +68,7 @@ Feature:
     And the field Year in the UA entry has the value 1980
     And the field SearchableId1 in the UA entry is empty
     And the field SearchableId2 in the UA entry is empty
-    And the field AllSearchableIds in the UA entry is the string "UA_222_emneKode_emneVersjon_1980_HØST_12,MEAKB00000"
+    And the field AllSearchableIds in the UA entry is the string "UA_222_emneKode_emneVersjon_1980_HØST_12_MEAKB00000"
     And the field Instructor1 in the UA entry is empty
     And the field Instructor2 in the UA entry is empty
     And the field Instructor3 in the UA entry is empty
@@ -94,9 +94,9 @@ Feature:
     Then the field StartDate in the UA entry is the string "1980-01-01"
     And the field EndDate in the UA entry is the string "1980-07-31"
     And the field Term1 in the UA entry is the string "SPRING"
-    And the field CourseCode in the UA entry is the string "UA_emneKode-emneVersjon-1980-VÅR"
+    And the field CourseCode in the UA entry is the string "UA_emneKode_emneVersjon_1980_VÅR_12_MEAKB00000"
     And the field CourseTitle in the UA entry is the string "NynorskEmneNavn - NynorskUANavn - emneKode VÅR 1980"
-    And the field AllSearchableIds in the UA entry is the string "UA_222_emneKode_emneVersjon_1980_VÅR_12,MEAKB00000"
+    And the field AllSearchableIds in the UA entry is the string "UA_222_emneKode_emneVersjon_1980_VÅR_12_MEAKB00000"
 
 
   Scenario: UserInput field operation has value ROLLOVER
@@ -104,7 +104,7 @@ Feature:
 
     When a new UA Leganto entry has been generated
 
-    Then the field Old Course Code in the UA entry is the string "UA_emneKode-emneVersjon-1979-HØST"
+    Then the field Old Course Code in the UA entry is the string "UA_emneKode_emneVersjon_1979_HØST"
     And the field Old Course Section ID in the UA entry is the string "emneVersjon"
     And the field Operation in the UA entry is the string "ROLLOVER"
 

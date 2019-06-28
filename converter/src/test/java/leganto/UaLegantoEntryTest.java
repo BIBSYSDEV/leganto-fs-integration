@@ -37,6 +37,7 @@ public class UaLegantoEntryTest extends LocalTest {
   private static final String EMNE_INSITUTION = "emneInsitution";
   private static final String EMNE_VERSION = "emneVersion";
   private static final String UNDERVISNING_HREF = "undervingnHref";
+  private static final String UNDERVISNINGS_AKTIVITET = "undervisningsaktivitet";
   private static final String UA_SEMESTER_HREF = "uaSemesterHref";
   private static final Integer UASEMESTER_YEAR = 1980;
   private static final String NORWEGIAN_EMNE_NAME = "NorwegianEmneName";
@@ -70,7 +71,7 @@ public class UaLegantoEntryTest extends LocalTest {
 
     return new UndervisningsAktivitet()
       .setUndervisning(undervisning)
-      .setAktivitet("UundervisningsAktivitet")
+      .setAktivitet(UNDERVISNINGS_AKTIVITET)
       .setNavn(uaEmneNavn);
   }
 
@@ -90,7 +91,9 @@ public class UaLegantoEntryTest extends LocalTest {
       firstPart,
       EMNE_VERSION,
       UASEMESTER_YEAR.toString(),
-      SemesterCode.AUTUMN_NORWEGIAN);
+      SemesterCode.AUTUMN_NORWEGIAN,
+      Integer.toString(TERMINNUMER),
+      UNDERVISNINGS_AKTIVITET);
 
     String actual = entry.getCourseCode();
     assertThat(actual, is(equalTo(expected)));

@@ -9,11 +9,13 @@ Feature:
     And there is a possibly empty personroller list
     And there is a valid user input
 
+    And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.terminnummer" with value "12"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.href" with value "emne/emneId"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.kode" with value "emneKode"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.versjon" with value "emneVersjon"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.ar" with value "1980"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.semester.termin" with value "HØST"
+    And the response from /undervisningsaktiviteter/UA_ID has a field "aktivitet" with value "1-1"
 
     And there is a valid response from /undervisning/UE_ID
     And the response from /undervisning/UE_ID has a field with name "emne.href" and value "/emne/emneId"
@@ -29,7 +31,7 @@ Feature:
     And  the user input has a field with name "campus_participants_file" with value "campus_participants_file.csv"
     And the campus participants file is a semicolon separated file
     And the campus participants file contains a row with the following value
-      | UA_emneKode-emneVersjon-1980-HØST;GLOS\|10,DRAG\|20 |
+      | UA_emneKode_emneVersjon_1980_HØST_12_1-1;GLOS\|10,DRAG\|20 |
 
     When a new UA Leganto entry has been generated
     Then CampusParticipants is the string "GLOS|10,DRAG|20"
@@ -46,7 +48,7 @@ Feature:
     And the user input has a field with name "number_of_participants_file" with value "number_of_participants_file.csv"
     And the number_of_participants file is a semicolon separated file
     And the number_of_participants file contains a row with the following value
-      | UA_emneKode-emneVersjon-1980-HØST;123 |
+      | UA_emneKode_emneVersjon_1980_HØST_12_1-1;123 |
     When a new UA Leganto entry has been generated
     Then  NumberOfParticipants is the string "123"
 

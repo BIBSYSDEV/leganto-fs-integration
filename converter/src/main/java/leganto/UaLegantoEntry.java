@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class UaLegantoEntry extends LegantoEntry {
 
-  public static final String COURSE_CODE_DELIMITER = "-";
+  public static final String COURSE_CODE_DELIMITER = "_";
   public static final String COURSE_CODE_PREFIX_DELIMITER = "_";
   public static final String PREFIX = "UA";
 
@@ -91,7 +91,11 @@ public class UaLegantoEntry extends LegantoEntry {
         .getUaSemester()
         .getYear()
         .toString(),
-      getSemesterCode().toString()
+      getSemesterCode().toString(),
+      ua.getUndervisning()
+        .getTerminnumer()
+        .toString(),
+      ua.getAktivitet()
     );
   }
 
@@ -138,12 +142,10 @@ public class UaLegantoEntry extends LegantoEntry {
         .toString(),
       ua.getUndervisning()
         .getTerminnumer()
-        .toString()
+        .toString(),
+      ua.getAktivitet()
     );
-
-    String id2 = ua.getAktivitet();
     searchableIds.add(id1);
-    searchableIds.add(id2);
     return String.join(SEARCHABLE_IDS_DELIMITER, searchableIds);
   }
 

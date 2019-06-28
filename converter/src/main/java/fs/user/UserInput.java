@@ -65,7 +65,7 @@ public class UserInput extends Validable {
 
   @JsonIgnore
   private transient ParticipantsFile numberOfPartipantsFile;
-  
+
   public UserInput() {
     super();
     this.operation = Operation.NORMAL;
