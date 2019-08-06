@@ -14,6 +14,7 @@ Feature:
       | en |
     And the user input has a field with name "include_institute_in_acad_department" with value "true"
     And there is a valid response from /undervisning/UE_ID
+    And the response from /undervisning/UE_ID has a field with name "href" and value "https://fs-api/undervisning/222,emneKode,emneVersjon,1980,HØST,12"
     And the response from /undervisning/UE_ID has a field with name "emne.href" and value "/emne/emneId"
     And the response from /undervisning/UE_ID has a field with name "emne.institusjon" and value "222"
     And the response from /undervisning/UE_ID has a field with name "emne.kode" and value "emneKode"
@@ -38,8 +39,8 @@ Feature:
   Scenario: Update Leganto with new undervisning information
     When a new UE Leganto entry has been generated
 
-    Then the field CourseCode in the UE entry is the string "UE_emneKode-emneVersjon-1980-HØST"
-    And the field CourseTitle in the UE entry is the string "NynorskEmneNavn - emneKode HØST 1980"
+    Then the field CourseCode in the UE entry is the string "UE_222-emneKode-emneVersjon-1980-HØST"
+    And the field CourseTitle in the UE entry is the string "NynorskEmneNavn - 222-emneKode HØST 1980"
     And the field SectionId  in the UE entry is the string "emneVersjon"
     And the field AcademicDepartment in the UE entry is the  string "222_39_7"
     And the field ProcessingDepartment in the UE entry is the invariant string LEGANTO
@@ -80,8 +81,8 @@ Feature:
     Then the field StartDate in the UE entry is the string "1980-01-01"
     And the field EndDate in the UE entry is the string "1980-07-31"
     And the field Term1 in the UE entry is the string "SPRING"
-    And the field CourseCode in the UE entry is the string "UE_emneKode-emneVersjon-1980-VÅR"
-    And the field CourseTitle in the UE entry is the string "NynorskEmneNavn - emneKode VÅR 1980"
+    And the field CourseCode in the UE entry is the string "UE_222-emneKode-emneVersjon-1980-VÅR"
+    And the field CourseTitle in the UE entry is the string "NynorskEmneNavn - 222-emneKode VÅR 1980"
     And the field AllSearchableIds in the UE entry is the string "UE_222_emneKode_emneVersjon_1980_VÅR_12,UA_222_emneKode_emneVersjon_1980_VÅR_12,emneKode"
 
 
@@ -90,7 +91,7 @@ Feature:
 
     When a new UE Leganto entry has been generated
 
-    Then the field OldCourseCode in the UE entry is the string "UE_emneKode-emneVersjon-1979-HØST"
+    Then the field OldCourseCode in the UE entry is the string "UE_222-emneKode-emneVersjon-1979-HØST"
     And the field OldCourseSectionId is the string "emneVersjon"
     And the field Operation in the UE entry  is the string "ROLLOVER"
 
@@ -118,7 +119,7 @@ Feature:
 
     When a new UE Leganto entry has been generated
 
-    Then the field CourseTitle in the UE entry is the string "emneKode - NynorskEmneNavn (HØST 1980)"
+    Then the field CourseTitle in the UE entry is the string "222-emneKode - NynorskEmneNavn (HØST 1980)"
 
 
 

@@ -1,7 +1,5 @@
 package fs.user;
 
-import static utils.IoUtils.emptyStream;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fs.common.IgnoreValidable;

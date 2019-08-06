@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public abstract class LegantoEntry {
 
@@ -26,7 +25,6 @@ public abstract class LegantoEntry {
   protected static final String MISSING_ORGANIZATION_ENTITY_INFORMATION_ERROR = "Missing organization entity "
     + "information";
   private static final String ILLEGAL_STATE_MESSAGE = "Not available";
-  private static final int NUMBER_OF_FIELDS = 34;
   private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
   private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
   public static final String INVALID_USER_INPUT_MESSAGE = "Invalid user input";
@@ -47,34 +45,57 @@ public abstract class LegantoEntry {
   @Override
   public final String toString() {
     StringBuilder builder = new StringBuilder();
-    builder.append(getCourseCode()).append(FIELD_DELIMITER);
-    builder.append(getCourseTitle()).append(FIELD_DELIMITER);
-    builder.append(getSectionId()).append(FIELD_DELIMITER);
-    builder.append(getAcademicDepartment()).append(FIELD_DELIMITER);
-    builder.append(getProcessingDepartment()).append(FIELD_DELIMITER);
-    builder.append(getTerm1()).append(FIELD_DELIMITER);
-    builder.append(getTerm2()).append(FIELD_DELIMITER);
-    builder.append(getTerm3()).append(FIELD_DELIMITER);
-    builder.append(getTerm4()).append(FIELD_DELIMITER);
-    builder.append(getStartDate()).append(FIELD_DELIMITER);
-    builder.append(getEndDate()).append(FIELD_DELIMITER);
-    builder.append(getNumberOfParticipants()).append(FIELD_DELIMITER);
-    builder.append(getWeeklyHours()).append(FIELD_DELIMITER);
-    builder.append(getYear()).append(FIELD_DELIMITER);
-    builder.append(getSearchableId1()).append(FIELD_DELIMITER);
-    builder.append(getSearchableId2()).append(FIELD_DELIMITER);
-    builder.append(getAllSearchableIds()).append(FIELD_DELIMITER);
-    for (int i = 0; i < 10; i++){
-      builder.append(getInstructor()).append(FIELD_DELIMITER);
+    builder.append(getCourseCode())
+      .append(FIELD_DELIMITER)
+      .append(getCourseTitle())
+      .append(FIELD_DELIMITER)
+      .append(getSectionId())
+      .append(FIELD_DELIMITER)
+      .append(getAcademicDepartment())
+      .append(FIELD_DELIMITER)
+      .append(getProcessingDepartment())
+      .append(FIELD_DELIMITER)
+      .append(getTerm1())
+      .append(FIELD_DELIMITER)
+      .append(getTerm2())
+      .append(FIELD_DELIMITER)
+      .append(getTerm3())
+      .append(FIELD_DELIMITER)
+      .append(getTerm4())
+      .append(FIELD_DELIMITER)
+      .append(getStartDate())
+      .append(FIELD_DELIMITER)
+      .append(getEndDate())
+      .append(FIELD_DELIMITER)
+      .append(getNumberOfParticipants())
+      .append(FIELD_DELIMITER)
+      .append(getWeeklyHours())
+      .append(FIELD_DELIMITER)
+      .append(getYear())
+      .append(FIELD_DELIMITER)
+      .append(getSearchableId1())
+      .append(FIELD_DELIMITER)
+      .append(getSearchableId2())
+      .append(FIELD_DELIMITER)
+      .append(getAllSearchableIds())
+      .append(FIELD_DELIMITER);
+    for (int i = 0; i < 10; i++) {
+      builder.append(getInstructor())
+        .append(FIELD_DELIMITER);
     }
-    builder.append(getAllInstructorIds()).append(FIELD_DELIMITER);
-    builder.append(getOperation()).append(FIELD_DELIMITER);
-    builder.append(getOldCourseCode()).append(FIELD_DELIMITER);
-    builder.append(getOldCourseSectionId()).append(FIELD_DELIMITER);
-    builder.append(getSubmitByDate()).append(FIELD_DELIMITER);
-    builder.append(getCampusParticipants()).append(FIELD_DELIMITER);
-    builder.append(getReadingListName());
-
+    builder.append(getAllInstructorIds())
+      .append(FIELD_DELIMITER)
+      .append(getOperation())
+      .append(FIELD_DELIMITER)
+      .append(getOldCourseCode())
+      .append(FIELD_DELIMITER)
+      .append(getOldCourseSectionId())
+      .append(FIELD_DELIMITER)
+      .append(getSubmitByDate())
+      .append(FIELD_DELIMITER)
+      .append(getCampusParticipants())
+      .append(FIELD_DELIMITER)
+      .append(getReadingListName());
     return builder.toString();
   }
 
@@ -222,7 +243,7 @@ public abstract class LegantoEntry {
 
   public final String getAllInstructorIds() {
     List<String> ids = new ArrayList<>();
-    for (Person p: instructors){
+    for (Person p : instructors) {
       ids.add(formatFeideId(p.getBrukernavn()));
     }
     return String.join(INSTUCTOR_LIST_DELIMITER, ids);

@@ -23,6 +23,7 @@ public class UeLegantoEntry extends LegantoEntry {
   private static final int PREVIOUS_YEAR = 1;
 
   private final transient UndervisiningEntry ue;
+  private transient String[] id_seg;
 
   public UeLegantoEntry(UndervisiningEntry ue, UserInput userInput) {
     super(userInput);
@@ -38,13 +39,30 @@ public class UeLegantoEntry extends LegantoEntry {
   private String generateCourseCode(Integer year) {
 
     String suffix = String.join(COURSE_CODE_DELIMITER,
-      getUeEmne().getCode(),
-      getUeEmne().getVersion(),
+      getCode(),
+      getVersion(),
       year.toString(),
       getUeSemester().getSemesterCode()
         .toString());
 
     return String.join(DEFAULT_DELIMITER, UE_ID_PREFIX, suffix);
+  }
+
+  private String getCode() {
+    String[] id_segs = getIdSegs();
+    return id_segs[0] + COURSE_CODE_DELIMITER + id_segs[1];
+  }
+
+  private String getVersion() {
+    String[] id_segs = getIdSegs();
+    return id_segs[2];
+  }
+
+  private String[] getIdSegs() {
+    if (id_seg == null){
+      id_seg = ue.getHref().substring(ue.getHref().lastIndexOf('/') + 1 ).split(",");
+    }
+    return id_seg;
   }
 
   @Override
@@ -55,8 +73,7 @@ public class UeLegantoEntry extends LegantoEntry {
     return UeCourseTitleFormat
       .fromInteger(userInput.getCourseTitleFormat())
       .formatUaCourseTitle(emneNavn,
-        ue.getEmne()
-          .getCode(),
+        getCode(),
         ue.getSemester()
           .getSemesterCode(),
         ue.getSemester()

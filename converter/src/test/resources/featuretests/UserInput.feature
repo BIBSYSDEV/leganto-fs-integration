@@ -18,6 +18,7 @@ Feature:
     And the response from /undervisningsaktiviteter/UA_ID has a field "aktivitet" with value "1-1"
 
     And there is a valid response from /undervisning/UE_ID
+    And the response from /undervisning/UE_ID has a field with name "href" and value "https://fs-api/undervisning/222,emneKode,emneVersjon,1980,HØST,12"
     And the response from /undervisning/UE_ID has a field with name "emne.href" and value "/emne/emneId"
     And the response from /undervisning/UE_ID has a field with name "emne.institusjon" and value "222"
     And the response from /undervisning/UE_ID has a field with name "emne.kode" and value "emneKode"
@@ -65,7 +66,7 @@ Feature:
 
     And the campus participants file is a semicolon separated file
     And the campus participants file contains a row with the following value
-      | UE_emneKode-emneVersjon-1980-HØST;GLOS\|10,DRAG\|20 |
+      | UE_222-emneKode-emneVersjon-1980-HØST;GLOS\|10,DRAG\|20 |
     When a new UE Leganto entry has been generated
     Then the field CampusParticipants in the UE entry is the string "GLOS|10,DRAG|20"
 
@@ -80,7 +81,7 @@ Feature:
     And the user input has a field with name "number_of_participants_file" with value "number_of_participants_file.csv"
     And the number_of_participants file is a semicolon separated file
     And the number_of_participants file contains a row with the following value
-      | UE_emneKode-emneVersjon-1980-HØST;123 |
+      | UE_222-emneKode-emneVersjon-1980-HØST;123 |
     When a new UE Leganto entry has been generated
     Then the field NumberOfParticipants in the UE entry is the integer 123
 
