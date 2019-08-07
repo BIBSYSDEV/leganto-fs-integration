@@ -1,7 +1,6 @@
 package leganto;
 
 import fs.common.Language;
-import fs.common.UEmne;
 import fs.personroller.UndervisningReference;
 import fs.ua.SemesterCode;
 import fs.ua.USemester;
@@ -48,14 +47,17 @@ public class UeLegantoEntry extends LegantoEntry {
     return String.join(DEFAULT_DELIMITER, UE_ID_PREFIX, suffix);
   }
 
+  private String getOnlyCode() {
+    return getIdSegs()[1];
+  }
+
   private String getCode() {
-    String[] id_segs = getIdSegs();
-    return id_segs[0] + COURSE_CODE_DELIMITER + id_segs[1];
+    String[] idSegs = getIdSegs();
+    return idSegs[0] + COURSE_CODE_DELIMITER + idSegs[1];
   }
 
   private String getVersion() {
-    String[] id_segs = getIdSegs();
-    return id_segs[2];
+    return getIdSegs()[2];
   }
 
   private String[] getIdSegs() {
@@ -82,7 +84,7 @@ public class UeLegantoEntry extends LegantoEntry {
 
   @Override
   public String getSectionId() {
-    return getUeEmne().getVersion();
+    return getVersion();
   }
 
   @Override
@@ -129,18 +131,15 @@ public class UeLegantoEntry extends LegantoEntry {
     searchableId2.addAll(searchableIdSuffix());
     String searchableId2String = String.join(DEFAULT_DELIMITER, searchableId2);
 
-    String searchableId3String = ue.getEmne()
-      .getCode();
+    String searchableId3String = getOnlyCode();
 
     return String.join(SEARCHABLE_IDS_DELIMITER, searchableId1String, searchableId2String, searchableId3String);
   }
 
   private List<String> searchableIdSuffix() {
     return Arrays.asList(
-      organizationEntity.getInstitution()
-        .toString(),
-      getUeEmne().getCode(),
-      getUeEmne().getVersion(),
+      getCode(),
+      getVersion(),
       getYear().toString(),
       getUeSemester().getSemesterCode()
         .toString(),
@@ -166,8 +165,7 @@ public class UeLegantoEntry extends LegantoEntry {
   @Override
   public String getOldCourseSectionId() {
     if (Operation.ROLLOVER.equals(userInput.getOperation())) {
-      return ue.getEmne()
-        .getVersion();
+      return getVersion();
     } else {
       return EMPTY_STRING;
     }
@@ -176,10 +174,6 @@ public class UeLegantoEntry extends LegantoEntry {
   @Override
   protected UndervisningReference undervisningsReference() {
     return new UndervisningReference(ue.getHref());
-  }
-
-  private UEmne getUeEmne() {
-    return ue.getEmne();
   }
 
   private USemester getUeSemester() {

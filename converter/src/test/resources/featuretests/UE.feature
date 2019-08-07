@@ -17,8 +17,8 @@ Feature:
     And the response from /undervisning/UE_ID has a field with name "href" and value "https://fs-api/undervisning/222,emneKode,emneVersjon,1980,HØST,12"
     And the response from /undervisning/UE_ID has a field with name "emne.href" and value "/emne/emneId"
     And the response from /undervisning/UE_ID has a field with name "emne.institusjon" and value "222"
-    And the response from /undervisning/UE_ID has a field with name "emne.kode" and value "emneKode"
-    And the response from /undervisning/UE_ID has a field with name "emne.versjon" and value "emneVersjon"
+    #And the response from /undervisning/UE_ID has a field with name "emne.kode" and value "emneKode"
+    #And the response from /undervisning/UE_ID has a field with name "emne.versjon" and value "emneVersjon"
     And the response from /undervisning/UE_ID has a field with name "semester.ar" and value "1980"
     And the response from /undervisning/UE_ID has a field with name "semester.termin" and value "HØST"
     And the response from /undervisning/UE_ID has a field with name "terminnummer" and value "12"
@@ -54,7 +54,7 @@ Feature:
     And the field Year in the UE entry has the value 1980
     And the field SearchableId1 in the UE entry is empty
     And the field SearchableId2 in the UE entry is empty
-    And the field AllSearchableIds in the UE entry is the string "UE_222_emneKode_emneVersjon_1980_HØST_12,UA_222_emneKode_emneVersjon_1980_HØST_12,emneKode"
+    And the field AllSearchableIds in the UE entry is the string "UE_222-emneKode_emneVersjon_1980_HØST_12,UA_222-emneKode_emneVersjon_1980_HØST_12,emneKode"
     And the field Instructor1 in the UE entry is empty
     And the field Instructor2 in the UE entry is empty
     And the field Instructor3 in the UE entry is empty
@@ -83,7 +83,7 @@ Feature:
     And the field Term1 in the UE entry is the string "SPRING"
     And the field CourseCode in the UE entry is the string "UE_222-emneKode-emneVersjon-1980-VÅR"
     And the field CourseTitle in the UE entry is the string "NynorskEmneNavn - 222-emneKode VÅR 1980"
-    And the field AllSearchableIds in the UE entry is the string "UE_222_emneKode_emneVersjon_1980_VÅR_12,UA_222_emneKode_emneVersjon_1980_VÅR_12,emneKode"
+    And the field AllSearchableIds in the UE entry is the string "UE_222-emneKode_emneVersjon_1980_VÅR_12,UA_222-emneKode_emneVersjon_1980_VÅR_12,emneKode"
 
 
   Scenario: UserInput filed operation has value ROLLOVER for UE entries
