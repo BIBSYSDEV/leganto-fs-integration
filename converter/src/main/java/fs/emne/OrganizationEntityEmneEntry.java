@@ -8,69 +8,69 @@ import java.util.Objects;
 
 public class OrganizationEntityEmneEntry {
 
-  @JsonProperty
-  private String href;
+    @JsonProperty
+    private String href;
 
-  @JsonProperty
-  private Type type;
+    @JsonProperty
+    private Type type;
 
-  public String getHref() {
-    return href;
-  }
-
-  public OrganizationEntityEmneEntry setHref(String href) {
-    this.href = href;
-    return this;
-  }
-
-  public Type getType() {
-    return type;
-  }
-
-  public OrganizationEntityEmneEntry setType(Type type) {
-    this.type = type;
-    return this;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    public String getHref() {
+        return href;
     }
-    if (!(o instanceof OrganizationEntityEmneEntry)) {
-      return false;
+
+    public OrganizationEntityEmneEntry setHref(String href) {
+        this.href = href;
+        return this;
     }
-    OrganizationEntityEmneEntry that = (OrganizationEntityEmneEntry) o;
 
-    return
-      Objects.equals(getHref(), that.getHref())
-        && getType() == that.getType();
-  }
+    public Type getType() {
+        return type;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(getHref(), getType());
-  }
-
-  public enum Type {
-    STUDIE, ADMINISTRATIV;
-
-    @JsonCreator
-    public static Type fromString(String input) {
-
-      if (STUDIE.name()
-        .equalsIgnoreCase(input)) {
-        return STUDIE;
-      } else {
-        return ADMINISTRATIV;
-      }
+    public OrganizationEntityEmneEntry setType(Type type) {
+        this.type = type;
+        return this;
     }
 
     @Override
-    @JsonValue
-    public String toString() {
-      return this.name();
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof OrganizationEntityEmneEntry)) {
+            return false;
+        }
+        OrganizationEntityEmneEntry that = (OrganizationEntityEmneEntry) o;
+
+        return
+            Objects.equals(getHref(), that.getHref())
+                && getType() == that.getType();
     }
 
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(getHref(), getType());
+    }
+
+    public enum Type {
+        STUDIE, ADMINISTRATIV;
+
+        @JsonCreator
+        public static Type fromString(String input) {
+
+            if (STUDIE.name()
+                .equalsIgnoreCase(input)) {
+                return STUDIE;
+            } else {
+                return ADMINISTRATIV;
+            }
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return this.name();
+        }
+
+    }
 }

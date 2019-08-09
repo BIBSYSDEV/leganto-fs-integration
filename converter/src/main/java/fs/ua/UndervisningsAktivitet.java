@@ -17,90 +17,90 @@ import java.util.Objects;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UndervisningsAktivitet extends Validable {
 
-  @JsonProperty("undervisning")
-  private UaUndervisning undervisning;
+    @JsonProperty("undervisning")
+    private UaUndervisning undervisning;
 
-  @JsonProperty("navn")
-  private List<LanguageValue> navn;
+    @JsonProperty("navn")
+    private List<LanguageValue> navn;
 
-  @JsonProperty("aktivitet")
-  private String aktivitet;
+    @JsonProperty("aktivitet")
+    private String aktivitet;
 
-  @JsonProperty("href")
-  private String href;
+    @JsonProperty("href")
+    private String href;
 
-  public static UndervisningsAktivitet fromJson(String json) throws IOException {
-    return mapper.readValue(json, UndervisningsAktivitet.class);
-  }
-
-  public UaUndervisning getUndervisning() {
-    return undervisning;
-  }
-
-  public UndervisningsAktivitet setUndervisning(UaUndervisning undervisning) {
-    this.undervisning = undervisning;
-    return this;
-  }
-
-  public UndervisningsAktivitet setUndervising(UaUndervisning undervisning) {
-    this.undervisning = undervisning;
-    return this;
-  }
-
-  public List<LanguageValue> getNavn() {
-    return navn;
-  }
-
-  public UndervisningsAktivitet setNavn(List<LanguageValue> navn) {
-    this.navn = navn;
-    return this;
-  }
-
-  public String getAktivitet() {
-    return aktivitet;
-  }
-
-  public UndervisningsAktivitet setAktivitet(String aktivitet) {
-    this.aktivitet = aktivitet;
-    return this;
-  }
-
-  @JsonIgnore
-  public UEmne getEmne() {
-    return this.undervisning.getEmne();
-  }
-
-  @JsonIgnore
-  public USemester getSemester() {
-    return this.getUndervisning()
-      .getUaSemester();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    public static UndervisningsAktivitet fromJson(String json) throws IOException {
+        return mapper.readValue(json, UndervisningsAktivitet.class);
     }
-    if (!(o instanceof UndervisningsAktivitet)) {
-      return false;
+
+    public UaUndervisning getUndervisning() {
+        return undervisning;
     }
-    UndervisningsAktivitet that = (UndervisningsAktivitet) o;
-    return Objects.equals(getUndervisning(), that.getUndervisning())
-      && Objects.equals(getNavn(), that.getNavn())
-      && Objects.equals(getAktivitet(), that.getAktivitet());
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(getUndervisning(), getNavn(), getAktivitet());
-  }
+    public UndervisningsAktivitet setUndervisning(UaUndervisning undervisning) {
+        this.undervisning = undervisning;
+        return this;
+    }
 
-  @IgnoreValidable
-  public String getHref() {
-    return href;
-  }
+    public UndervisningsAktivitet setUndervising(UaUndervisning undervisning) {
+        this.undervisning = undervisning;
+        return this;
+    }
 
-  public void setHref(String href) {
-    this.href = href;
-  }
+    public List<LanguageValue> getNavn() {
+        return navn;
+    }
+
+    public UndervisningsAktivitet setNavn(List<LanguageValue> navn) {
+        this.navn = navn;
+        return this;
+    }
+
+    public String getAktivitet() {
+        return aktivitet;
+    }
+
+    public UndervisningsAktivitet setAktivitet(String aktivitet) {
+        this.aktivitet = aktivitet;
+        return this;
+    }
+
+    @JsonIgnore
+    public UEmne getEmne() {
+        return this.undervisning.getEmne();
+    }
+
+    @JsonIgnore
+    public USemester getSemester() {
+        return this.getUndervisning()
+            .getUaSemester();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UndervisningsAktivitet)) {
+            return false;
+        }
+        UndervisningsAktivitet that = (UndervisningsAktivitet) o;
+        return Objects.equals(getUndervisning(), that.getUndervisning())
+            && Objects.equals(getNavn(), that.getNavn())
+            && Objects.equals(getAktivitet(), that.getAktivitet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUndervisning(), getNavn(), getAktivitet());
+    }
+
+    @IgnoreValidable
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(String href) {
+        this.href = href;
+    }
 }

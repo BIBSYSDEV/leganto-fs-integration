@@ -17,25 +17,25 @@ import utils.IoUtils;
 
 public class EmneTest {
 
-  public static final String EMNE_JSON = "Emne.json";
-  public static final String RESOURCES_FOLDER = "ua";
-  private final Emne emne;
+    public static final String EMNE_JSON = "Emne.json";
+    public static final String RESOURCES_FOLDER = "ua";
+    private final Emne emne;
 
-  public EmneTest() throws IOException {
+    public EmneTest() throws IOException {
 
-    String emneJson = IoUtils.resourceAsString(Paths.get(RESOURCES_FOLDER, EMNE_JSON));
-    emne = Emne.fromJson(emneJson);
-  }
+        String emneJson = IoUtils.resourceAsString(Paths.get(RESOURCES_FOLDER, EMNE_JSON));
+        emne = Emne.fromJson(emneJson);
+    }
 
-  @Test
-  public void fromJsonShouldGenerateAValidObject() {
-    assertThat(emne.isValid(), is(equalTo(true)));
-  }
+    @Test
+    public void fromJsonShouldGenerateAValidObject() {
+        assertThat(emne.isValid(), is(equalTo(true)));
+    }
 
-  @Test
-  public void getAndSetNavnShouldHandleNavn() {
-    List<LanguageValue> navn = Collections.singletonList(new LanguageValue(Language.NB, "something"));
-    emne.setNavn(navn);
-    assertThat(emne.getNavn(), is(equalTo(navn)));
-  }
+    @Test
+    public void getAndSetNavnShouldHandleNavn() {
+        List<LanguageValue> navn = Collections.singletonList(new LanguageValue(Language.NB, "something"));
+        emne.setNavn(navn);
+        assertThat(emne.getNavn(), is(equalTo(navn)));
+    }
 }
