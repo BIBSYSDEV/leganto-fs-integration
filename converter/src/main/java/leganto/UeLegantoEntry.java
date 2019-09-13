@@ -42,7 +42,8 @@ public class UeLegantoEntry extends LegantoEntry {
             getVersion(),
             year.toString(),
             getUeSemester().getSemesterCode()
-                .toString());
+                .toString(),
+            ue.getTerminNummer());
 
         return String.join(DEFAULT_DELIMITER, UE_ID_PREFIX, suffix);
     }
@@ -78,7 +79,7 @@ public class UeLegantoEntry extends LegantoEntry {
         return UeCourseTitleFormat
             .fromInteger(userInput.getCourseTitleFormat())
             .formatUaCourseTitle(emneNavn,
-                getCode(),
+                getOnlyCode(),
                 ue.getSemester()
                     .getSemesterCode(),
                 ue.getSemester()
