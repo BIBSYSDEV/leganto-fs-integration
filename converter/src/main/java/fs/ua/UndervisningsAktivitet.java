@@ -29,8 +29,18 @@ public class UndervisningsAktivitet extends Validable {
     @JsonProperty("href")
     private String href;
 
+    @JsonProperty("campus")
+    private String campus = "";
+
     public static UndervisningsAktivitet fromJson(String json) throws IOException {
         return mapper.readValue(json, UndervisningsAktivitet.class);
+    }
+
+    public String getCampus(){return campus;}
+
+    public UndervisningsAktivitet setCampus(String camp){
+        campus = camp;
+        return this;
     }
 
     public UaUndervisning getUndervisning() {

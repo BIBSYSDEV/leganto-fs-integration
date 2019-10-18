@@ -6,15 +6,19 @@ import fs.common.Person;
 import fs.emne.Emne;
 import fs.organizations.OrganizationEntity;
 import fs.personroller.UndervisningReference;
+import fs.ua.SemesterCode;
+import fs.ua.USemester;
 import fs.user.UserInput;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
+// Yes, this class grew a bit complex, but divide it up does not make sense...
+@SuppressWarnings("PMD.GodClass")
 public abstract class LegantoEntry {
 
     public static final String FIELD_DELIMITER = "\t";
@@ -22,8 +26,7 @@ public abstract class LegantoEntry {
     protected static final String DEFAULT_DELIMITER = "_";
     protected static final String PROCESSING_DEPARTMENT_INVARIANT = "LEGANTO";
     protected static final String SEARCHABLE_IDS_DELIMITER = ",";
-    protected static final String MISSING_ORGANIZATION_ENTITY_INFORMATION_ERROR = "Missing organization entity "
-        + "information";
+    protected static final String MISSING_ORGANIZATION_ENTITY_INFORMATION_ERROR = "Missing organization entity information";
     private static final String ILLEGAL_STATE_MESSAGE = "Not available";
     private static final String INVALID_EMNE_RECORD = "Emne record without emneNavn";
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
@@ -36,10 +39,45 @@ public abstract class LegantoEntry {
 
     private transient List<Person> instructors = Collections.emptyList();
 
+    protected transient int endDateModifier;
+    protected transient int startDateModifier;
+
 
     public LegantoEntry(UserInput userInput) {
         this.userInput = userInput;
         Preconditions.checkArgument(userInput.isValid(), INVALID_USER_INPUT_MESSAGE);
+        setEndDateModifier(userInput.getEndDateModifier());
+        setStartDateModifier(userInput.getStartDateModifier());
+    }
+
+    protected String getEndDate(USemester semester) {
+        int year = semester.getYear();
+        if (semester.getSemesterCode()
+            .equals(SemesterCode.AUTUMN)) {
+            year = year + 1;
+        }
+        LocalDate endDate = semester.getSemesterCode()
+            .semesterEndDate(year);
+        endDate = endDate.plus(endDateModifier, ChronoUnit.MONTHS);
+        return dateToString(endDate);
+    }
+
+    protected String getStartDate(USemester semester) {
+        int year = semester.getYear();
+        LocalDate startDate = semester.getSemesterCode()
+            .semesterStartDate(year);
+        startDate = startDate.plus(startDateModifier, ChronoUnit.MONTHS);
+        return dateToString(startDate);
+    }
+
+    public LegantoEntry setEndDateModifier(int month){
+        endDateModifier = month;
+        return this;
+    }
+
+    public LegantoEntry setStartDateModifier(int month){
+        startDateModifier = month;
+        return this;
     }
 
     @Override
@@ -161,12 +199,16 @@ public abstract class LegantoEntry {
         return EMPTY_STRING;
     }
 
-    public String getStartDate() {
+    public USemester getSemester() {
         throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
     }
 
     public String getEndDate() {
-        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE);
+        return getEndDate(getSemester());
+    }
+
+    public String getStartDate() {
+        return getStartDate(getSemester());
     }
 
     public String getWeeklyHours() {
@@ -236,7 +278,7 @@ public abstract class LegantoEntry {
         return dateFormatter.format(date);
     }
 
-    public final String getCampusParticipants() {
+    public String getCampusParticipants() {
         return userInput.getCampusParticipants(getCourseCode())
             .orElse(EMPTY_STRING);
     }

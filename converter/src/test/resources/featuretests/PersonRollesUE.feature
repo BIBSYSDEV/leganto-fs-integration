@@ -4,6 +4,9 @@ Feature: Instructors for each UE Leganto entry
 
   Background:
     Given there is a valid user input
+    And the user input has a field with name "start_dato_modifier" with value 0
+    And the user input has a field with name "slutt_dato_modifier" with value 0
+
     And there is a valid response from /organizationsenheter/ORG_ID
     And there is a valid response from /emne/emneId
     And there is a valid response from /undervisning/UE_ID

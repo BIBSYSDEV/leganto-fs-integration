@@ -2,14 +2,14 @@ package leganto;
 
 import fs.common.Language;
 import fs.personroller.UndervisningReference;
-import fs.ua.SemesterCode;
+
 import fs.ua.USemester;
 import fs.ue.UeCourseTitleFormat;
 import fs.ue.UndervisiningEntry;
 import fs.user.Operation;
 import fs.user.UserInput;
 
-import java.time.LocalDate;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,8 +63,9 @@ public class UeLegantoEntry extends LegantoEntry {
 
     private String[] getIdSegs() {
         if (idSeg == null) {
-            idSeg = ue.getHref()
-                .substring(ue.getHref()
+            String href = URLDecoder.decode(ue.getHref());
+            idSeg = href
+                .substring(href
                     .lastIndexOf('/') + 1)
                 .split(",");
         }
@@ -96,25 +97,9 @@ public class UeLegantoEntry extends LegantoEntry {
         return getUeSemester().getSemesterCode()
             .toEnglishString();
     }
-
     @Override
-    public String getStartDate() {
-        LocalDate startDate = getUeSemester().getSemesterCode()
-            .semesterStartDate(getUeSemester().getYear());
-        return dateToString(startDate);
-    }
-
-    @Override
-    public String getEndDate() {
-
-        int year = getUeSemester().getYear();
-        if (SemesterCode.AUTUMN.equals(getUeSemester().getSemesterCode())) {
-            year = getUeSemester().getYear() + 1;
-        }
-
-        LocalDate endDate = getUeSemester().getSemesterCode()
-            .semesterEndDate(year);
-        return dateToString(endDate);
+    public USemester getSemester(){
+        return getUeSemester();
     }
 
     @Override

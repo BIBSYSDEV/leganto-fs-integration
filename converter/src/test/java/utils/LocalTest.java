@@ -28,6 +28,8 @@ public class LocalTest {
             .setNumberOfParticipantsFilename(NUMBER_OF_PARTICIPANTS_FILENAME)
             .setIncludeNumberOfParticipants(INCLUDE_NUMBER_OF_PARTICIPANTS)
             .setIncludeUA(true)
-            .setRoleCodes(Collections.emptyList());
+            .setRoleCodes(Collections.emptyList())
+            .setEndDateModifier(0)
+            .setStartDateModifier(0);
     }
 }

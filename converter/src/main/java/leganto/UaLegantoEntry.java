@@ -4,12 +4,12 @@ import com.google.common.base.Preconditions;
 import fs.common.Language;
 import fs.personroller.UndervisningReference;
 import fs.ua.SemesterCode;
+import fs.ua.USemester;
 import fs.ua.UaCourseTitleFormat;
 import fs.ua.UndervisningsAktivitet;
 import fs.user.Operation;
 import fs.user.UserInput;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,26 +28,9 @@ public class UaLegantoEntry extends LegantoEntry {
         Preconditions.checkArgument(ua.isValid());
         this.ua = ua;
     }
-
     @Override
-    public String getEndDate() {
-        Integer year = ua.getSemester()
-            .getYear();
-        if (ua.getSemester()
-            .getSemesterCode()
-            .equals(SemesterCode.AUTUMN)) {
-            year = year + 1;
-        }
-        LocalDate endDate = getSemesterCode().semesterEndDate(year);
-        return dateToString(endDate);
-    }
-
-    @Override
-    public String getStartDate() {
-        Integer year = ua.getSemester()
-            .getYear();
-        LocalDate startDate = getSemesterCode().semesterStartDate(year);
-        return dateToString(startDate);
+    public USemester getSemester(){
+        return ua.getSemester();
     }
 
     @Override
@@ -153,6 +136,12 @@ public class UaLegantoEntry extends LegantoEntry {
     public String getNumberOfParticipants() {
         return this.userInput.getNumberOfParticipants(getCourseCode())
             .orElse(EMPTY_STRING);
+    }
+
+    @Override
+    public String getCampusParticipants() {
+        return userInput.getCampusParticipants(getCourseCode())
+            .orElse(ua.getCampus());
     }
 
     @Override

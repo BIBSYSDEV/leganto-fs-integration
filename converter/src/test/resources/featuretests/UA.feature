@@ -14,6 +14,8 @@ Feature:
 
     And the user input has a field with name "include_ua" with boolean value "true"
     And the user input has a field with name "include_institute_in_acad_department" with boolean value "true"
+    And the user input has a field with name "start_dato_modifier" with value 0
+    And the user input has a field with name "slutt_dato_modifier" with value 0
 
     And there is a valid response from /undervisningsaktiviteter/UA_ID
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.href" with value "emne/emneId"
@@ -132,3 +134,11 @@ Feature:
     When a new UA Leganto entry has been generated
 
     Then the field CourseTitle in the UA entry is the string "emneKode - NynorskEmneNavn - NynorskUANavn (HØST 1980)"
+
+
+  Scenario: Campus has a value
+    Given the response from /undervisningsaktiviteter/UA_ID has a field "campus" with value "campusName"
+
+    When a new UA Leganto entry has been generated
+
+    Then the field CampusParticipants in the UA entry is the string "campusName"

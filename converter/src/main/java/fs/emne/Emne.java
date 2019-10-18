@@ -6,6 +6,7 @@ import fs.common.LanguageValue;
 import fs.common.Validable;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import utils.JsonUtils;
@@ -29,6 +30,9 @@ public class Emne extends Validable {
 
     public Emne setNavn(List<LanguageValue> navn) {
         this.navn = navn;
+        for (LanguageValue v: navn) {
+            v.setValue(URLDecoder.decode(v.getValue()));
+        }
         return this;
     }
 

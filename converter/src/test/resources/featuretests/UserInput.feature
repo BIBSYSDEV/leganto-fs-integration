@@ -8,6 +8,8 @@ Feature:
     And there is a valid response from /emne/emneId
     And there is a possibly empty personroller list
     And there is a valid user input
+    And the user input has a field with name "start_dato_modifier" with value 0
+    And the user input has a field with name "slutt_dato_modifier" with value 0
 
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.terminnummer" with value "12"
     And the response from /undervisningsaktiviteter/UA_ID has a field "undervisning.emne.href" with value "emne/emneId"
@@ -26,7 +28,7 @@ Feature:
     And the response from /undervisning/UE_ID has a field with name "semester.ar" and value "1980"
     And the response from /undervisning/UE_ID has a field with name "semester.termin" and value "HØST"
     And the response from /undervisning/UE_ID has a field with name "terminnummer" and value "12"
-
+    #And the response from /undervisning/UE_ID has a field with name "campus" and value "12"
 
   Scenario: campus participants in UA entry
     Given the user input has a field with name "include_campus_participants" with boolean value "true"
@@ -91,3 +93,24 @@ Feature:
     Given the user input has a field with name "include_number_of_participants" with boolean value "false"
     When a new UE Leganto entry has been generated
     Then the field NumberOfParticipants in the UE entry is empty
+
+
+  Scenario: unmoved start date
+    Given the user input has a field with name "start_dato_modifier" with value 0
+    When a new UE Leganto entry has been generated
+    Then the field StartDate in the UE entry is the string "1980-08-01"
+
+  Scenario: moved start date
+    Given the user input has a field with name "start_dato_modifier" with value -1
+    When a new UE Leganto entry has been generated
+    Then the field StartDate in the UE entry is the string "1980-07-01"
+
+  Scenario: unmoved end date
+    Given the user input has a field with name "slutt_dato_modifier" with value 0
+    When a new UE Leganto entry has been generated
+    Then the field EndDate in the UE entry is the string "1981-01-31"
+
+  Scenario: moved end date
+    Given the user input has a field with name "slutt_dato_modifier" with value 1
+    When a new UE Leganto entry has been generated
+    Then the field EndDate in the UE entry is the string "1981-02-28"

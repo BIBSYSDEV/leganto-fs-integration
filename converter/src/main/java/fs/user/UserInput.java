@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
+@SuppressWarnings("PMD.TooManyFields")
 public class UserInput extends Validable {
 
     public static final String CAMPUS_PARTICIPANTS_FILE_FIELD = "campus_participants_file";
@@ -57,6 +57,12 @@ public class UserInput extends Validable {
 
     @JsonProperty("feide_domain")
     private String feideDomain;
+
+    @JsonProperty(value = "start_dato_modifier", defaultValue = "0")
+    private Integer startDateModifier;
+
+    @JsonProperty(value = "slutt_dato_modifier", defaultValue = "0")
+    private Integer endDateModifier;
 
     @JsonIgnore
     private transient ParticipantsFile campusParticipantsFile;
@@ -240,4 +246,13 @@ public class UserInput extends Validable {
         this.feideDomain = feideDomain;
     }
 
+    @IgnoreValidable
+    public Integer getStartDateModifier() { return startDateModifier; }
+
+    public UserInput setStartDateModifier(Integer dateModifier) { startDateModifier = dateModifier; return this; }
+
+    @IgnoreValidable
+    public Integer getEndDateModifier() { return endDateModifier; }
+
+    public UserInput setEndDateModifier(Integer dateModifier) { endDateModifier = dateModifier; return this; }
 }
