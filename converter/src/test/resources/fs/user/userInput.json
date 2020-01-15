@@ -1,0 +1,15 @@
+{
+  "include_campus_participants": false,
+  "campus_participants_file": null,
+  "include_number_of_participants": false,
+  "number_of_participants_file": "number_of_participants_file.csv",
+  "operation": "NORMAL",
+  "include_institute_in_acad_department": true,
+  "language_order": [
+    "nn",
+    "nb",
+    "en"
+  ],
+  "course_title_format": 1,
+  "include_ua": true
+}
